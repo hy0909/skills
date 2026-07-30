@@ -1,0 +1,7 @@
+interface:
+  display_name: "Component Generator"
+  short_description: "Planner/designer component MD writer"
+  default_prompt: "Use $component-generator to turn this Figma mockup or notes into a concise Korean design-system component handoff document."
+
+policy:
+  allow_implicit_invocation: true
