@@ -1,16 +1,16 @@
 # Feature Content Rules
 
-The requirement table is the implementation source of truth.
+The `기능명세서` table is the implementation source of truth.
 
 Columns, exact order:
 
 | 순서 | 항목명 | 작성 기준 |
 | --- | --- | --- |
-| 1 | `1depth` | 상위 기능 그룹 또는 메뉴 |
-| 2 | `2depth` | 화면, 탭, 하위 메뉴 |
-| 3 | `3depth` | 화면 주제, 액션, 요구사항 주제 |
-| 4 | `요구사항 ID` | `REQ-...` |
-| 5 | `요구사항명` | 핵심 주제를 짧게 작성 |
+| 1 | `요구사항 ID` | `REQ-...` |
+| 2 | `1depth` | 상위 기능 그룹 또는 메뉴 |
+| 3 | `2depth` | 화면, 탭, 하위 메뉴 |
+| 4 | `3depth` | 화면 주제, 액션, 요구사항 주제 |
+| 5 | `요구사항명` | 핵심 주제 |
 | 6 | `요청목적` | 필요 이유. 없으면 비워도 됨 |
 | 7 | `기능 요구사항` | 기능 동작 |
 | 8 | `프로세스 요구사항` | 사용자/시스템 흐름. `→` 사용 |
@@ -22,6 +22,8 @@ Writing rules:
 
 - Keep each row focused on one screen/action/rule.
 - Use short bullets inside cells.
+- Use easy, direct words.
+- Prefer noun-style endings where natural.
 - Preserve source terminology.
 - Remove duplication and merge scattered requirements.
 - Do not invent API, DB, enum, FE component, event, analytics, or state machine.
