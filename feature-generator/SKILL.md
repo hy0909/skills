@@ -1,14 +1,14 @@
 ---
 name: feature-generator
-description: Create Korean 기능명세서 Markdown or XLSX files from raw text, an existing feature XLSX, or a feature MD/table. Use when the user asks to generate a 기능명세서, convert text to feature MD, convert 기능명세서 XLSX to MD, create 기능명세서 XLSX, preserve the standard feature XLSX design, or enforce IA depth columns and common MD sections for feature specifications.
+description: Create Korean 기능명세서 Markdown or XLSX files from raw text, an existing feature XLSX, or a feature MD/table. Use when the user asks to generate a concise feature specification, convert text to feature MD, convert 기능명세서 XLSX to MD, create 기능명세서 XLSX, preserve the standard feature XLSX design, or enforce IA depth columns and requirement tables without duplicative narrative.
 ---
 
 # Feature Generator
 
 Use this skill to create a 기능명세서 `.md` or `.xlsx` file. It supports three input modes:
 
-- Text to MD: raw text, pasted notes, screen descriptions, or requirements become a complete 기능명세서 MD.
-- XLSX to MD: an existing 기능명세서/요구사항정의서 `.xlsx` becomes a complete 기능명세서 MD.
+- Text to MD: raw text, pasted notes, screen descriptions, or requirements become a concise 기능명세서 MD.
+- XLSX to MD: an existing 기능명세서/요구사항정의서 `.xlsx` becomes a concise 기능명세서 MD.
 - MD/Table to XLSX: a 기능명세서 MD or requirements table becomes a styled 기능명세서 XLSX.
 
 ## Front Step
@@ -34,16 +34,18 @@ Every output MD must include these sections in this order:
 1. Header
 2. Metadata block
 3. Purpose and scope
-4. Core rules
-5. Body
+4. Core planning rules
+5. Requirement table
 6. Related links
 7. Change history
+
+The MD must stay table-first and concise. The requirement table is the primary implementation source. Do not add long overview prose, repeated body summaries, or occupation-specific implementation contracts above the table.
 
 Always place `Related links` immediately above `Change history`.
 
 Read `references/common_md_structure.md` when drafting or reviewing the output.
 Read `references/feature_content_rules.md` before drafting requirement rows.
-Read `references/core_summary_rules.md` before drafting the Core rules section.
+Read `references/core_summary_rules.md` before drafting the Core planning rules section.
 
 ## Section Spacing Rule
 
@@ -62,21 +64,12 @@ Before every major level-2 section heading, insert three standalone HTML line br
 Apply this spacing before every `##` heading, including:
 
 - `## 1. 목적·범위`
-- `## 2. 핵심 규칙`
-- `## 3. 본문`
+- `## 2. 핵심 기획 규칙`
+- `## 3. 요구사항 테이블`
 - `## 4. 연관 링크`
 - `## 5. 변경 이력`
 
-Between sibling lower-level headings, insert two standalone HTML line breaks before the next heading. Apply this consistently to repeated `###` and `####` headings:
-
-```md
-<br>
-<br>
-
-### 2.2 권한 요약
-```
-
-Do not insert these spacing tags inside Markdown table cells. When restructuring an existing feature MD, normalize its headings to this rule without adding a change-history row solely for formatting.
+Between sibling lower-level headings, insert two standalone HTML line breaks before the next heading. Apply this consistently to repeated `###` and `####` headings. Do not insert these spacing tags inside Markdown table cells. When restructuring an existing feature MD, normalize its headings to this rule without adding a change-history row solely for formatting.
 
 ## Text To MD Workflow
 
@@ -86,13 +79,14 @@ Use this when the user provides only text or screenshots described in text.
 2. Fill every required MD section even if the source text is short.
    - Infer concise values from context when possible.
    - Use `TBD` only for information that cannot be inferred safely.
-3. Build the body as a feature specification.
-   - Include IA / feature group summary.
-   - Always include developer-facing core summary tables for permissions, notifications/risk alerts, risk stages/statuses, and backend-relevant requirement logic.
-   - Include permissions/roles as a core table. If the source is incomplete, mark missing values as `원문 기준 추가 정의 필요` instead of omitting the table.
-   - Include conditional rules for if/then behavior.
+3. Build the MD around the requirement table.
+   - Include only a short `## 2. 핵심 기획 규칙` table before the requirements.
+   - Core planning rules must contain only planning facts that help developers structure implementation.
+   - Do not duplicate every permission, status, notification, or report rule above the table.
+   - Do not add backend-owned status values, API details, DB fields, frontend component structures, or cross-role implementation contracts unless the user explicitly asks to document them in this feature MD.
+   - If BE/FE-specific details appear in the source, include only the planning-level implication needed for this feature; leave detailed BE/FE ownership to their respective documents.
+   - Include conditional rules for if/then behavior in the requirement rows.
    - Include only requirement-level states, data fields, permissions, and exceptions that are stated or directly implied by the source.
-   - Include a requirements table.
 4. Requirement tables must use the fixed columns and exact header names from `references/feature_content_rules.md`.
 5. Requirement tables must use IA depth columns:
    - `1depth`: top-level product area or feature group.
@@ -112,10 +106,9 @@ Use this when the user provides a 기능명세서 or 요구사항정의서 `.xls
    - If the source has one hierarchy column such as `업무그룹`, split it into `1depth`, `2depth`, and `3depth`.
 5. Remove trailing empty columns that came only from spreadsheet formatting.
 6. Convert internal spreadsheet line breaks to `<br>` inside Markdown table cells.
-7. Add the required core summary tables from `references/core_summary_rules.md`.
-   - Preserve and summarize any source rows about `권한`, `알림`, `위험알림`, `위험 단계`, `보고서`, and `비계 정합성`.
-   - Never drop permission or notification tables because they are backend-facing contract summaries.
-   - If a source workbook lacks enough detail for a required core table, include the table and write `원문 기준 추가 정의 필요` in unknown cells.
+7. Add only concise planning-level rules to `## 2. 핵심 기획 규칙`.
+   - Do not create mandatory role/notification/status/backend summary subsections.
+   - Do not repeat the same logic once in a summary and again in the requirement table unless it is truly a top-level planning rule.
 
 Use `scripts/xlsx_to_feature_md.py` for deterministic XLSX conversion when suitable.
 
@@ -146,7 +139,7 @@ Read `references/xlsx_design_rules.md` before producing a feature XLSX.
 
 ## IA Depth Rules
 
-- Use IA depth for both summaries and requirements tables.
+- Use IA depth for requirement tables.
 - Group page/screen items by actual navigation hierarchy.
 - Group page-less items into MECE functional groups such as `알림`, `권한`, `보고서`, `설정`, `데이터`, or another group implied by the source.
 - Keep related requirements adjacent within the same `1depth > 2depth > 3depth` path.
@@ -173,10 +166,6 @@ Read `references/xlsx_design_rules.md` before producing a feature XLSX.
 - Do not add product or category prefixes that repeat the parent-directory context.
 - Use the same topic for document-specific assets: `assets/<topic>/`.
 - Preserve an existing filename only when it already follows this rule. Otherwise rename the MD/XLSX files and update relative links and asset paths.
-- Examples:
-  - Project settings feature specification: `project-settings.md`, `project-settings.xlsx`, `assets/project-settings/`
-  - SOP risk alert feature specification: `sop-risk-alert.md`, `sop-risk-alert.xlsx`, `assets/sop-risk-alert/`
-  - Member invitation feature specification: `member-invitation.md`, `member-invitation.xlsx`, `assets/member-invitation/`
 
 ## Output Rules
 
@@ -188,10 +177,10 @@ Read `references/xlsx_design_rules.md` before producing a feature XLSX.
 - Do not leave required sections blank.
 - Preserve original source meaning; do not delete requirements.
 - Do not invent development structures that are not in the source.
-- Do not omit core summary tables. MD outputs must always include `권한 요약`, `알림·위험알림 요약`, `위험 단계/상태 요약`, and `백엔드 핵심 로직 요약` when generating a 기능명세서.
-- Backend-facing summaries must stay at requirement level. Summarize roles, recipients, view/edit permissions, alert routing, report creation rules, saved history/data items, statuses, and exception behavior only when they appear in or are directly implied by the source.
-- Do not create imagined enums, error codes, API shapes, database schemas, state machines, class names, component names, or backend architecture.
-- Do not add development code, pseudo-code, error codes, enums, API contracts, DB fields, tracking events, analytics events, or permission models unless the user/source explicitly provides them.
+- Do not create mandatory `권한 요약`, `알림·위험알림 요약`, `위험 단계/상태 요약`, or `백엔드 핵심 로직 요약` sections unless the user explicitly asks for those separate summaries.
+- Keep `## 2. 핵심 기획 규칙` short: one table, only top-level planning rules, no duplicate narrative.
+- Core planning rules are not BE/FE ownership documents. Do not update or restate another role's authoritative spec in the feature MD.
+- Do not add development code, pseudo-code, error codes, enums, API contracts, DB fields, tracking events, analytics events, or permission models unless the user/source explicitly provides them and asks to include them here.
 - Do not inflate requirements with speculative behavior. If a field is not provided and cannot be safely inferred from the product context, write `TBD`, leave it blank, or state only `원문 기준 추가 정의 필요`.
 - If implementation-level information is explicitly provided by the user, include it as source-provided requirements, not as speculative design.
 - Use Markdown tables that paste cleanly into Notion and GitHub.

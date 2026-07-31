@@ -161,27 +161,27 @@ def ia_summary(rows: list[list[str]]) -> str:
     return "\n".join(lines)
 
 
-def core_rules(rows: list[list[str]]) -> str:
+def core_planning_rules(rows: list[list[str]]) -> str:
     if not rows:
-        return "_핵심 규칙은 원본 기준으로 확인 필요_"
+        return "_핵심 기획 규칙은 원본 기준으로 확인 필요_"
     headers = rows[0]
     req_index = column_index(headers, "기능 요구사항")
     security_index = column_index(headers, "보안 요구사항")
     data_index = column_index(headers, "데이터 요구사항")
-    lines = ["| 구분 | 핵심 규칙 |", "| --- | --- |"]
+    lines = ["| 구분 | 핵심 기획 규칙 | 적용 범위 | 요구사항 연결 |", "| --- | --- | --- | --- |"]
     if req_index is not None:
         sample = next((row[req_index] for row in rows[1:] if req_index < len(row) and row[req_index].strip()), "")
         if sample:
-            lines.append(f"| 기능 | {md_cell(sample[:160])} |")
+            lines.append(f"| 기능 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
     if security_index is not None:
         sample = next((row[security_index] for row in rows[1:] if security_index < len(row) and row[security_index].strip()), "")
         if sample:
-            lines.append(f"| 권한/보안 | {md_cell(sample[:160])} |")
+            lines.append(f"| 권한/보안 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
     if data_index is not None:
         sample = next((row[data_index] for row in rows[1:] if data_index < len(row) and row[data_index].strip()), "")
         if sample:
-            lines.append(f"| 데이터 | {md_cell(sample[:160])} |")
-    return "\n".join(lines) if len(lines) > 2 else "_핵심 규칙은 원본 기준으로 확인 필요_"
+            lines.append(f"| 데이터 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
+    return "\n".join(lines) if len(lines) > 2 else "_핵심 기획 규칙은 원본 기준으로 확인 필요_"
 
 
 def safe_id(title: str) -> str:
@@ -217,32 +217,23 @@ effective_date: {today}
 
 ## 1. 목적·범위
 
-- 목적: 원본 기능명세서 Excel 내용을 개발자와 AI가 참조하기 쉬운 Markdown 구조로 정리합니다.
+- 목적: 원본 기능명세서 Excel 내용을 구현 기준으로 참조하기 쉬운 Markdown 요구사항 테이블로 정리합니다.
 - 포함 범위: IA, 요구사항, 프로세스, 화면, 권한/보안, 데이터 요구사항.
-- 제외 범위: 원본에 명시되지 않은 정책, 결제, 법무 항목.
+- 제외 범위: 원본에 명시되지 않은 정책, 결제, 법무, 직군별 세부 구현 문서.
 
 <br>
 <br>
 <br>
 
-## 2. 핵심 규칙
+## 2. 핵심 기획 규칙
 
-{core_rules(rows)}
-
-<br>
-<br>
-<br>
-
-## 3. 본문
-
-### 3.1 IA / 기능 그룹
-
-{ia_summary(rows)}
+{core_planning_rules(rows)}
 
 <br>
 <br>
+<br>
 
-### 3.2 요구사항 테이블
+## 3. 요구사항 테이블
 
 {md_table(rows)}
 

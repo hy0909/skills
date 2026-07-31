@@ -2,7 +2,7 @@
 
 Use these rules whenever writing 기능명세서 requirement rows.
 
-Before writing requirement rows, write the required core summary tables from `core_summary_rules.md`. Permission, notification/risk alert, stage/status, and backend-relevant requirement logic must be summarized in `## 2. 핵심 규칙` and then detailed in the body table.
+The requirement table is the primary source for implementation. Before it, write only the concise `## 2. 핵심 기획 규칙` table from `core_summary_rules.md`.
 
 ## Fixed Requirement Columns
 
@@ -34,10 +34,8 @@ Do not rename these columns. In particular, use `요청목적` without `(선택)
 - Use `→` for process flow.
 - Keep each row focused on one screen, action, or requirement topic.
 - Group rows by IA path: `1depth > 2depth > 3depth`.
-- Keep backend-important logic visible in both places:
-  - summarize it in the core summary tables
-  - detail it in the requirement rows
-- Do not leave permission, notification, risk stage, report, or settings logic only inside scattered body rows when it affects backend structure.
+- Do not repeat every important row again in the core section. Use `## 2. 핵심 기획 규칙` only for cross-cutting planning rules.
+- Keep BE/FE-owned details out of the feature MD unless the user explicitly asks to include them here.
 
 ## What Can Be Improved
 
