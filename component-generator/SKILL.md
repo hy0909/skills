@@ -63,12 +63,13 @@ Start every file with the component name as the H1, then a metadata block:
 
 > **Figma:** [{{시안명}}](figma://link/REPLACE_WITH_NODE_ID)
 > **Status:** `Draft` · **Last updated:** {{YYYY-MM-DD}}
-> **Owner:** Design System Team
+> **Owner:** AI Research Team
 ```
 
 - `Status`: `Draft`, `Review`, `Stable`, `Deprecated` 중 하나.
 - `Last updated`: current date or user-provided date.
 - `Figma`: use provided links only. Do not invent links.
+- `Owner`: always write `AI Research Team` unless the user explicitly provides another owner.
 
 ## 목적·범위
 
