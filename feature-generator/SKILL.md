@@ -1,19 +1,19 @@
 ---
 name: feature-generator
-description: Create concise Korean 기능명세서 Markdown or XLSX files from raw text, existing XLSX, or MD tables. Use when the user wants a table-first feature spec with only essential planning rules above the requirements table, no duplicated FE/BE summaries, and the standard feature XLSX export.
+description: Create concise Korean 기능명세서 Markdown or XLSX files from raw text, existing XLSX, or MD tables. Use when the user wants a feature spec with 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, no duplicated FE/BE summaries, and standard XLSX export.
 ---
 
 # Feature Generator
 
-Create table-first Korean 기능명세서 files.
+Create concise Korean 기능명세서 files.
 
 ## Output Principle
 
-- Keep the MD short. The `요구사항 테이블` is the implementation source of truth.
-- Above the table, write only `## 1. 핵심 기획 규칙`.
-- Do not generate `목적·범위`, `IA 요약`, `본문`, `권한 요약`, `알림 요약`, `상태 요약`, or `백엔드 핵심 로직 요약` by default.
-- Do not copy the same rule into both a summary section and a requirement row unless it prevents real misunderstanding.
-- FE/BE-owned details belong in FE/BE docs. In this feature MD, include only planning meaning needed to implement the feature.
+- Keep the MD short.
+- Use easy, clear Korean. Prefer short noun-style endings such as `데이터 출처 정의`, not long `~한다` prose.
+- Write only planning information needed for implementation.
+- Do not repeat the same rule in both the top section and the table unless it prevents misunderstanding.
+- FE/BE-owned details belong in FE/BE documents. Feature MD keeps only planning meaning.
 
 ## MD Structure
 
@@ -21,12 +21,22 @@ Use this order:
 
 1. Header
 2. Metadata block
-3. `## 1. 핵심 기획 규칙`
-4. `## 2. 요구사항 테이블`
-5. `## 3. 연관 링크`
-6. `## 4. 변경 이력`
+3. `## 1. 목적·범위`
+4. `## 2. 핵심 기획 규칙`
+5. `## 3. 기능명세서`
+6. `## 4. 연관 링크`
+7. `## 5. 변경 이력`
 
 Use three `<br>` lines before each `##` heading.
+
+## 목적·범위
+
+Write only two bullets:
+
+- `목적:` one short noun-style phrase
+- `범위:` included screens, data, or rules
+
+Write only `목적` and `범위` bullets.
 
 ## 핵심 기획 규칙
 
@@ -41,16 +51,16 @@ Rules:
 
 - Max 5 rows unless the user explicitly asks for more.
 - One row = one cross-cutting planning rule.
-- Include only rules that affect multiple requirement rows or prevent implementation misunderstanding.
-- If there is no meaningful cross-cutting rule, write one `공통` row saying the requirements table is the source of truth.
+- Include only rules that affect multiple 기능명세서 rows or prevent implementation misunderstanding.
+- If there is no meaningful cross-cutting rule, write one `공통` row saying the 기능명세서 table is the source of truth.
 
-## 요구사항 테이블
+## 기능명세서
 
 Read `references/feature_content_rules.md`.
 
-Always use columns:
+Always use columns in this exact order:
 
-`1depth`, `2depth`, `3depth`, `요구사항 ID`, `요구사항명`, `요청목적`, `기능 요구사항`, `프로세스 요구사항`, `화면 요구사항`, `보안 요구사항`, `데이터 요구사항`
+`요구사항 ID`, `1depth`, `2depth`, `3depth`, `요구사항명`, `요청목적`, `기능 요구사항`, `프로세스 요구사항`, `화면 요구사항`, `보안 요구사항`, `데이터 요구사항`
 
 Keep rows concise. Put detailed behavior in the relevant row, not in a repeated narrative section.
 
@@ -77,4 +87,5 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Preserve source meaning; do not invent scope.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
+- Write only the latest change-history row unless the user asks to preserve all history.
 - Write `Codex, 김혜연` in change history.

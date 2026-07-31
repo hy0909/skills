@@ -1,9 +1,11 @@
 # Common MD Structure
 
-Feature MD output must be compact.
+Feature MD output must be concise and table-first.
 
 ````md
 # {{문서명}}
+
+{{한 줄 설명}}
 
 ```yaml
 id: {{문서_ID}}
@@ -17,7 +19,16 @@ effective_date: {{YYYY-MM-DD}}
 <br>
 <br>
 
-## 1. 핵심 기획 규칙
+## 1. 목적·범위
+
+- 목적: {{짧은 명사형 문구}}
+- 범위: {{포함 화면·데이터·규칙}}
+
+<br>
+<br>
+<br>
+
+## 2. 핵심 기획 규칙
 
 | 구분 | 핵심 기획 규칙 | 적용 범위 | 요구사항 연결 |
 | --- | --- | --- | --- |
@@ -26,16 +37,16 @@ effective_date: {{YYYY-MM-DD}}
 <br>
 <br>
 
-## 2. 요구사항 테이블
+## 3. 기능명세서
 
-| 1depth | 2depth | 3depth | 요구사항 ID | 요구사항명 | 요청목적 | 기능 요구사항 | 프로세스 요구사항 | 화면 요구사항 | 보안 요구사항 | 데이터 요구사항 |
+| 요구사항 ID | 1depth | 2depth | 3depth | 요구사항명 | 요청목적 | 기능 요구사항 | 프로세스 요구사항 | 화면 요구사항 | 보안 요구사항 | 데이터 요구사항 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 <br>
 <br>
 <br>
 
-## 3. 연관 링크
+## 4. 연관 링크
 
 | 구분 | 링크 |
 | --- | --- |
@@ -48,11 +59,16 @@ effective_date: {{YYYY-MM-DD}}
 <br>
 <br>
 
-## 4. 변경 이력
+## 5. 변경 이력
 
 | 버전 | 일자 | 변경 내용 | 작성자 |
 | --- | --- | --- | --- |
 | 1.0.0 | {{YYYY-MM-DD}} | 최초 작성 | Codex, 김혜연 |
 ````
 
-Do not add `목적·범위`, `IA 요약`, `본문`, or role-specific summary sections unless the user asks.
+Rules:
+
+- Write only `목적` and `범위` bullets.
+- Do not add IA summary, role summary, alert summary, status summary, or backend summary sections unless the user asks.
+- Use easy words and short noun-style endings.
+- Keep only the latest change-history row by default.

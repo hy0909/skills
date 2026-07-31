@@ -101,20 +101,33 @@ def normalize_ia_rows(rows: list[list[str]]) -> list[list[str]]:
     )
     rows = rows[header_index:]
     headers = [cell.strip() for cell in rows[0]]
-    if headers[:3] == ["1depth", "2depth", "3depth"]:
-        return rows
     hierarchy_index = next((i for i, header in enumerate(headers) if header in {"업무그룹", "그룹", "기능 그룹"}), None)
-    if hierarchy_index is None:
-        return rows
-    req_name_index = next((i for i, header in enumerate(headers) if header == "요구사항명"), None)
-    new_headers = headers[:hierarchy_index] + ["1depth", "2depth", "3depth"] + headers[hierarchy_index + 1 :]
-    normalized = [new_headers]
-    for row in rows[1:]:
-        padded = row + [""] * (len(headers) - len(row))
-        req_name = padded[req_name_index] if req_name_index is not None and req_name_index < len(padded) else ""
-        depth1, depth2, depth3 = split_ia_group(padded[hierarchy_index], req_name)
-        normalized.append(padded[:hierarchy_index] + [depth1, depth2, depth3] + padded[hierarchy_index + 1 :])
-    return remove_trailing_empty_columns(normalized)
+    if hierarchy_index is not None and not {"1depth", "2depth", "3depth"}.issubset(set(headers)):
+        req_name_index = next((i for i, header in enumerate(headers) if header == "요구사항명"), None)
+        new_headers = headers[:hierarchy_index] + ["1depth", "2depth", "3depth"] + headers[hierarchy_index + 1 :]
+        normalized = [new_headers]
+        for row in rows[1:]:
+            padded = row + [""] * (len(headers) - len(row))
+            req_name = padded[req_name_index] if req_name_index is not None and req_name_index < len(padded) else ""
+            depth1, depth2, depth3 = split_ia_group(padded[hierarchy_index], req_name)
+            normalized.append(padded[:hierarchy_index] + [depth1, depth2, depth3] + padded[hierarchy_index + 1 :])
+        rows = remove_trailing_empty_columns(normalized)
+        headers = [cell.strip() for cell in rows[0]]
+
+    index_by_header = {name: i for i, name in enumerate(headers)}
+    if "요구사항 ID" in index_by_header and "1depth" in index_by_header and "2depth" in index_by_header and "3depth" in index_by_header:
+        ordered = [headers]
+        normalized_header = ['요구사항 ID', '1depth', '2depth', '3depth', '요구사항명', '요청목적', '기능 요구사항', '프로세스 요구사항', '화면 요구사항', '보안 요구사항', '데이터 요구사항']
+        ordered = [normalized_header]
+        for row in rows[1:]:
+            padded = row + [""] * (len(headers) - len(row))
+            ordered.append([
+                padded[index_by_header[name]] if name in index_by_header and index_by_header[name] < len(padded) else ""
+                for name in normalized_header
+            ])
+        return remove_trailing_empty_columns(ordered)
+
+    return rows
 
 
 def md_cell(value: str) -> str:
@@ -147,20 +160,6 @@ def column_index(headers: list[str], name: str) -> int | None:
     return next((i for i, header in enumerate(headers) if header == name), None)
 
 
-def ia_summary(rows: list[list[str]]) -> str:
-    if not rows or rows[0][:3] != ["1depth", "2depth", "3depth"]:
-        return "_IA 기준 분류 정보가 없습니다._"
-    seen: set[tuple[str, str, str]] = set()
-    lines = ["| 1depth | 2depth | 3depth | 설명 |", "| --- | --- | --- | --- |"]
-    for row in rows[1:]:
-        depth = tuple((row + ["", "", ""])[:3])
-        if depth in seen:
-            continue
-        seen.add(depth)
-        lines.append(f"| {md_cell(depth[0])} | {md_cell(depth[1])} | {md_cell(depth[2])} | 요구사항 참조 |")
-    return "\n".join(lines)
-
-
 def core_planning_rules(rows: list[list[str]]) -> str:
     if not rows:
         return "_핵심 기획 규칙은 원본 기준으로 확인 필요_"
@@ -172,15 +171,15 @@ def core_planning_rules(rows: list[list[str]]) -> str:
     if req_index is not None:
         sample = next((row[req_index] for row in rows[1:] if req_index < len(row) and row[req_index].strip()), "")
         if sample:
-            lines.append(f"| 기능 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
+            lines.append(f"| 기능 | {md_cell(sample[:160])} | 전체 | 기능명세서 |")
     if security_index is not None:
         sample = next((row[security_index] for row in rows[1:] if security_index < len(row) and row[security_index].strip()), "")
         if sample:
-            lines.append(f"| 권한/보안 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
+            lines.append(f"| 권한/보안 | {md_cell(sample[:160])} | 전체 | 기능명세서 |")
     if data_index is not None:
         sample = next((row[data_index] for row in rows[1:] if data_index < len(row) and row[data_index].strip()), "")
         if sample:
-            lines.append(f"| 데이터 | {md_cell(sample[:160])} | 전체 | 요구사항 테이블 |")
+            lines.append(f"| 데이터 | {md_cell(sample[:160])} | 전체 | 기능명세서 |")
     return "\n".join(lines) if len(lines) > 2 else "_핵심 기획 규칙은 원본 기준으로 확인 필요_"
 
 
@@ -213,7 +212,16 @@ effective_date: {today}
 <br>
 <br>
 
-## 1. 핵심 기획 규칙
+## 1. 목적·범위
+
+- 목적: 기능명세서 변환
+- 범위: 원본 XLSX의 요구사항, 화면, 권한, 데이터 항목
+
+<br>
+<br>
+<br>
+
+## 2. 핵심 기획 규칙
 
 {core_planning_rules(rows)}
 
@@ -221,7 +229,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 2. 요구사항 테이블
+## 3. 기능명세서
 
 {md_table(rows)}
 
@@ -229,7 +237,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 3. 연관 링크
+## 4. 연관 링크
 
 | 구분 | 링크 |
 | --- | --- |
@@ -242,7 +250,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 4. 변경 이력
+## 5. 변경 이력
 
 | 버전 | 일자 | 변경 내용 | 작성자 |
 | --- | --- | --- | --- |
