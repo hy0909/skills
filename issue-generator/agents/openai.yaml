@@ -1,0 +1,4 @@
+interface:
+  display_name: "Issue Generator"
+  short_description: "Create GitHub issues in docs repos"
+  default_prompt: "Use $issue-generator to create a GitHub issue or sub-issue in the matching docs repository."
