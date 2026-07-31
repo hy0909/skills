@@ -1,13 +1,13 @@
 ---
 name: component-generator
-description: Create concise Korean design-system component Markdown documents from Figma mockups, screenshots, notes, or existing MD files for planner/designer handoff. Use when the user wants a component spec focused on purpose/scope, service usage locations, visual structure, display rules, states, interactions, content, accessibility, and a short checklist, with no code, API, CSS, props, FE/BE architecture, or duplicated implementation detail.
+description: Create concise Korean design-system component Markdown documents from Figma mockups, screenshots, notes, or existing MD files for planner/designer handoff. Use when the user wants a component spec organized by service usage and function-level behavior, with only necessary design definitions, no code, API, CSS, props, FE/BE architecture, or duplicated tables.
 ---
 
 # Component Generator
 
 Create concise Korean component design documents.
 
-This skill is for 기획자·디자이너가 개발자에게 전달하는 디자인 컴포넌트 기준 문서. The document should explain what the component is, where it appears in the service, how it looks, and how it behaves. Development design belongs to developers.
+This skill is for 기획자·디자이너가 개발자에게 전달하는 디자인 컴포넌트 기준 문서. The document should explain what the component is, where it appears in the service, and what each user-facing function must do. Development design belongs to developers.
 
 ## Output Principle
 
@@ -15,9 +15,11 @@ This skill is for 기획자·디자이너가 개발자에게 전달하는 디자
 - Use easy, clear Korean.
 - Prefer short noun-style endings such as `공통 미디어 뷰어 컴포넌트`, not long `~한다` prose.
 - Write only planning/design information needed for implementation handoff.
-- Make `서비스 내 적용 위치` and `컴포넌트 자체 구조` the strongest parts of the document.
-- Describe user-visible behavior and interaction, not internal implementation.
+- Make `서비스 내 적용 위치` and `기능 단위 명세` the strongest parts of the document.
+- Describe user-visible behavior, display rules, and interaction in function units.
 - Do not repeat the same rule in multiple sections unless it prevents misunderstanding.
+- Do not split one idea into many tables.
+- Remove tables or sections that do not add a decision or implementation handoff value.
 - Do not create `적용 범위` or `제외 범위` sections.
 - Do not create `Implementation Notes`.
 - Do not create `Figma 최신 텍스트 샘플`.
@@ -32,6 +34,7 @@ Do not include:
 - Developer-owned component architecture.
 - Implementation guesses not shown in the source.
 - Duplicate summaries that restate table rows.
+- Long separate tables for structure, display, interaction, and labels when one function table is enough.
 - Long abstract wording that increases reading load.
 
 Technical terms are allowed only when they are user-facing gestures or UI labels in the design, such as `pinch-to-zoom`, `double tap`, `progress bar`, or `Close button`.
@@ -44,13 +47,10 @@ Use this order. Keep numbering contiguous.
 2. Metadata block
 3. `## 1. 목적·범위`
 4. `## 2. 서비스 내 적용 위치`
-5. `## 3. 컴포넌트 구조`
-6. `## 4. 표시 규칙`
-7. `## 5. 상태·인터랙션`
-8. `## 6. 콘텐츠·접근성`
-9. `## 7. 핵심 확인 체크리스트`
-10. `## 8. 연관 링크`
-11. `## 9. 변경이력`
+5. `## 3. 기능 단위 명세`
+6. `## 4. 핵심 확인 체크리스트`
+7. `## 5. 연관 링크`
+8. `## 6. 변경이력`
 
 Use `---` between top-level sections.
 
@@ -102,78 +102,37 @@ Use a table that shows where the component appears in the service:
 
 Rules:
 
-- Include only real service locations from the source.
-- Mark uncertain usage as `시안 확정 필요`.
-- If a screen does not use this component, write the reason briefly.
+- Include only real or strongly relevant service locations from the source.
+- Remove non-use rows unless they prevent a likely misunderstanding.
+- Mark uncertain usage as `시안 확정 필요` only when the user needs that decision.
 - Prefer service meaning over internal routing or rendering details.
 
-## 컴포넌트 구조
+## 기능 단위 명세
 
-Describe the visible parts of the component.
+This is the main section.
 
-Recommended table:
+Write a function-level table that helps developers understand the component behavior without code:
 
-| 영역 | 구성 요소 | 설명 |
-| --- | --- | --- |
+| 기능 | 사용 위치 | 조건·대상 | 사용자 액션 | 화면 반응 | 핵심 기준 |
+| --- | --- | --- | --- | --- | --- |
 
 Rules:
 
-- Focus on what the user sees.
+- One row should describe one user-facing function.
+- Merge visual structure, display rules, interaction, and content labels into this table when possible.
+- Include only rows needed to build or review the component.
+- Use function names such as `사진 확대 열기`, `사진 확대·이동`, `영상 재생`, `영상 컨트롤`, `모달 닫기`.
+- Keep platform differences in `사용 위치`, `조건·대상`, or `핵심 기준`.
+- Use `선택` for Korean user action wording.
+- Keep gesture names such as `pinch-to-zoom`, `double tap`, and `drag/pan` when they are the clearest labels.
 - Include Figma node IDs only when they help confirm the source.
 - Do not use class names, props, architecture names, or code-style state keys.
-- Keep Figma frame names readable. If a technical name is needed for handoff, keep it short and human-readable.
-
-## 표시 규칙
-
-Write visual and content display rules.
-
-Good subjects:
-
-- Photo/video display ratio.
-- Modal size behavior shown in the design.
-- Close button location and touch/click area.
-- Player control visibility.
-- Media type by risk level or service context.
-- Whether a Figma control is only a reference and may use a similar player library.
-
-Rules:
-
-- Use tables for repeated rules.
+- Do not add a separate section for every state unless the component is too complex for one table.
 - Do not write CSS values or implementation properties.
 - Do not invent tokens.
 - If the design does not define a value, write `시안 기준 추가 정의 필요`.
 
-## 상태·인터랙션
-
-Write only user actions and visible results.
-
-Recommended table:
-
-| 상황 | 사용자 액션 | 화면 반응 |
-| --- | --- | --- |
-
-Rules:
-
-- Focus on click/selection, close, zoom, pan, play/pause, progress movement, and dim-area close.
-- Use `선택` for Korean user action wording.
-- Keep gesture names such as `pinch-to-zoom`, `double tap`, and `drag/pan` when they are the clearest labels.
-- Do not mention internal state machines or lifecycle behavior.
-
-## 콘텐츠·접근성
-
-Include only content labels and accessibility rules that matter for handoff.
-
-Recommended table:
-
-| 항목 | 기준 |
-| --- | --- |
-
-Rules:
-
-- Include icon labels, button labels, and focus/keyboard needs when relevant.
-- Do not create a `Figma 최신 텍스트 샘플` section.
-- Do not duplicate unrelated page text.
-- Keep accessibility wording practical and short.
+Add a short `기본 구조` bullet list before the table only when the component cannot be understood from the function table alone.
 
 ## 핵심 확인 체크리스트
 
@@ -186,13 +145,13 @@ Recommended table:
 
 Rules:
 
-- Keep only core user-visible checks.
+- Keep only core user-visible checks that are not already obvious from the function table.
 - Do not include code, internal reset logic, or developer-owned cleanup.
 - Use `필수`, `권장`, `해당 없음`, or `시안 확정 필요`.
 
 ## 변경이력
 
-- Write the section title as `## 9. 변경이력` or the correct contiguous number.
+- Write the section title with the correct contiguous number, such as `## 6. 변경이력`.
 - Keep only the latest row unless the user asks to preserve all history.
 - Sort newest rows first when multiple rows are needed.
 - Use `Claude, 김혜연` as Author for user-requested component document changes.
@@ -203,6 +162,7 @@ Rules:
 - Use short sentences.
 - Use familiar words before specialist terms.
 - Remove repeated sections.
+- Prefer one strong function table over many small tables.
 - Preserve source meaning.
 - Do not invent scope, screen behavior, or design values.
 - Use `TBD` or `시안 기준 추가 정의 필요` only when needed.
