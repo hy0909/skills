@@ -201,8 +201,6 @@ def build_markdown(source: Path, rows: list[list[str]]) -> str:
 
     return f"""# {title}
 
-{source.name} 기반 기능명세서입니다.
-
 ```yaml
 id: {safe_id(title)}
 version: 1.0.0
@@ -215,17 +213,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 1. 목적·범위
-
-- 목적: 원본 기능명세서 Excel 내용을 구현 기준으로 참조하기 쉬운 Markdown 요구사항 테이블로 정리합니다.
-- 포함 범위: IA, 요구사항, 프로세스, 화면, 권한/보안, 데이터 요구사항.
-- 제외 범위: 원본에 명시되지 않은 정책, 결제, 법무, 직군별 세부 구현 문서.
-
-<br>
-<br>
-<br>
-
-## 2. 핵심 기획 규칙
+## 1. 핵심 기획 규칙
 
 {core_planning_rules(rows)}
 
@@ -233,7 +221,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 3. 요구사항 테이블
+## 2. 요구사항 테이블
 
 {md_table(rows)}
 
@@ -241,7 +229,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 4. 연관 링크
+## 3. 연관 링크
 
 | 구분 | 링크 |
 | --- | --- |
@@ -254,7 +242,7 @@ effective_date: {today}
 <br>
 <br>
 
-## 5. 변경 이력
+## 4. 변경 이력
 
 | 버전 | 일자 | 변경 내용 | 작성자 |
 | --- | --- | --- | --- |
