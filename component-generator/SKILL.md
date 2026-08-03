@@ -17,6 +17,8 @@ This skill is for 기획자·디자이너가 개발자에게 전달하는 디자
 - Write only planning/design information needed for implementation handoff.
 - Make `서비스 내 적용 위치` and `기능 단위 명세` the strongest parts of the document.
 - Describe user-visible behavior, display rules, and interaction in function units.
+- When a control or visual effect appears only in some areas, clearly separate `있음` and `없음`.
+- Include state changes such as `replay` when the visible label or button changes.
 - Optimize for reader understanding before optimizing for table count.
 - Do not repeat the same rule in multiple sections unless it prevents misunderstanding.
 - Do not split one idea into many tables unless platform differences improve readability.
@@ -69,7 +71,8 @@ Start every file with the component name as the H1, then a metadata block:
 # {{Component Name}}
 
 > **Figma:** [{{시안명}}](figma://link/REPLACE_WITH_NODE_ID)
-> **Status:** `Draft` · **Last updated:** {{YYYY-MM-DD}}
+> **Status:** Draft
+> **Last updated:** {{YYYY-MM-DD}}
 > **Owner:** AI Research Team
 ```
 
@@ -77,6 +80,8 @@ Start every file with the component name as the H1, then a metadata block:
 - `Last updated`: current date or user-provided date.
 - `Figma`: use provided links only. Do not invent links.
 - `Owner`: always write `AI Research Team` unless the user explicitly provides another owner.
+- Write each metadata item on its own blockquote line.
+- Do not combine `Status` and `Last updated` into one line.
 
 ## 목적·범위
 
@@ -148,6 +153,8 @@ Rules:
 - Do not add a separate section for every state unless the component is too complex for one table.
 - Do not write CSS properties or implementation properties.
 - Design values such as direction, area size, color, and opacity are allowed when needed for visual handoff.
+- If the user asks for button presence, visual effects, or state changes, state where it appears and where it does not appear.
+- For gradients, write the area, direction, height, color, and opacity when those values are provided.
 - Do not invent tokens.
 - If the design does not define a value, write `시안 기준 추가 정의 필요`.
 
