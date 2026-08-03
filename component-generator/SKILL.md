@@ -1,6 +1,6 @@
 ---
 name: component-generator
-description: Create concise Korean design-system component Markdown documents from Figma mockups, screenshots, notes, or existing MD files for planner/designer handoff. Use when the user wants a component spec organized by service usage and function-level behavior, with only necessary design definitions, no code, API, CSS, props, FE/BE architecture, or duplicated tables.
+description: Create concise Korean design-system component Markdown documents from Figma mockups, screenshots, notes, or existing MD files for planner/designer handoff. Use when the user wants a reader-friendly component spec organized by service usage, platform differences, common visual rules, and function-level behavior, with no code, API, CSS, props, FE/BE architecture, or confusing duplicated tables.
 ---
 
 # Component Generator
@@ -17,9 +17,11 @@ This skill is for 기획자·디자이너가 개발자에게 전달하는 디자
 - Write only planning/design information needed for implementation handoff.
 - Make `서비스 내 적용 위치` and `기능 단위 명세` the strongest parts of the document.
 - Describe user-visible behavior, display rules, and interaction in function units.
+- Optimize for reader understanding before optimizing for table count.
 - Do not repeat the same rule in multiple sections unless it prevents misunderstanding.
 - Do not split one idea into many tables unless platform differences improve readability.
 - Split PC Web and Mobile App into separate tables when their usage, gestures, or required checks differ.
+- Split behavior, visual display rules, and QA checks when combining them makes rows long or hard to scan.
 - Remove tables or sections that do not add a decision or implementation handoff value.
 - Do not create `적용 범위` or `제외 범위` sections.
 - Do not create `Implementation Notes`.
@@ -36,6 +38,7 @@ Do not include:
 - Implementation guesses not shown in the source.
 - Duplicate summaries that restate table rows.
 - Long separate tables for structure, display, interaction, and labels when one function table is enough.
+- Wide tables with many long text cells that make the document harder to scan.
 - Long abstract wording that increases reading load.
 
 Technical terms are allowed only when they are user-facing gestures or UI labels in the design, such as `pinch-to-zoom`, `double tap`, `progress bar`, or `Close button`.
@@ -113,18 +116,26 @@ Rules:
 
 This is the main section.
 
-Write function-level tables that help developers understand the component behavior without code:
+Write the clearest mix of short bullets and function-level tables that helps developers understand the component behavior without code.
 
-| 기능 | 사용 위치 | 조건·대상 | 사용자 액션 | 화면 반응 | 핵심 기준 |
-| --- | --- | --- | --- | --- | --- |
+Use a separate `공통 표시 기준` table when visual rules are shared across PC Web and Mobile App:
+
+| 항목 | 기준 |
+| --- | --- |
+
+Use compact function tables for platform-specific behavior:
+
+| 기능 | 대상 | 동작 | 기준 |
+| --- | --- | --- | --- |
 
 Rules:
 
 - One row should describe one user-facing function.
-- Merge visual structure, display rules, interaction, and content labels into this table when possible.
+- Merge visual structure, display rules, interaction, and content labels only when it helps understanding.
 - Include only rows needed to build or review the component.
 - When both PC Web and Mobile App are in scope, prefer `### PC Web` and `### Mobile App` tables inside `## 3. 기능 단위 명세`.
 - Do not force platform columns into one table when the reader must compare many PC/Mobile differences.
+- Prefer 3-4 table columns for function flow. Avoid 5-6 columns unless each cell stays short.
 - Use function names such as `사진 확대 열기`, `사진 확대·이동`, `영상 재생`, `영상 컨트롤`, `모달 닫기`.
 - Keep platform differences in `사용 위치`, `조건·대상`, or `핵심 기준`.
 - Use `선택` for Korean user action wording.
