@@ -205,8 +205,10 @@ Rules:
 ## 변경이력
 
 - Write the section title with the correct contiguous number, such as `## 6. 변경이력`.
-- Keep only the latest row unless the user asks to preserve all history.
-- Sort newest rows first when multiple rows are needed.
+- Keep all change history rows.
+- Add the newest change as a new row at the top.
+- Sort newest rows first.
+- Do not delete old rows unless the user explicitly asks to remove them.
 - Use `Claude, 김혜연` as Author for user-requested component document changes.
 
 ## Writing Rules
