@@ -1,7 +1,7 @@
 interface:
   display_name: "Component Generator"
-  short_description: "Function-based component MD writer"
-  default_prompt: "Use $component-generator to turn this Figma mockup or notes into a concise Korean design-system component document organized by service usage and function-level behavior."
+  short_description: "Platform-based component MD writer"
+  default_prompt: "Use $component-generator to turn this Figma mockup or notes into a concise Korean design-system component document organized by service usage and PC/Mobile function-level behavior."
 
 policy:
   allow_implicit_invocation: true

@@ -18,7 +18,8 @@ This skill is for 기획자·디자이너가 개발자에게 전달하는 디자
 - Make `서비스 내 적용 위치` and `기능 단위 명세` the strongest parts of the document.
 - Describe user-visible behavior, display rules, and interaction in function units.
 - Do not repeat the same rule in multiple sections unless it prevents misunderstanding.
-- Do not split one idea into many tables.
+- Do not split one idea into many tables unless platform differences improve readability.
+- Split PC Web and Mobile App into separate tables when their usage, gestures, or required checks differ.
 - Remove tables or sections that do not add a decision or implementation handoff value.
 - Do not create `적용 범위` or `제외 범위` sections.
 - Do not create `Implementation Notes`.
@@ -112,7 +113,7 @@ Rules:
 
 This is the main section.
 
-Write a function-level table that helps developers understand the component behavior without code:
+Write function-level tables that help developers understand the component behavior without code:
 
 | 기능 | 사용 위치 | 조건·대상 | 사용자 액션 | 화면 반응 | 핵심 기준 |
 | --- | --- | --- | --- | --- | --- |
@@ -122,6 +123,8 @@ Rules:
 - One row should describe one user-facing function.
 - Merge visual structure, display rules, interaction, and content labels into this table when possible.
 - Include only rows needed to build or review the component.
+- When both PC Web and Mobile App are in scope, prefer `### PC Web` and `### Mobile App` tables inside `## 3. 기능 단위 명세`.
+- Do not force platform columns into one table when the reader must compare many PC/Mobile differences.
 - Use function names such as `사진 확대 열기`, `사진 확대·이동`, `영상 재생`, `영상 컨트롤`, `모달 닫기`.
 - Keep platform differences in `사용 위치`, `조건·대상`, or `핵심 기준`.
 - Use `선택` for Korean user action wording.
@@ -129,7 +132,8 @@ Rules:
 - Include Figma node IDs only when they help confirm the source.
 - Do not use class names, props, architecture names, or code-style state keys.
 - Do not add a separate section for every state unless the component is too complex for one table.
-- Do not write CSS values or implementation properties.
+- Do not write CSS properties or implementation properties.
+- Design values such as direction, area size, color, and opacity are allowed when needed for visual handoff.
 - Do not invent tokens.
 - If the design does not define a value, write `시안 기준 추가 정의 필요`.
 
@@ -147,6 +151,7 @@ Recommended table:
 Rules:
 
 - Keep only core user-visible checks that are not already obvious from the function table.
+- Split checklist into `### PC Web` and `### Mobile App` tables when `해당 없음` rows increase reading load.
 - Do not include code, internal reset logic, or developer-owned cleanup.
 - Use `필수`, `권장`, `해당 없음`, or `시안 확정 필요`.
 
