@@ -21,13 +21,20 @@ Use this order:
 
 1. Header
 2. Metadata block
-3. `## 1. 목적·범위`
-4. `## 2. 핵심 기획 규칙`
-5. `## 3. 기능명세서`
-6. `## 4. 연관 링크`
-7. `## 5. 변경 이력`
+3. Top source links, only when needed
+4. `## 1. 목적·범위`
+5. `## 2. 핵심 기획 규칙`
+6. `## 3. 기능명세서`
+7. `## 4. 연관 링크`
+8. `## 5. 변경 이력`
 
 Use three `<br>` lines before each `##` heading.
+
+## Top Source Links
+
+- When a Figma source exists, place it immediately below the metadata block as a clickable Markdown link.
+- Do not put Figma URLs or Figma labels inside the metadata code block because links do not render there.
+- Use this format: `> Figma: [조달과제 건축현장안전관리 — 화면명](https://...)`
 
 ## 목적·범위
 
@@ -87,6 +94,6 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Preserve source meaning; do not invent scope.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
-- For Figma references, do not expose raw Figma URLs in the document body or metadata. Use a readable label in metadata when needed, and put the real URL behind Markdown link text in `## 4. 연관 링크`.
+- For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
 - Write only the latest change-history row unless the user asks to preserve all history.
 - Write `Codex, 김혜연` in change history.
