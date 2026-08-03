@@ -87,5 +87,6 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Preserve source meaning; do not invent scope.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
+- For Figma references, do not expose raw Figma URLs in the document body or metadata. Use a readable label in metadata when needed, and put the real URL behind Markdown link text in `## 4. 연관 링크`.
 - Write only the latest change-history row unless the user asks to preserve all history.
 - Write `Codex, 김혜연` in change history.
