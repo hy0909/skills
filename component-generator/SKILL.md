@@ -47,8 +47,6 @@ Do not include:
 
 Technical terms are allowed only when they are user-facing gestures or UI labels in the design, such as `pinch-to-zoom`, `double tap`, `progress bar`, or `Close button`.
 
-The fenced `yaml` metadata block is allowed. Treat it as document metadata, not as implementation code.
-
 ## MD Structure
 
 Use this order. Keep numbering contiguous.
@@ -69,26 +67,25 @@ Use `---` between top-level sections.
 
 Start every file with the component name as the H1, then a metadata block:
 
-````md
+```md
 # {{Component Name}}
 
-```yaml
-source_figma_pc: {{PC Figma URL}}
-source_figma_mobile: {{Mobile Figma URL}}
-status: Draft
-last_updated: {{YYYY-MM-DD}}
-owner_team: AI Research Team
+> **Figma:** [PC Web → {{시안명}}]({{PC Figma URL}})<br>
+> **Figma:** [Mobile App → {{시안명}}]({{Mobile Figma URL}})<br>
+> **Status:** Draft<br>
+> **Last updated:** {{YYYY-MM-DD}}<br>
+> **Owner:** AI Research Team
 ```
-````
 
 - `Status`: `Draft`, `Review`, `Stable`, `Deprecated` 중 하나.
 - `Last updated`: current date or user-provided date.
 - `Figma`: use provided links only. Do not invent links.
 - `Owner`: always write `AI Research Team` unless the user explicitly provides another owner.
-- Use a fenced `yaml` block for metadata so line breaks render exactly.
-- Write each metadata item on its own line.
+- Use a blockquote metadata block with clickable Markdown links.
+- Add `<br>` at the end of every metadata line except the last line so GitHub renders each item on a separate line.
+- Do not use fenced `yaml` metadata blocks because Figma URLs are not clickable inside code blocks.
 - Do not combine two metadata items into one line.
-- Use `source_figma_pc` and `source_figma_mobile` when both platform links exist.
+- Use separate PC Web and Mobile App Figma lines when both platform links exist.
 
 ## 목적·범위
 
