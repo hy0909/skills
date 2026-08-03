@@ -23,6 +23,8 @@ This skill is for 기획자·디자이너가 개발자에게 전달하는 디자
 - Split PC Web and Mobile App into separate tables when their usage, gestures, or required checks differ.
 - Split behavior, visual display rules, and QA checks when combining them makes rows long or hard to scan.
 - Remove tables or sections that do not add a decision or implementation handoff value.
+- Add a `Figma 화면` section only when the user asks for synced previews, screenshots, or visual references in the MD.
+- Keep Figma previews to one or two core screens that directly support the described component rules.
 - Do not create `적용 범위` or `제외 범위` sections.
 - Do not create `Implementation Notes`.
 - Do not create `Figma 최신 텍스트 샘플`.
@@ -53,8 +55,9 @@ Use this order. Keep numbering contiguous.
 4. `## 2. 서비스 내 적용 위치`
 5. `## 3. 기능 단위 명세`
 6. `## 4. 핵심 확인 체크리스트`
-7. `## 5. 연관 링크`
-8. `## 6. 변경이력`
+7. Optional `## n. Figma 화면` when visual previews are requested
+8. `## n. 연관 링크`
+9. `## n. 변경이력`
 
 Use `---` between top-level sections.
 
@@ -165,6 +168,25 @@ Rules:
 - Split checklist into `### PC Web` and `### Mobile App` tables when `해당 없음` rows increase reading load.
 - Do not include code, internal reset logic, or developer-owned cleanup.
 - Use `필수`, `권장`, `해당 없음`, or `시안 확정 필요`.
+
+## Figma 화면
+
+Add this section only when the user asks to show or sync Figma screens inside the document.
+
+Recommended table:
+
+| 구분 | 화면 | Figma 원본 |
+| --- | --- | --- |
+
+Rules:
+
+- Include only one or two representative screens.
+- Choose screens that explain the component usage or a recently changed rule.
+- Use local repo image paths for images, not expiring Figma image URLs.
+- Keep the original Figma link next to each image.
+- Do not paste sync commands, API notes, or development setup details into the component MD.
+- If image files cannot be generated because the Figma token is unavailable, add the image references only when the user accepts that the files will appear after sync.
+- Do not invent screenshots or describe screens that were not provided.
 
 ## 변경이력
 
