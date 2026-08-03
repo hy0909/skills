@@ -47,6 +47,8 @@ Do not include:
 
 Technical terms are allowed only when they are user-facing gestures or UI labels in the design, such as `pinch-to-zoom`, `double tap`, `progress bar`, or `Close button`.
 
+The fenced `yaml` metadata block is allowed. Treat it as document metadata, not as implementation code.
+
 ## MD Structure
 
 Use this order. Keep numbering contiguous.
@@ -67,21 +69,26 @@ Use `---` between top-level sections.
 
 Start every file with the component name as the H1, then a metadata block:
 
-```md
+````md
 # {{Component Name}}
 
-> **Figma:** [{{시안명}}](figma://link/REPLACE_WITH_NODE_ID)
-> **Status:** Draft
-> **Last updated:** {{YYYY-MM-DD}}
-> **Owner:** AI Research Team
+```yaml
+source_figma_pc: {{PC Figma URL}}
+source_figma_mobile: {{Mobile Figma URL}}
+status: Draft
+last_updated: {{YYYY-MM-DD}}
+owner_team: AI Research Team
 ```
+````
 
 - `Status`: `Draft`, `Review`, `Stable`, `Deprecated` 중 하나.
 - `Last updated`: current date or user-provided date.
 - `Figma`: use provided links only. Do not invent links.
 - `Owner`: always write `AI Research Team` unless the user explicitly provides another owner.
-- Write each metadata item on its own blockquote line.
-- Do not combine `Status` and `Last updated` into one line.
+- Use a fenced `yaml` block for metadata so line breaks render exactly.
+- Write each metadata item on its own line.
+- Do not combine two metadata items into one line.
+- Use `source_figma_pc` and `source_figma_mobile` when both platform links exist.
 
 ## 목적·범위
 
