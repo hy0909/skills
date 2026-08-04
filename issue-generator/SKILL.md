@@ -1,6 +1,6 @@
 ---
 name: issue-generator
-description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, even if the user provides a development repository URL such as `safeai-kr/safe-site`.
+description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and always ask for Assignees before creating if the user did not specify them.
 ---
 
 # Issue Generator
@@ -18,7 +18,9 @@ Use this skill for SafeAI GitHub issue work. The user is a planner, so planning 
 - For `safeai-kr/safe-site`, use `safeai-kr/safe-site-docs`.
 - For plain issues, create the issue directly in the docs repository.
 - For sub-issues, create the child issue in the docs repository and set the provided parent issue with `--parent` when available.
-- Before creating any issue or sub-issue, explicitly mention the assignee plan and ask the user to confirm. If assignees were already specified in the same request, treat that as the proposed plan and still state it back before creation.
+- Before creating any issue or sub-issue, explicitly mention the Assignees plan.
+- If the user did not explicitly specify Assignees, stop and ask the user to provide Assignees. Do not create the issue or sub-issue until the user answers.
+- If Assignees were already specified in the same request, treat that as the proposed plan and state it back before creation.
 - If the user says FE/BE assignees, use FE `easyDong19` and BE `gurdl0525`.
 - When labels, issue type, project fields, priority, or start date are available, set sensible planning defaults instead of leaving them empty.
 - Default priority to a middle/medium value unless the user says otherwise.
@@ -43,9 +45,9 @@ If both a development repo and a docs repo appear in context, use the docs repo 
 3. Resolve the creation repository to a docs repository.
 4. Draft the issue in Korean, matching the user's concise planning style.
 5. Handle assignees before creation:
-   - Always mention assignees before creating.
+   - Always mention Assignees before creating.
    - If assignees were already specified, state the proposed assignees back and proceed only when the request is unambiguous.
-   - If assignees were not specified, ask who should be assigned before creating.
+   - If Assignees were not specified, ask the user to provide Assignees and do not create the issue yet.
    - FE: `easyDong19`
    - BE: `gurdl0525`
 6. Apply issue metadata when possible:
