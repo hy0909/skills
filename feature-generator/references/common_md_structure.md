@@ -71,4 +71,7 @@ Rules:
 - Write only `목적` and `범위` bullets.
 - Do not add IA summary, role summary, alert summary, status summary, or backend summary sections unless the user asks.
 - Use easy words and short noun-style endings.
-- Keep only the latest change-history row by default.
+- When editing an existing document, preserve all previous change-history rows.
+- Add the current work as the newest row and include every material change made in the task.
+- Combine same-day changes into one row by default; split them only when the user requests separate entries.
+- Do not rewrite or remove earlier rows without an explicit request.
