@@ -95,5 +95,7 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
 - For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
-- Write only the latest change-history row unless the user asks to preserve all history.
+- When editing an existing document, preserve every existing change-history row.
+- Add the current work as the newest row at the top. Combine changes made on the same date into one complete row unless the user requests separate rows.
+- Never delete, shorten, reorder, or rewrite previous history without an explicit user request.
 - Write `Codex, 김혜연` in change history.
