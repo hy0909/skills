@@ -84,6 +84,14 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Add a 1px `#D9DEE7` outer border without resizing/cropping/redrawing the original.
 - Store assets in `assets/<topic>/`.
 
+## Figma Scroll Frames
+
+- When a Figma frame name contains `scroll` (case-insensitive), always define scrolling in the relevant feature requirement.
+- Determine the scroll container from the frame hierarchy and screen layout. Specify the scrolling area, direction, overflow condition, and elements that remain fixed.
+- Place the scroll area on the actual content region represented by the named frame; do not automatically apply full-page scrolling.
+- Do not omit scrolling only because the mockup does not show a scrollbar.
+- If the named frame's location makes scrolling structurally unusual, or the intended scroll container is ambiguous, ask the user whether scrolling there is correct before finalizing the document.
+
 ## Naming
 
 - Use concise lowercase kebab-case: `<topic>.md`, `<topic>.xlsx`.

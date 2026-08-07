@@ -28,3 +28,15 @@ Writing rules:
 - Remove duplication and merge scattered requirements.
 - Do not invent API, DB, enum, FE component, event, analytics, or state machine.
 - Keep BE/FE-owned details out unless the user explicitly asks this MD to own them.
+
+## Figma Scroll Mapping
+
+When a Figma frame name contains `scroll` (case-insensitive):
+
+- Treat it as an explicit interaction requirement, not a visual label.
+- Use the frame's parent, clipping bounds, siblings, and fixed headers/footers to identify the intended scroll container.
+- Write the scroll behavior in the same requirement row as the affected screen.
+- `기능 요구사항`: scrolling availability and overflow condition.
+- `프로세스 요구사항`: user scroll → content movement → boundary behavior when relevant.
+- `화면 요구사항`: exact scroll region, vertical/horizontal direction, and fixed elements.
+- Ask the user before writing the final rule when the frame is placed in an implausible area or more than one scroll container is possible.
