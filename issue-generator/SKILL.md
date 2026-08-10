@@ -1,6 +1,6 @@
 ---
 name: issue-generator
-description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and always ask for Assignees before creating if the user did not specify them.
+description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default.
 ---
 
 # Issue Generator
@@ -18,10 +18,11 @@ Use this skill for SafeAI GitHub issue work. The user is a planner, so planning 
 - For `safeai-kr/safe-site`, use `safeai-kr/safe-site-docs`.
 - For plain issues, create the issue directly in the docs repository.
 - For sub-issues, create the child issue in the docs repository and set the provided parent issue with `--parent` when available.
-- Before creating any issue or sub-issue, explicitly mention the Assignees plan.
-- If the user did not explicitly specify Assignees, stop and ask the user to provide Assignees. Do not create the issue or sub-issue until the user answers.
-- If Assignees were already specified in the same request, treat that as the proposed plan and state it back before creation.
-- If the user says FE/BE assignees, use FE `easyDong19` and BE `gurdl0525`.
+- Always set issue and sub-issue Assignees to `hy0909`.
+- Before creating any issue or sub-issue, explicitly mention `Assignees: hy0909`.
+- Do not stop to ask for Assignees when the user did not specify them; `hy0909` is the default and required assignee.
+- If the user requests extra assignees such as FE/BE, include `hy0909` and the requested additional assignees unless the user explicitly says otherwise.
+- If the user says FE/BE assignees, add FE `easyDong19` and BE `gurdl0525` in addition to `hy0909`.
 - When labels, issue type, project fields, priority, or start date are available, set sensible planning defaults instead of leaving them empty.
 - Default priority to a middle/medium value unless the user says otherwise.
 - Default start date to today's local date from the active environment context unless the user says otherwise.
@@ -45,9 +46,9 @@ If both a development repo and a docs repo appear in context, use the docs repo 
 3. Resolve the creation repository to a docs repository.
 4. Draft the issue in Korean, matching the user's concise planning style.
 5. Handle assignees before creation:
-   - Always mention Assignees before creating.
-   - If assignees were already specified, state the proposed assignees back and proceed only when the request is unambiguous.
-   - If Assignees were not specified, ask the user to provide Assignees and do not create the issue yet.
+   - Always mention `Assignees: hy0909` before creating.
+   - If no assignees were specified, proceed with `hy0909`.
+   - If extra assignees were specified, include `hy0909` and state the full proposed assignee list before creating.
    - FE: `easyDong19`
    - BE: `gurdl0525`
 6. Apply issue metadata when possible:
@@ -75,7 +76,7 @@ gh issue create \
   --parent https://github.com/safeai-kr/safe-site/issues/12 \
   --title "[PD] 위험알림 보고서 컴포넌트 제작 및 기획 문서 작성" \
   --body-file <body-file> \
-  --assignee easyDong19,gurdl0525
+  --assignee hy0909,easyDong19,gurdl0525
 ```
 
 ## Transfer Workflow
