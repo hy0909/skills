@@ -1,4 +1,4 @@
 interface:
   display_name: "PR Generator"
-  short_description: "Create PRs after checking assignees"
-  default_prompt: "Use $pr-generator to create a GitHub PR after confirming Assignees."
+  short_description: "Create PRs with hy0909 assigned"
+  default_prompt: "Use $pr-generator to create a GitHub PR with hy0909 assigned after confirming Reviewers."
