@@ -10,10 +10,21 @@ Create concise Korean 기능명세서 files.
 ## Output Principle
 
 - Keep the MD short.
-- Use easy, clear Korean. Prefer short noun-style endings such as `데이터 출처 정의`, not long `~한다` prose.
+- Use the easiest Korean that preserves the source meaning. Replace jargon and abstract wording with familiar words, and explain unavoidable terms once.
+- Make every rule understandable on first read. Name the exact page, category, and function instead of using vague phrases such as `해당 화면`, `관련 기능`, or `이 버튼`.
+- Prefer short noun-style endings such as `데이터 출처 정의`, not long `~한다` prose.
 - Write only planning information needed for implementation.
 - Do not repeat the same rule in both the top section and the table unless it prevents misunderstanding.
 - FE/BE-owned details belong in FE/BE documents. Feature MD keeps only planning meaning.
+
+## Change Notation
+
+- Put a changed item before its detailed behavior in the relevant requirement row.
+- Start with the exact location using `페이지명 > 카테고리명 > 기능명` when more than one screen can be confused.
+- Use this exact order: `(변경 전) 기존 내용 → (변경 후) 새 내용`.
+- For multiple changes, write one before/after pair per bullet.
+- Example: `[QR 관리 > QR 그룹 상세 > 날짜 항목] (변경 전) 등록일 → (변경 후) 생성일`.
+- Do not create a separate repeated change-summary section when the same change already appears in the feature table.
 
 ## MD Structure
 
