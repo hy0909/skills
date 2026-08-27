@@ -94,6 +94,18 @@ def validate(flow):
         elif n.get("type") not in ("end", "note") and not outs:
             warns.append(f"{nid}: 나가는 edge가 없음 — 종착이면 type을 end로")
 
+    # 인접성: FigJam 커넥터는 경유점 제어가 불가 — 2칸 이상 건너뛰는 엣지는 중간 노드를 관통한다
+    pos = {n.get("id"): (n.get("col"), n.get("row")) for n in nodes if n.get("id")}
+    for e in edges:
+        f, t = pos.get(e.get("from")), pos.get(e.get("to"))
+        if not f or not t or None in f or None in t:
+            continue
+        dc, dr = abs(t[0] - f[0]), abs(t[1] - f[1])
+        if dc >= 2 or (dc == 0 and dr >= 2):
+            errors.append(
+                f"비인접 엣지 {e.get('from')}({f[0]},{f[1]})→{e.get('to')}({t[0]},{t[1]}) — "
+                "선이 다른 노드를 관통합니다. 중간 노드를 추가하거나 배치를 인접 셀로 조정하세요.")
+
     # 해피 패스가 row 0에 있는지 대략 확인
     row0 = [n for n in nodes if n.get("row") == 0 and n.get("type") != "note"]
     if nodes and not row0:
