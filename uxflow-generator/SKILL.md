@@ -25,7 +25,7 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 **모든 엣지는 인접 셀만 잇는다 — 선 겹침의 유일한 예방법.** FigJam 커넥터는 경유점 제어가 불가능해서, 2칸 이상 떨어진 노드를 잇는 엣지는 중간 노드를 관통하고 라벨이 다른 라벨·노드와 겹친다. 규칙: ① 엣지는 가로/세로/대각 1칸 이내로만 ② 유효성 검증이 여러 개면 decision 하나에서 부챗살로 뿌리지 말고 **decision 체인**(마름모를 col로 나란히, 각 오류는 자기 마름모 바로 아래 row 1)으로 편다 — 코드의 순차 가드와도 일치 ③ 긴 루프백(에러→입력, 취소→목록) 엣지는 금지하고 해당 노드 details에 `수정 시 즉시 재검증`, `[취소] → 모달 닫고 목록 유지`처럼 결과를 명시하거나, [아니요]류 복귀는 인접한 `end`(exception) 노드로 종결한다 ④ 취소·닫기로 흐름이 끝나면 그 노드를 `end` 타입으로 — 뒤로 이어지는 선이 생기면 안 된다.
 
-**진입·버튼은 `[ ]`로 정확히 표기.** 시작 노드 라벨은 `GNB - [QR 발주서]`처럼 실제 페이지명/버튼명을 대괄호로 감싸고, details에 정확한 경로(`경로: GNB > QR 발주 내역`)를 쓴다. 본문 노드에서도 실제 버튼은 `[발주]`, `칩 [x]`처럼 대괄호 표기.
+**페이지·버튼 단위는 항상 `[ ]`로 표기 — 라벨·제목·레이어명 전부.** 시작 노드 라벨은 `GNB - [QR 발주서 작성]`처럼 실제 페이지명/버튼명을 대괄호로 감싸고, details에 정확한 경로(`경로: GNB > QR 발주 내역`)를 쓴다. 본문 노드의 실제 버튼도 `[발주]`, `칩 [x]`처럼 표기. `title`은 `[대상/페이지] 기능 플로우` 형식(예: `[QR 그룹] 수정 플로우`)으로 쓴다 — 플러그인도 섹션 레이어명을 `[페이지] > 기능`으로 그린다.
 
 **Happy path reads left to right on one line.** Put the success path on `row: 0`, ordered by time (`col` 0, 1, 2, …). Branches (error/exception) drop to `row: 1+` below the decision that spawns them. A developer should trace the main scenario without ever scanning vertically.
 
