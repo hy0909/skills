@@ -21,18 +21,20 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 **Happy path reads left to right on one line.** Put the success path on `row: 0`, ordered by time (`col` 0, 1, 2, …). Branches (error/exception) drop to `row: 1+` below the decision that spawns them. A developer should trace the main scenario without ever scanning vertically.
 
-**Every branch is an explicit decision.** Anywhere the implementation needs an `if` — validation, API response, permission, empty data — add a `decision` node (a short question, e.g. `재고 있음?`) with **all outgoing edges labeled** (`YES`/`NO` or the concrete condition like `401`, `중복`). YES/성공 continues right on the happy row; NO/실패 goes down. Unlabeled decision edges are the #1 thing that makes developers guess — the validator rejects them.
+**Every branch is an explicit decision.** Anywhere the implementation needs an `if` — validation, API response, permission, empty data — add a `decision` node (a short question, e.g. `재고 있음?`) with **all outgoing edges labeled** (`YES`/`NO` or the concrete condition like `401`, `중복`). YES/성공 continues right on the happy row; NO/실패 goes down. Unlabeled decision edges are the #1 thing that makes developers guess — the validator rejects them. Rule of thumb: condition checks the code evaluates (유효성, 응답 코드, 권한, 데이터 유무) get a `decision` node; a user's own choice (취소/닫기 buttons) may branch straight off a `screen`/`action` node with a labeled edge.
+
+**Failure paths loop back to where the user fixes them.** An error/exception node that lets the user retry should connect back to the input step it corrects (`인라인 오류 → 주문 폼`). That loop edge is exactly the retry logic the developer must implement — don't omit it, and don't route it anywhere the user can't act.
 
 **Separate what FE and BE each implement.**
 - `api` nodes are BE touchpoints: details start with `METHOD /path` (e.g. `POST /orders`), then key request fields and response codes the flow branches on.
 - `owner: "FE" | "BE" | "FE·BE"` on nodes where ownership isn't obvious from the type.
 - FE-side handling (토스트, 리다이렉트, 버튼 비활성) are `action`/`screen` nodes — every error/exception path must end at a node stating what the user actually sees. Never leave a failure edge dangling into nothing.
 
-**Mark 권한 and 상태 where they gate behavior.** `role` (게스트/유저/관리자 …) on entry screens or any node that behaves differently by permission; `state` (로그인됨, 데이터 없음, 로딩 …) when a node only applies in that state. Don't repeat the same role on every node — set it where it changes or gates.
+**Mark 권한 and 상태 where they gate behavior.** `role` answers "누가 접근 가능한가" (게스트/유저/관리자 …) — put it on the entry node of a permission-gated flow, or on a node that behaves differently per permission tier. `state` answers "어떤 조건일 때인가" (로그인됨, 데이터 없음, 로딩 …) — put it on nodes that only apply under that condition. Don't repeat the same role on every node — set it where it changes or gates.
 
-**Classify every path node with `case`.** `happy` (default, gray), `error` (red — API 실패, 유효성 오류 등 실패 응답 처리), `exception` (orange — 빈 데이터, 권한 없음, 중복, 네트워크 끊김 같은 edge case). The colors are how a developer finds "여기서 터지면?" answers, so classify by what the path handles, not by where it sits.
+**Classify every path node with `case`.** `happy` (default, gray), `error` (red — 실패 응답 처리: API 실패, 유효성 오류), `exception` (orange — 비정상이지만 예상되는 상황: 빈 데이터, 권한 없음, 중복, 네트워크 끊김). Classify by what the path handles, not by where it sits — the colors are how a developer finds "여기서 터지면?" answers. An optional step or a disabled-button state on the normal journey is still `happy`; reserve orange for paths that only run when something is off.
 
-**Short text only.** Node `label` ≤ 16 chars, noun-style Korean (`주문 폼 진입`, not `사용자가 주문 폼에 진입한다`). `details` = 3~6 bullets, each ≤ 22 chars — field names, API paths, error codes, 정책 numbers. Long policy notes go into a `note` node (yellow sticky) placed in the cell below its related node, not into details.
+**Short text only.** Node `label` ≤ 16 chars, noun-style Korean (`주문 폼 진입`, not `사용자가 주문 폼에 진입한다`). `details` = 3~6 bullets, each ≤ 22 chars — field names, API paths, error codes, 정책 numbers. Long policy notes go into a `note` node (yellow sticky) at the **same `col` as its related node, first free `row` below it** — not into details.
 
 **Keep the grid clean.** No two nodes share the same `(col, row)`. Merge-back edges (a branch returning to the happy path) are fine — connectors route themselves.
 
