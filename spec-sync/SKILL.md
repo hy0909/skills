@@ -14,7 +14,7 @@ Figma is the SSOT for 화면·문구·컴포넌트 상태. The spec mds addition
 - Local mirror: `/Users/khy/Downloads/figmaplugin_260531/specs/`
 - State file: `general/feature/.sync-state.json` (committed with the specs)
 - Frame → md mapping:
-  - QR 관리 목록 frames → `qr-group-list.md`
+  - QR 그룹 관리 목록 frames → `qr-group-list.md`
   - QR 그룹 상세 frames → `qr-group-detail.md`
   - QR 발주하기/발주서 모달 frames → `qr-order-form.md`
   - QR 발주 내역(사용자) frames → `qr-order-list.md` / 상세 → `qr-order-detail.md`
