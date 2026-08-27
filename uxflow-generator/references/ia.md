@@ -1,11 +1,18 @@
 # 제품 IA (페이지 이름의 기준)
 
-플로우의 `page` 이름은 이 제품 IA를 따른다. **원본(항상 우선)**:
+플로우의 `page` 이름은 제품 IA를 따른다. **우선순위: ① 사용자가 준 IA 링크/문서 ② spec md의 1depth ③ 아래 프로젝트 캐시.**
+이 파일은 특정 프로젝트의 IA 캐시일 뿐이다 — 다른 제품/프로젝트 작업이면 아래 캐시는 무시하고 입력에서 IA를 확인할 것. 새 프로젝트를 반복 작업하게 되면 이 파일을 그 프로젝트 기준으로 갱신한다.
+
+---
+
+## 현재 캐시: 스크럽대디 (SafeQR)
+
+원본(항상 우선):
 🔗 [스크럽대디 — IA (node 1738-34241)](https://www.figma.com/design/SBGmrsYE4ooIBMwXvdtJ7S/%EC%8A%A4%ED%81%AC%EB%9F%BD%EB%8C%80%EB%94%94?node-id=1738-34241)
 
-플로우 작성 전 Figma MCP(`get_screenshot`)로 위 노드를 확인해 페이지명을 맞출 것. MCP를 못 쓰는 상황이면 아래 스냅샷과 `specs/common.md`(REQ-C01·C02 GNB 구성)를 참조.
+플로우 작성 전 Figma MCP(`get_screenshot`)로 위 노드를 확인해 페이지명을 맞출 것. MCP를 못 쓰는 상황이면 아래 스냅샷과 spec md의 common(REQ-C01·C02 GNB 구성)을 참조.
 
-## 스냅샷 (2026-08-27 기준, 1depth)
+### 스냅샷 (2026-08-27 기준, 1depth)
 
 **PC 웹**
 - 진입: 회원가입 / 로그인 / 비밀번호 변경

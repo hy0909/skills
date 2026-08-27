@@ -9,12 +9,12 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 ## Pipeline
 
-1. **Collect input.** Planning text, spec markdown, or a conversation description — plus Figma design links when available. **Spec md가 있으면 md가 최우선 기준이다**: 요구사항 ID(REQ-*)·필수/선택·에러 케이스를 md에서 그대로 가져오고, md의 GitHub URL을 `docLinks`에 넣는다(플러그인이 우측 상단에 📄 링크로 그린다).
+1. **Collect input.** Planning text, spec markdown, or a conversation description — plus Figma design links when available. md는 붙여넣은 텍스트·로컬 파일·GitHub 링크 어느 형태든 받는다. GitHub 링크(블랍/트리/브랜치 포함)면 `gh api "repos/{owner}/{repo}/contents/{path}?ref={branch}" --jq .content | base64 -d`로 원문을 받아서 쓴다(프라이빗 레포도 gh 인증으로 동작). **Spec md가 있으면 md가 최우선 기준이다**: 요구사항 ID(REQ-*)·필수/선택·에러 케이스를 md에서 그대로 가져오고, md의 GitHub URL을 `docLinks`에 넣는다(플러그인이 우측 상단에 📄 링크로 그린다). 사용자가 말로 준 정책(한도·개수 제한 등)은 md에 없어도 반영하되 note로 "정책 확정 필요" 표시 가능.
 2. **Read the design.** For each Figma link, use the Figma MCP (`get_metadata` first, then `get_screenshot` / `get_design_context` for the needed nodes) to identify screens, buttons, empty/error states, and permission-gated UI. Every link you consulted goes into `figmaLinks` — developers jump from the flow to the design through these.
-3. **Split by page/feature — page names come from the IA.** One flow = one 페이지 + one 기능 (e.g. `QR 발주 내역 > 발주 승인`). `page` must match the product IA so developers can map flows to routes/menus — check `references/ia.md` (canonical IA Figma link + cached snapshot) before naming, and include the IA link in `figmaLinks` when you consulted it. If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
+3. **Split by page/feature — page names come from the IA.** One flow = one 페이지 + one 기능 (e.g. `QR 발주 내역 > 발주 승인`). `page` must match the product IA so developers can map flows to routes/menus. IA 출처 우선순위: ① 사용자가 준 IA 링크/문서 ② spec md의 1depth 컬럼 ③ `references/ia.md`(현재 프로젝트 캐시 — 다른 프로젝트면 무시). 참조한 IA 링크는 `figmaLinks`에 넣는다. If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
 4. **Author the flow JSON.** Schema and a complete example: `references/flow-schema.md`. Writing rules below.
 5. **Validate.** `python3 scripts/validate_flow.py <flow.json>` — fix every ERROR, review every WARN.
-6. **Send.** `python3 scripts/validate_flow.py <flow.json> --send` (POSTs to `http://localhost:3765/ux-flow`). If the server is down, tell the user to run `./start-server.sh` in the plugin folder (`~/Downloads/figjam_260827`), then retry.
+6. **Send.** `python3 scripts/validate_flow.py <flow.json> --send` (POSTs to `http://localhost:3765/ux-flow`). If the server is down, run `./start-server.sh` in the plugin folder — the folder is a clone of [hy0909/uxflow-figjam-plugin](https://github.com/hy0909/uxflow-figjam-plugin) (없으면 클론해서 세팅, 세팅법은 그 레포 README). 그 후 재전송.
 7. **Tell the user how to draw it:** open a **FigJam** file → run the `UX 플로우 생성기` plugin → `UX Flow` tab → click the flow. Mention the flow name you saved.
 
 ## Writing rules — developer's point of view
