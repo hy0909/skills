@@ -9,6 +9,7 @@ The plugin server accepts this JSON at `POST http://localhost:3765/ux-flow`. One
 | `page` | string | ✅ | 페이지명 (예: `QR 주문`). 파일명과 섹션 제목에 사용 |
 | `feature` | string | ✅ | 기능명 (예: `주문 생성`) |
 | `title` | string | | 플로우 제목. 없으면 `page > feature` |
+| `docLinks` | array | | 기준 스펙 md 링크. `{ "label": string, "url": string }` — 섹션 우측 상단에 📄 라벨-온리 하이퍼링크로 표기(figmaLinks보다 위). 스펙 md 기반 플로우는 필수로 넣을 것 |
 | `figmaLinks` | array | | 참고한 피그마 링크. `{ "label": string, "url": string }` — 섹션 **우측 상단**에 라벨 텍스트만 표기하고 라벨에 하이퍼링크를 건다(URL 문자열은 캔버스에 노출하지 않음). label은 짧게 |
 | `nodes` | array | ✅ | 아래 Node 참조 |
 | `edges` | array | ✅ | 아래 Edge 참조 |
