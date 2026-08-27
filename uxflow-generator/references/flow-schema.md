@@ -20,7 +20,7 @@ The plugin server accepts this JSON at `POST http://localhost:3765/ux-flow`. One
 |---|---|---|---|
 | `id` | string | ✅ | 고유 id (영문/숫자, 예: `n1`, `check_stock`) |
 | `type` | string | ✅ | `start` `end` `screen` `action` `decision` `api` `note` |
-| `label` | string | ✅ | 노드 제목, ≤ 16자. decision은 짧은 질문형 (`재고 있음?`) |
+| `label` | string | ✅ | 노드 제목, ≤ 16자. decision은 짧은 질문형 (`재고 있음?`). 필수 입력 노드는 끝에 `*`(플러그인이 빨간색 강조), 선택 입력은 `(선택)` 표기 |
 | `details` | string[] | | 짧은 문장/단어 3~6개, 각 ≤ 22자. 노드 아래 `·` 리스트로 표기. api는 첫 줄에 `METHOD /path` |
 | `role` | string | | 권한 (예: `관리자`, `게스트`) — 노드 안 뱃지 `👤` |
 | `state` | string | | 상태 조건 (예: `로그인됨`, `데이터 없음`) |
