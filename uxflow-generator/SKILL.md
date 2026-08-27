@@ -1,6 +1,6 @@
 ---
 name: uxflow-generator
-description: Create developer-friendly UX flow diagrams on FigJam so FE/BE developers can check business logic and branch handling at a glance. Use whenever the user asks for a UX flow, 유저 플로우, 화면 흐름도, 플로우차트, FigJam/피그잼 flow, 분기 정리, or wants to hand developers a page/feature-level flow with happy/error/exception paths, 권한(role), 상태(state), and yes/no branch arrows. Takes 기획 내용 (text or spec md) plus Figma design links, produces flow JSON, and sends it to the local plugin server (localhost:3765) so the 핸드오프문서 자동생성기 FigJam plugin draws it.
+description: Create developer-friendly UX flow diagrams on FigJam so FE/BE developers can check business logic and branch handling at a glance. Use whenever the user asks for a UX flow, 유저 플로우, 화면 흐름도, 플로우차트, FigJam/피그잼 flow, 분기 정리, or wants to hand developers a page/feature-level flow with happy/error/exception paths, 권한(role), 상태(state), and yes/no branch arrows. Takes 기획 내용 (text or spec md) plus Figma design links, produces flow JSON, and sends it to the local plugin server (localhost:3765) so the UX 플로우 생성기 FigJam plugin draws it.
 ---
 
 # UX Flow Generator
@@ -14,8 +14,8 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 3. **Split by page/feature — page names come from the IA.** One flow = one 페이지 + one 기능 (e.g. `QR 발주 내역 > 발주 승인`). `page` must match the product IA so developers can map flows to routes/menus — check `references/ia.md` (canonical IA Figma link + cached snapshot) before naming, and include the IA link in `figmaLinks` when you consulted it. If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
 4. **Author the flow JSON.** Schema and a complete example: `references/flow-schema.md`. Writing rules below.
 5. **Validate.** `python3 scripts/validate_flow.py <flow.json>` — fix every ERROR, review every WARN.
-6. **Send.** `python3 scripts/validate_flow.py <flow.json> --send` (POSTs to `http://localhost:3765/ux-flow`). If the server is down, tell the user to run `./start-server.sh` in the plugin folder (`~/Downloads/figmaplugin_260531`), then retry.
-7. **Tell the user how to draw it:** open a **FigJam** file → run the `핸드오프문서 자동생성기` plugin → `UX Flow` tab → click the flow. Mention the flow name you saved.
+6. **Send.** `python3 scripts/validate_flow.py <flow.json> --send` (POSTs to `http://localhost:3765/ux-flow`). If the server is down, tell the user to run `./start-server.sh` in the plugin folder (`~/Downloads/figjam_260827`), then retry.
+7. **Tell the user how to draw it:** open a **FigJam** file → run the `UX 플로우 생성기` plugin → `UX Flow` tab → click the flow. Mention the flow name you saved.
 
 ## Writing rules — developer's point of view
 
