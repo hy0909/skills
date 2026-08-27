@@ -10,7 +10,9 @@ cd "$REPO" 2>/dev/null || exit 0
 git add -A uxflow-generator .hooks 2>/dev/null
 
 if ! git diff --cached --quiet 2>/dev/null; then
-  git commit -m "uxflow-generator 스킬 업데이트 ($(date '+%Y-%m-%d %H:%M'))" --quiet \
+  # GitHub 이메일 보호(GH007) 회피 — noreply 주소로 커밋
+  git -c user.name="hy0909" -c user.email="hy0909@users.noreply.github.com" \
+    commit -m "uxflow-generator 스킬 업데이트 ($(date '+%Y-%m-%d %H:%M'))" --quiet \
     && echo "[$(date '+%F %T')] 커밋 완료" >> "$LOG"
 fi
 
