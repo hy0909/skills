@@ -23,6 +23,10 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 **Spec에 정의된 에러 케이스는 하나도 빠짐없이 red로.** 유효성 에러가 여러 종류면(예: 단위 오류/개수 초과/총량 초과) 각각 별도 `error` 노드로 쪼개고 decision에서 조건별 edge label로 분기시킨다 — 뭉뚱그린 "오류 표시" 하나로 합치면 개발자가 케이스를 놓친다.
 
+**모든 엣지는 인접 셀만 잇는다 — 선 겹침의 유일한 예방법.** FigJam 커넥터는 경유점 제어가 불가능해서, 2칸 이상 떨어진 노드를 잇는 엣지는 중간 노드를 관통하고 라벨이 다른 라벨·노드와 겹친다. 규칙: ① 엣지는 가로/세로/대각 1칸 이내로만 ② 유효성 검증이 여러 개면 decision 하나에서 부챗살로 뿌리지 말고 **decision 체인**(마름모를 col로 나란히, 각 오류는 자기 마름모 바로 아래 row 1)으로 편다 — 코드의 순차 가드와도 일치 ③ 긴 루프백(에러→입력, 취소→목록) 엣지는 금지하고 해당 노드 details에 `수정 시 즉시 재검증`, `[취소] → 모달 닫고 목록 유지`처럼 결과를 명시하거나, [아니요]류 복귀는 인접한 `end`(exception) 노드로 종결한다 ④ 취소·닫기로 흐름이 끝나면 그 노드를 `end` 타입으로 — 뒤로 이어지는 선이 생기면 안 된다.
+
+**진입·버튼은 `[ ]`로 정확히 표기.** 시작 노드 라벨은 `GNB - [QR 발주서]`처럼 실제 페이지명/버튼명을 대괄호로 감싸고, details에 정확한 경로(`경로: GNB > QR 발주 내역`)를 쓴다. 본문 노드에서도 실제 버튼은 `[발주]`, `칩 [x]`처럼 대괄호 표기.
+
 **Happy path reads left to right on one line.** Put the success path on `row: 0`, ordered by time (`col` 0, 1, 2, …). Branches (error/exception) drop to `row: 1+` below the decision that spawns them. A developer should trace the main scenario without ever scanning vertically.
 
 **Every branch is an explicit decision.** Anywhere the implementation needs an `if` — validation, API response, permission, empty data — add a `decision` node (a short question, e.g. `재고 있음?`) with **all outgoing edges labeled** (`YES`/`NO` or the concrete condition like `401`, `중복`). YES/성공 continues right on the happy row; NO/실패 goes down. Unlabeled decision edges are the #1 thing that makes developers guess — the validator rejects them. Rule of thumb: condition checks the code evaluates (유효성, 응답 코드, 권한, 데이터 유무) get a `decision` node; a user's own choice (취소/닫기 buttons) may branch straight off a `screen`/`action` node with a labeled edge.
