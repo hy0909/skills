@@ -9,7 +9,7 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 ## Pipeline
 
-1. **Collect input.** Planning text, spec markdown, or a conversation description — plus Figma design links when available.
+1. **Collect input.** Planning text, spec markdown, or a conversation description — plus Figma design links when available. **Spec md가 있으면 md가 최우선 기준이다**: 요구사항 ID(REQ-*)·필수/선택·에러 케이스를 md에서 그대로 가져오고, md의 GitHub URL을 `docLinks`에 넣는다(플러그인이 우측 상단에 📄 링크로 그린다).
 2. **Read the design.** For each Figma link, use the Figma MCP (`get_metadata` first, then `get_screenshot` / `get_design_context` for the needed nodes) to identify screens, buttons, empty/error states, and permission-gated UI. Every link you consulted goes into `figmaLinks` — developers jump from the flow to the design through these.
 3. **Split by page/feature — page names come from the IA.** One flow = one 페이지 + one 기능 (e.g. `QR 발주 내역 > 발주 승인`). `page` must match the product IA so developers can map flows to routes/menus — check `references/ia.md` (canonical IA Figma link + cached snapshot) before naming, and include the IA link in `figmaLinks` when you consulted it. If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
 4. **Author the flow JSON.** Schema and a complete example: `references/flow-schema.md`. Writing rules below.
@@ -18,6 +18,10 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 7. **Tell the user how to draw it:** open a **FigJam** file → run the `UX 플로우 생성기` plugin → `UX Flow` tab → click the flow. Mention the flow name you saved.
 
 ## Writing rules — developer's point of view
+
+**Form fields are parallel, not a chain.** 한 화면(폼/모달)에서 입력하는 필드들은 시간 순서가 없다 — 수량 → 수출국 → 제품처럼 순차 체인으로 그리지 말 것. 같은 col에 세로로 나란히 배치해 화면 노드에서 병렬로 분기시키고(edge label `병렬`), 모두 "버튼 활성 조건" decision(예: `필수 모두 입력?`)으로 모은다. 필수(*)/선택은 라벨·details에 표기. 디자인이 실제로 입력 순서를 강제할 때만 체인을 쓴다.
+
+**Spec에 정의된 에러 케이스는 하나도 빠짐없이 red로.** 유효성 에러가 여러 종류면(예: 단위 오류/개수 초과/총량 초과) 각각 별도 `error` 노드로 쪼개고 decision에서 조건별 edge label로 분기시킨다 — 뭉뚱그린 "오류 표시" 하나로 합치면 개발자가 케이스를 놓친다.
 
 **Happy path reads left to right on one line.** Put the success path on `row: 0`, ordered by time (`col` 0, 1, 2, …). Branches (error/exception) drop to `row: 1+` below the decision that spawns them. A developer should trace the main scenario without ever scanning vertically.
 
