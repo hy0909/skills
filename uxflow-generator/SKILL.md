@@ -11,7 +11,7 @@ Turn planning text and Figma designs into a FigJam flow diagram that FE/BE devel
 
 1. **Collect input.** Planning text, spec markdown, or a conversation description — plus Figma design links when available.
 2. **Read the design.** For each Figma link, use the Figma MCP (`get_metadata` first, then `get_screenshot` / `get_design_context` for the needed nodes) to identify screens, buttons, empty/error states, and permission-gated UI. Every link you consulted goes into `figmaLinks` — developers jump from the flow to the design through these.
-3. **Split by page/feature.** One flow = one 페이지 + one 기능 (e.g. `QR 주문 > 주문 생성`). If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
+3. **Split by page/feature — page names come from the IA.** One flow = one 페이지 + one 기능 (e.g. `QR 발주 내역 > 발주 승인`). `page` must match the product IA so developers can map flows to routes/menus — check `references/ia.md` (canonical IA Figma link + cached snapshot) before naming, and include the IA link in `figmaLinks` when you consulted it. If a flow needs more than ~9 columns or ~18 nodes, split it into two features rather than shrinking text.
 4. **Author the flow JSON.** Schema and a complete example: `references/flow-schema.md`. Writing rules below.
 5. **Validate.** `python3 scripts/validate_flow.py <flow.json>` — fix every ERROR, review every WARN.
 6. **Send.** `python3 scripts/validate_flow.py <flow.json> --send` (POSTs to `http://localhost:3765/ux-flow`). If the server is down, tell the user to run `./start-server.sh` in the plugin folder (`~/Downloads/figmaplugin_260531`), then retry.
