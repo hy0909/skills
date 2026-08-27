@@ -9,7 +9,7 @@ The plugin server accepts this JSON at `POST http://localhost:3765/ux-flow`. One
 | `page` | string | ✅ | 페이지명 (예: `QR 주문`). 파일명과 섹션 제목에 사용 |
 | `feature` | string | ✅ | 기능명 (예: `주문 생성`) |
 | `title` | string | | 플로우 제목. 없으면 `page > feature` |
-| `figmaLinks` | array | | 참고한 피그마 링크. `{ "label": string, "url": string }` — 플로우 상단에 하이퍼링크로 표기 |
+| `figmaLinks` | array | | 참고한 피그마 링크. `{ "label": string, "url": string }` — 섹션 **우측 상단**에 라벨 텍스트만 표기하고 라벨에 하이퍼링크를 건다(URL 문자열은 캔버스에 노출하지 않음). label은 짧게 |
 | `nodes` | array | ✅ | 아래 Node 참조 |
 | `edges` | array | ✅ | 아래 Edge 참조 |
 
@@ -29,6 +29,8 @@ The plugin server accepts this JSON at `POST http://localhost:3765/ux-flow`. One
 | `row` | number | ✅ | 행 (0 = 해피 패스, 1+ = 분기/에러/예외/메모) |
 
 노드 모양: start/end=타원(초록/회색), screen=사각형, action=둥근사각형, decision=마름모(노랑), api=평행사변형(파랑), note=스티커(노랑, label+details가 스티커 본문).
+
+플러그인은 매 플로우 상단에 이 도형 규칙 **범례**를 자동으로 그린다(시작·종료/화면/액션/분기/API/에러·예외 색). 모든 도형은 1px 테두리, 텍스트는 Inter 폰트로 렌더링된다 — JSON에서 별도로 지정할 필요 없음.
 
 ## Edge
 
