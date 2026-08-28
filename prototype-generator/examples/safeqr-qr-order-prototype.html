@@ -176,8 +176,8 @@ td.c-num{font-weight:400;text-align:right;white-space:nowrap} /* 수량 — body
   color:var(--gray-0)}
 .chip-ok{padding:0 6px;border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0);
   font-size:14px;font-weight:400}
-.chip-cancel{padding:0 6px;background:var(--gray-100);color:var(--gray-600);font-size:14px;font-weight:400}
-.txt-rejected{padding:0 6px;background:var(--pink-50);color:var(--pink-600);font-size:14px;font-weight:400}
+.chip-cancel{padding:0 6px;border:1px solid var(--gray-200);background:var(--gray-0);color:var(--gray-500);font-size:14px;font-weight:400}
+.txt-rejected{padding:0 6px;border:1px solid #f0bee1;background:var(--gray-0);color:var(--pink-600);font-size:14px;font-weight:400} /* 핑크 아웃라인 칩(보더 파생색) */
 .txt-done{color:var(--gray-500);font-size:13px;white-space:nowrap}
 /* 관리자 처리 상태 텍스트 — 칩 아님, 14 Regular 우측 정렬 */
 .adm-st{font-size:14px;color:var(--gray-400);white-space:nowrap}
@@ -361,7 +361,7 @@ tr.dim .prod-card{opacity:.6}
 .step-btn{display:flex;align-items:center;justify-content:center;width:28px;height:28px;
   border:1px solid var(--gray-300);border-radius:var(--radius-lg);color:var(--gray-600);background:var(--gray-0)}
 .step-btn:hover:not(:disabled){background:var(--gray-100)}
-.step-btn:disabled{color:var(--gray-400);background:var(--gray-50)}
+.step-btn:disabled,.step-btn.dim{color:var(--gray-400);background:var(--gray-50)}
 .qty-input{width:112px;height:32px;border:1px solid var(--gray-300);border-radius:var(--radius-lg);
   text-align:center;font-size:16px;color:var(--gray-700);background:var(--gray-0)}
 .qty-input:focus{border-color:var(--primary)}
@@ -772,7 +772,7 @@ function userOrdersPage(){
         <thead><tr>
           <th class="col-status">상태</th><th class="col-date">발주일</th><th class="col-fixed">제품</th>
           <th>생산 공장</th><th>수출국 코드</th><th>QR 그룹 ID</th>
-          <th class="col-qty" style="text-align:right">총 발주 수량</th><th class="col-kebab"></th>
+          <th class="col-qty" style="text-align:right">총 주문 수량</th><th class="col-kebab"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
@@ -797,9 +797,9 @@ function adminActionCell(o){
     case 'pending': return `<div style="display:flex;gap:6px;justify-content:flex-end">
       <button class="btn-reject" data-act="reject" data-id="${o.id}">거절</button>
       <button class="btn-approve" data-act="approve" data-id="${o.id}">승인</button></div>`;
-    case 'approved': return `<span class="adm-st ok">승인함</span>`;
-    case 'rejected': return `<span class="adm-st">거절함</span>`;
-    case 'canceled': return `<span class="adm-st">사용자가 취소</span>`;
+    case 'approved': return `<span class="chip-ok">관리자 승인</span>`;
+    case 'rejected': return `<span class="txt-rejected">관리자 거절</span>`;
+    case 'canceled': return `<span class="chip-cancel">사용자 취소</span>`;
   }
 }
 
@@ -829,7 +829,7 @@ function adminOrdersPage(){
       <table class="tbl">
         <thead><tr>
           <th class="col-date">발주일</th><th class="col-fixed">제품</th><th>생산 공장</th>
-          <th>수출국 코드</th><th>QR 그룹 ID</th><th style="text-align:right">총 발주 수량</th>
+          <th>수출국 코드</th><th>QR 그룹 ID</th><th style="text-align:right">총 주문 수량</th>
           <th class="col-action" style="text-align:right">거절/승인</th><th class="col-kebab"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
@@ -855,7 +855,7 @@ function groupsPage(){
       </div>
       <div class="gcard-rows">
         <div class="r"><span class="k">주문 수량</span><span class="v num"><b>${fmt(g.qty)}</b>장</span></div>
-        <div class="r"><span class="k">생산공장</span><span class="v">${esc(g.factory)}</span></div>
+        <div class="r"><span class="k">생산 공장</span><span class="v">${esc(g.factory)}</span></div>
         <div class="r"><span class="k">수출국</span><span class="v">${g.exp}</span></div>
         <div class="r"><span class="k">생성일</span><span class="v num">${g.created}</span></div>
         <div class="r"><span class="k">마케팅</span><span class="mkt-chip">${g.campaign ? esc(g.campaign.name) : '진행 중인 캠페인 없음'}</span></div>
@@ -993,7 +993,7 @@ function orderModalHtml(){
     <div class="qty-row">
       <span class="rl"><span>·</span><span>QR 그룹</span>${i>0?`<button class="del" data-act="om-del" data-i="${i}" title="행 삭제">${ic.xs}</button>`:''}</span>
       <span class="stepper">
-        <button class="step-btn" data-act="om-minus" data-i="${i}" ${v<=UNIT?'disabled':''} aria-label="감소">${ic.minus}</button>
+        <button class="step-btn${v<=UNIT?' dim':''}" data-act="om-minus" data-i="${i}" aria-label="감소">${ic.minus}</button>
         <input class="qty-input num" data-i="${i}" value="${fmt(v)}" inputmode="numeric" aria-label="수량">
         <button class="step-btn" data-act="om-plus" data-i="${i}" aria-label="증가">${ic.plus}</button>
       </span>
@@ -1393,7 +1393,8 @@ document.addEventListener('click', e => {
     }
     case 'om-minus': {
       const i = +t.dataset.i;
-      if (modal.rows[i] > UNIT){ modal.rows[i] -= UNIT; renderModal(); }
+      if (modal.rows[i] <= UNIT){ showQtyError('min'); return; }
+      modal.rows[i] -= UNIT; renderModal();
       return;
     }
     case 'om-submit': {
