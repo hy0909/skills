@@ -734,9 +734,9 @@ function statusCellUser(o){
   switch(o.status){
     case 'pending':  return `<button class="chip-wait" data-act="cancel-order" data-id="${o.id}" title="발주 취소">승인 대기 중
       <span class="x">${ic.x16}</span></button>`;
-    case 'approved': return `<span class="chip-ok">승인됨</span>`;
-    case 'rejected': return `<span class="txt-rejected">반려됨</span>`;
-    case 'canceled': return `<span class="chip-cancel">발주 취소함</span>`;
+    case 'approved': return `<span class="chip-ok">관리자 승인</span>`;
+    case 'rejected': return `<span class="txt-rejected">관리자 거절</span>`;
+    case 'canceled': return `<span class="chip-cancel">발주 취소</span>`;
   }
 }
 
