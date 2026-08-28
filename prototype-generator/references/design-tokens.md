@@ -75,6 +75,8 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 컨펌 모달 | w448 r12, **border gray900** + shadow 2px 2px 16px rgba(0,0,0,.2) · 헤더 px32 py28 타이틀 **22 Bold** · 본문 px32 py8 **18 Regular gray900** · 푸터 px32 py28 우측 정렬, 버튼 **120×40 r6** 15 Regular, gap12 (ghost border gray300 / 확정 gray900 / 위험 red600) |
 | 그룹 상세 카드 | **그림자 없음** — white bg + border gray200, r12, p32 · 카드 타이틀 **18 Bold** · 섹션 간격 48 + 구분선 gray200 · 2단 gap 40 · 비활성 필드: bg gray100 + **border gray300**, 라벨 15 **gray500**, `*` gray400, 값 16 gray500 |
 | QR 정보 박스(상세 좌측) | white bg + border gray200, **r16**, px24 py20, 2열 · 라벨 16 Regular gray500 · 값 **22 Bold gray700** |
+| QR 이미지 박스(상세 좌측) | white bg + border gray200, r16, h440 · **QR 이미지 160×160 중앙** |
+| 관리자 처리 상태 | **칩 아님 — 우측 정렬 14 Regular 텍스트**: 승인함 gray700 · 거절함 gray400 · 사용자가 취소 gray400 (반려됨 핑크 칩은 **사용자 목록 전용**) |
 
 ## Radius · Shadow · Spacing · Icon
 

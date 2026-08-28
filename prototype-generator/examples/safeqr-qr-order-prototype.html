@@ -135,6 +135,9 @@ tr.dim td.c-num{font-weight:400}
 .chip-cancel{padding:0 6px;background:var(--gray-100);color:var(--gray-600)}
 .txt-rejected{padding:0 6px;background:var(--pink-50);color:var(--pink-600)}
 .txt-done{color:var(--gray-500);font-size:13px;white-space:nowrap}
+/* 관리자 처리 상태 텍스트 — 칩 아님, 14 Regular 우측 정렬 */
+.adm-st{font-size:14px;color:var(--gray-400);white-space:nowrap}
+.adm-st.ok{color:var(--gray-700)}
 .pending-gen{display:inline-flex;align-items:center;gap:4px;color:var(--gray-500);font-size:13px;font-weight:500;white-space:nowrap}
 
 /* 그룹 ID + 복사 */
@@ -222,9 +225,9 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .dfields .hr{margin:0}
 .dcard .fld{margin-bottom:0}
 .dcard .fld2{gap:40px}
-.qr-box{border:1px solid var(--gray-200);border-radius:var(--radius-lg);
-  display:flex;align-items:center;justify-content:center;padding:44px 0;background:var(--gray-0)}
-.qr-meta{margin-top:20px;background:var(--gray-0);border:1px solid var(--gray-200);border-radius:16px;
+.qr-box{border:1px solid var(--gray-200);border-radius:16px;height:440px;
+  display:flex;align-items:center;justify-content:center;background:var(--gray-0)}
+.qr-meta{margin-top:16px;background:var(--gray-0);border:1px solid var(--gray-200);border-radius:16px;
   padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .qr-meta .k{font-size:16px;color:var(--gray-500)}
 .qr-meta .v{font-size:22px;font-weight:700;color:var(--gray-700);margin-top:2px;letter-spacing:-.2px}
@@ -654,9 +657,9 @@ function adminActionCell(o){
     case 'pending': return `<div style="display:flex;gap:8px;justify-content:flex-end">
       <button class="btn-reject" data-act="reject" data-id="${o.id}">거절</button>
       <button class="btn-approve" data-act="approve" data-id="${o.id}">승인</button></div>`;
-    case 'approved': return `<span class="txt-done">승인함</span>`;
-    case 'rejected': return `<span class="txt-rejected">거절함</span>`;
-    case 'canceled': return `<span class="txt-done">사용자가 취소</span>`;
+    case 'approved': return `<span class="adm-st ok">승인함</span>`;
+    case 'rejected': return `<span class="adm-st">거절함</span>`;
+    case 'canceled': return `<span class="adm-st">사용자가 취소</span>`;
   }
 }
 
@@ -765,7 +768,7 @@ function groupDetailPage(){
     <div class="detail-wrap"><div class="detail-grid">
       <section class="dcard">
         <h2>QR코드 정보</h2>
-        <div class="qr-box">${qrSvg(g.id, 260)}</div>
+        <div class="qr-box">${qrSvg(g.id, 160)}</div>
         <div class="qr-meta">
           <div><div class="k">그룹 ID</div><div class="v num">${g.id}</div></div>
           <div><div class="k">수량</div><div class="v num">${fmt(g.qty)}장</div></div>
