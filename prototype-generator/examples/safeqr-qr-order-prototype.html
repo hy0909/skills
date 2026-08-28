@@ -307,6 +307,14 @@ tr.dim .prod-card{opacity:.6}
 .prod-select .cd{font-size:14px;color:var(--gray-500);margin-top:4px}
 .prod-select .ph{font-size:16px;color:var(--gray-400)}
 .prod-select > svg:last-child{margin-left:auto;color:var(--gray-400)}
+/* 발주서 상세 — 제품 셀렉트 비활성 스타일(피그마 1967:210575). 클릭해 제품 수정은 가능 */
+.od-ro .prod-select{background:var(--gray-100)}
+.od-ro .prod-select .nm{color:var(--gray-500)}
+.od-ro .prod-select .cd{color:var(--gray-400)}
+/* 발주서 상세 — 제품 미등록 박스(피그마 1967:212993): H56 r10 gray100 필, 14 gray500 중앙 */
+.prod-none{display:flex;align-items:center;justify-content:center;height:56px;width:100%;
+  background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;
+  font-size:14px;color:var(--gray-500);cursor:not-allowed}
 .ro-input{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;cursor:not-allowed; /* 비활성 폼 — disabled 셀렉트와 동일 커서 */
   background:var(--gray-100);border:1px solid var(--gray-300);border-radius:var(--radius-lg);
   font-size:16px;color:var(--gray-500)}
@@ -979,13 +987,13 @@ function orderTotal(){ return sum(modal.rows); }
 const QTY_ERR = {
   max:  '최대 주문 가능 수량 600,000장',
   unit: '10,000장 단위 주문 가능',
-  min:  '최소 수량 10,000장 이상 주문 가능',
+  min:  '최소 주문 가능 수량 10,000장',
   rows: 'QR 그룹 최대 5개 생성 가능',
 };
 function showQtyError(kind){
   modal.err = kind;
   clearTimeout(modal.errTimer);
-  modal.errTimer = setTimeout(() => { modal.err = null; renderModal(); }, 2600);
+  modal.errTimer = setTimeout(() => { if (modal){ modal.err = null; renderModal(); } }, 2600); /* 모달 닫힌 뒤 발화 방지 */
   renderModal();
 }
 
@@ -1104,17 +1112,15 @@ function orderDetailHtml(){
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body" style="border-radius:0 0 12px 12px">
         <div class="fld">
-          <span class="lbl">제품<span class="opt">(선택)</span></span>
-          <div class="dd">
-            <button class="prod-select" data-dd="od-prod"${o.product?' style="gap:20px"':''}>
-              ${o.product ? thumb('lg') : emptyThumb('lg')}
-              ${o.product
-                ? `<span><span class="nm">${esc(o.product.name)}</span><div class="cd">${esc(o.product.code)}</div></span>`
-                : `<span class="ph">제품을 선택하세요</span>`}
+          <span class="lbl muted">제품<span class="opt">(선택)</span></span>
+          ${o.product ? `<div class="dd">
+            <button class="prod-select" data-dd="od-prod" style="gap:20px">
+              ${thumb('lg')}
+              <span><span class="nm">${esc(o.product.name)}</span><div class="cd">${esc(o.product.code)}</div></span>
               ${ic.chevDown}
             </button>
-            ${state.ddOpen==='od-prod' ? productDropdown('od-prod', o.product && o.product.code) : ''}
-          </div>
+            ${state.ddOpen==='od-prod' ? productDropdown('od-prod', o.product.code) : ''}
+          </div>` : `<div class="prod-none">제품 미등록</div>`}
         </div>
         <div class="fld2" style="gap:16px"><!-- 작성 모달과 동일 순서: 생산 공장 좌 / 수출국 코드 우 -->
           <div class="fld">
