@@ -70,6 +70,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .search{margin-left:auto;display:flex;align-items:center;width:300px;height:32px;
   background:var(--gray-100);border-radius:var(--radius-md);padding:0 12px;gap:8px}
 .search input{flex:1;font-size:14px}
+.search input:focus-visible{outline:none}
+.search:focus-within{outline:2px solid var(--primary);outline-offset:-1px}
 .search input::placeholder{color:var(--gray-400)}
 .search svg{color:var(--gray-500)}
 .btn-edit-done{margin-left:auto;height:40px;width:172px;border-radius:var(--radius-md);
@@ -146,7 +148,7 @@ td.c-num{font-weight:400;text-align:right} /* 수량 — body1 Regular(디자인
 .adm-st{font-size:14px;color:var(--gray-400);white-space:nowrap}
 .adm-st.ok{color:var(--gray-700)}
 .pending-gen{display:inline-flex;align-items:center;gap:4px;color:var(--gray-500);font-size:13px;font-weight:500;white-space:nowrap}
-.pending-gen svg{color:#c3c3fa} /* 파생(토큰 미정의) — 시계 아이콘 fill 실측 */
+.pending-gen svg{color:var(--gray-300)} /* 시계 아이콘 fill — 피그마 실측(gray/300) */
 
 /* 그룹 ID + 복사 */
 /* 그룹 ID 목록(1~5개): 항목 간격 -2px, 최대 높이 136px */
