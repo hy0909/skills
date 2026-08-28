@@ -268,6 +268,7 @@ tr.dim .prod-card{opacity:.6}
 .gcard-bottom{margin-top:24px}
 /* 그룹 카드 제품 컴포넌트: 가로 fill, 제품명은 항상 1줄 + 말줄임 */
 .gcard-bottom .prod-card{width:100%;max-width:none;min-width:0}
+.gcard-bottom .btn-add-prod{max-width:none} /* 제품 미등록 버튼도 fill */
 
 /* ============ QR 그룹 상세 ============ */
 .detail-wrap{flex:1;min-height:0;overflow-y:auto}
@@ -479,6 +480,9 @@ const ic = {
 const PRODUCT = { name:'스크럽 대디 수세미 3개, 혼합 색상', code:'SD001SDA' };
 const CAMPAIGN = { name:'첫구매 웰컴 세일 쿠폰 이벤트', period:'2025-05-21 오전 10:00 ~ 2025-06-21 오후 11:00' };
 const EXPORTS = [['KR','대한민국'],['US','미국'],['JP','일본'],['VN','베트남']];
+/* 수출국 코드는 어디서든 '코드 국가명'으로 함께 표기 (같은 크기·같은 컬러) */
+const expName = c => (EXPORTS.find(e => e[0] === c) || [])[1] || '';
+const expFull = c => c ? `${c} ${expName(c)}`.trim() : '';
 const FACTORIES = ['베트남','중국','인도네시아'];
 const PRODUCTS = [PRODUCT,
   { name:'스크럽 대디 수세미 6개, 옐로우', code:'SD002SDB' },
@@ -662,6 +666,7 @@ function productDropdown(key, selectedCode){
           <span><span class="nm">${esc(p.name)}</span><span class="cd">${esc(p.code)}</span></span>
         </button>`).join('') : `<div class="pd-empty">검색 결과가 없어요</div>`}
       <button class="pd-item" data-set="${key}" data-v=""><span style="font-size:14px;color:var(--gray-500);padding:4px 0">선택 안 함</span></button>
+      <button class="pd-item" data-act="goto-products"><span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--primary);padding:4px 0">${ic.plus} 새 제품 정보 등록하기</span></button>
     </div>
   </div>`;
 }
@@ -755,7 +760,7 @@ function userOrdersPage(){
       <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
       <td>${prodCell(o, dim)}</td>
       <td>${esc(o.factory)}</td>
-      <td>${o.exp}</td>
+      <td>${expFull(o.exp)}</td>
       <td>${gidCell(o)}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td>${kebabCell(o)}</td>
@@ -812,7 +817,7 @@ function adminOrdersPage(){
       <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
       <td>${prodCell(o, dim)}</td>
       <td>${esc(o.factory)}</td>
-      <td>${o.exp}</td>
+      <td>${expFull(o.exp)}</td>
       <td>${gid}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td style="text-align:right">${adminActionCell(o)}</td>
@@ -856,7 +861,7 @@ function groupsPage(){
       <div class="gcard-rows">
         <div class="r"><span class="k">주문 수량</span><span class="v num"><b>${fmt(g.qty)}</b>장</span></div>
         <div class="r"><span class="k">생산 공장</span><span class="v">${esc(g.factory)}</span></div>
-        <div class="r"><span class="k">수출국</span><span class="v">${g.exp}</span></div>
+        <div class="r"><span class="k">수출국</span><span class="v">${expFull(g.exp)}</span></div>
         <div class="r"><span class="k">생성일</span><span class="v num">${g.created}</span></div>
         <div class="r"><span class="k">마케팅</span><span class="mkt-chip">${g.campaign ? esc(g.campaign.name) : '진행 중인 캠페인 없음'}</span></div>
       </div>
@@ -1415,6 +1420,13 @@ document.addEventListener('click', e => {
     }
 
     /* 발주 처리 플로우 */
+    /* 제품 드롭다운 → 제품 정보 관리 바로가기 */
+    case 'goto-products': {
+      modal = null; modal2 = null;
+      state.ddOpen = null; state.pdQuery = ''; state.kebab = null;
+      state.page = 'products'; state.pageNum = 1; state.search = '';
+      renderModal(); render(); return;
+    }
     case 'cancel-order': cancelOrder(id); return;
     case 'approve': state.kebab = null; approveOrder(id); render(); return;
     case 'reject': state.kebab = null; rejectOrder(id); render(); return;
