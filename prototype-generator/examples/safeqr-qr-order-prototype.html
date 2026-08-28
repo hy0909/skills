@@ -731,7 +731,7 @@ function userOrdersPage(){
         <thead><tr>
           <th class="col-status">상태</th><th class="col-hug">발주일</th><th class="col-fixed">제품</th>
           <th>생산 공장</th><th>수출국 코드</th><th>QR 그룹 ID</th>
-          <th class="col-hug">총 발주 수량</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
+          <th class="col-hug" style="text-align:right">총 발주 수량</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
@@ -753,7 +753,7 @@ function kebabCell(o){
 /* ================= 관리자: QR 발주 내역 ================= */
 function adminActionCell(o){
   switch(o.status){
-    case 'pending': return `<div style="display:flex;gap:6px">
+    case 'pending': return `<div style="display:flex;gap:6px;justify-content:flex-end">
       <button class="btn-reject" data-act="reject" data-id="${o.id}">거절</button>
       <button class="btn-approve" data-act="approve" data-id="${o.id}">승인</button></div>`;
     case 'approved': return `<span class="adm-st ok">승인함</span>`;
@@ -774,7 +774,7 @@ function adminOrdersPage(){
       <td>${o.exp}</td>
       <td>${gid}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
-      <td>${adminActionCell(o)}</td>
+      <td style="text-align:right">${adminActionCell(o)}</td>
       <td>${kebabCell(o)}</td>
     </tr>`;
   }).join('');
@@ -788,8 +788,8 @@ function adminOrdersPage(){
       <table class="tbl">
         <thead><tr>
           <th class="col-hug">발주일</th><th class="col-fixed">제품</th><th>생산 공장</th>
-          <th>수출국 코드</th><th>QR 그룹 ID</th><th>총 발주 수량</th>
-          <th class="col-hug">거절/승인</th><th class="col-hug"></th>
+          <th>수출국 코드</th><th>QR 그룹 ID</th><th style="text-align:right">총 발주 수량</th>
+          <th class="col-hug" style="text-align:right">거절/승인</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
