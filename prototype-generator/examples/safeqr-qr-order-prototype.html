@@ -102,13 +102,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .dd-btn svg{color:var(--gray-400);margin-left:auto}
 .dd-btn:hover{border-color:var(--gray-300)}
 .dd-btn:disabled{background:var(--gray-100);color:var(--gray-500)}
-.dd-pop{position:absolute;top:calc(100% + 4px);left:0;min-width:100%;z-index:40;
-  background:var(--gray-0);border:1px solid var(--gray-100);border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-m);padding:4px;max-height:280px;overflow-y:auto}
-.dd-pop button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
-  padding:9px 12px;border-radius:var(--radius-md);font-size:14px;color:var(--gray-700);white-space:nowrap}
+/* 드롭다운 컨테이너·아이템 — 피그마 Dropdown Menu 실측 */
+.dd-pop{position:absolute;top:calc(100% + 4px);left:0;min-width:max(100%,144px);z-index:40;
+  background:var(--gray-0);border:1px solid var(--gray-300);border-radius:var(--radius-md);
+  box-shadow:1px 2px 4px rgba(0,0,0,.1);padding:4px;max-height:280px;overflow-y:auto}
+.dd-pop button{display:flex;align-items:center;gap:8px;width:100%;min-width:128px;text-align:left;
+  padding:8px;border-radius:var(--radius-sm);font-size:14px;color:var(--gray-700);white-space:nowrap}
 .dd-pop button:hover{background:var(--gray-100)}
 .dd-pop button.sel{color:var(--primary);font-weight:700}
+/* 폼 셀렉트(필드) 옵션은 필드 값과 동일한 16px */
+.fld .dd-pop button{font-size:16px}
 
 /* ============ 테이블 ============ */
 .tbl{width:100%;border-collapse:collapse}
@@ -181,11 +184,11 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
   border-radius:var(--radius-md);color:var(--gray-400)}
 .kebab:hover{background:var(--gray-100);color:var(--gray-600)}
 .kebab-wrap{position:relative;display:flex;justify-content:flex-end}
-.menu-pop{position:absolute;top:calc(100% + 4px);right:0;z-index:50;min-width:150px;
-  background:var(--gray-0);border:1px solid var(--gray-100);border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-m);padding:4px}
-.menu-pop button{display:block;width:100%;text-align:left;padding:9px 12px;
-  border-radius:var(--radius-md);font-size:14px;color:var(--gray-700);white-space:nowrap}
+.menu-pop{position:absolute;top:calc(100% + 4px);right:0;z-index:50;min-width:144px;
+  background:var(--gray-0);border:1px solid var(--gray-300);border-radius:var(--radius-md);
+  box-shadow:1px 2px 4px rgba(0,0,0,.1);padding:4px}
+.menu-pop button{display:block;width:100%;min-width:128px;text-align:left;padding:8px;
+  border-radius:var(--radius-sm);font-size:14px;color:var(--gray-700);white-space:nowrap}
 .menu-pop button:hover{background:var(--gray-100)}
 .menu-pop button.blue{color:var(--primary);font-weight:500}
 
@@ -852,16 +855,22 @@ function placeholderPage(){
 
 /* ================= 발주서 작성 모달 ================= */
 function openOrderModal(){
-  modal = { type:'order', rows:[UNIT], exp:null, factory:null, product:null, err:false, errTimer:null };
+  modal = { type:'order', rows:[UNIT], exp:null, factory:null, product:null, err:null, errTimer:null };
   renderModal();
 }
 
 function orderTotal(){ return sum(modal.rows); }
 
-function showCapError(){
-  modal.err = true;
+/* 수량 에러 텍스트 3종 (qr-order-form REQ-F02) */
+const QTY_ERR = {
+  max:  '최대 주문 가능 수량 600,000장',
+  unit: '10,000장 단위 주문 가능',
+  min:  '최소 수량 10,000장 이상 주문 가능',
+};
+function showQtyError(kind){
+  modal.err = kind;
   clearTimeout(modal.errTimer);
-  modal.errTimer = setTimeout(() => { modal.err = false; renderModal(); }, 2600);
+  modal.errTimer = setTimeout(() => { modal.err = null; renderModal(); }, 2600);
   renderModal();
 }
 
@@ -894,7 +903,7 @@ function orderModalHtml(){
         </div>
         ${rowsHtml}
         <div class="qty-total">
-          ${m.err ? `<span class="err">최대 주문 가능 수량 600,000장</span>` : ''}
+          ${m.err ? `<span class="err">${QTY_ERR[m.err]}</span>` : ''}
           <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(total)}</span><span class="t">장</span></span>
         </div>
         </div>
@@ -1030,15 +1039,17 @@ function renderModal(){
     inp.addEventListener('change', () => {
       const i = +inp.dataset.i;
       const digits = parseInt((inp.value || '').replace(/[^0-9]/g,''), 10) || 0;
+      let err = null;
       let v = Math.floor(digits / UNIT) * UNIT;          // 하위 4자리 0 고정
-      if (v < UNIT) v = UNIT;                            // 최소 10,000
+      if (digits < UNIT){ v = UNIT; err = 'min'; }       // 최소 10,000 미만
+      else if (digits % UNIT !== 0){ err = 'unit'; }     // 1만 장 단위 위반
       const others = orderTotal() - modal.rows[i];
       if (others + v > MAX_TOTAL){                       // 총합 600,000 컷
         v = Math.max(UNIT, Math.floor((MAX_TOTAL - others) / UNIT) * UNIT);
-        showCapError();
+        err = 'max';
       }
       modal.rows[i] = v;
-      renderModal();
+      err ? showQtyError(err) : renderModal();
     });
   });
 }
@@ -1175,11 +1186,11 @@ document.addEventListener('click', e => {
     case 'om-close': modal = null; renderModal(); return;
     case 'om-add-row':
       if (modal.rows.length >= MAX_ROWS) return;
-      if (orderTotal() + UNIT > MAX_TOTAL){ showCapError(); return; }
+      if (orderTotal() + UNIT > MAX_TOTAL){ showQtyError('max'); return; }
       modal.rows.push(UNIT); renderModal(); return;
     case 'om-del': modal.rows.splice(+t.dataset.i, 1); renderModal(); return;
     case 'om-plus': {
-      if (orderTotal() + UNIT > MAX_TOTAL){ showCapError(); return; }
+      if (orderTotal() + UNIT > MAX_TOTAL){ showQtyError('max'); return; }
       modal.rows[+t.dataset.i] += UNIT; renderModal(); return;
     }
     case 'om-minus': {
