@@ -417,7 +417,11 @@ const PRODUCTS = [PRODUCT, { name:'스크럽 대디 수세미 6개, 옐로우', 
 
 let seq = 0;
 const oid = () => 'o' + (++seq);
-const D = '7-22 목 오전 10:32';
+/* 발주일 시드 — 시간 표기 정책(POL-SYS-NOTIFICATION-TIME-001) 3단계가 모두 보이게 구성 */
+const HOUR = 3600 * 1000;
+const T_RECENT = new Date(Date.now() - 3 * HOUR);   // 24시간 이내 → 시간만
+const T_THISYR = new Date(new Date().getFullYear(), 6, 22, 10, 32); // 올해 → MM-DD 요일
+const T_LASTYR = new Date(new Date().getFullYear() - 1, 2, 3, 9, 9); // 작년 → YYYY-MM-DD 요일
 
 function mkGroupId(){
   const A = 'ABCDEFGHJKMNPQRSTUVWXYZ123456789';
@@ -435,13 +439,13 @@ const state = {
   detailGroupId: null,
   detailDraft: null,
   orders: [
-    { id:oid(), date:D, items:[10000,10000,10000], exp:'KR', factory:'베트남 공장', product:null,    status:'pending',  groupIds:[] },
-    { id:oid(), date:D, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남 공장', product:null, status:'approved',
+    { id:oid(), ts:T_RECENT, items:[10000,10000,10000], exp:'KR', factory:'베트남 공장', product:null,    status:'pending',  groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남 공장', product:null, status:'approved',
       groupIds:['K7MD9QPA-1-1','K7MD9QPA-1-2','K7MD9QPA-1-3','K7MD9QPA-1-4','K7MD9QPA-1-5'] },
-    { id:oid(), date:D, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
-    { id:oid(), date:D, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'canceled', groupIds:[] },
+    { id:oid(), ts:T_LASTYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'canceled', groupIds:[] },
     ...Array.from({length:6}, () => ({
-      id:oid(), date:D, items:[10000], exp:'KR', factory:'베트남 공장', product:PRODUCT,
+      id:oid(), ts:T_THISYR, items:[10000], exp:'KR', factory:'베트남 공장', product:PRODUCT,
       status:'approved', groupIds:['K7MD9QPA-1-1'] })),
   ],
   groups: [
@@ -470,6 +474,19 @@ function nowLabel(){
   const ap = h < 12 ? '오전' : '오후';
   h = h % 12 || 12;
   return `${d.getMonth()+1}-${d.getDate()} ${day} ${ap} ${h}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+/* 발주일 표기 — 시간 표기 정책(POL-SYS-NOTIFICATION-TIME-001) 테이블 규칙:
+   상대시간 미사용. 24시간 이내 '오전/오후 HH:MM' → 올해 이내 'MM-DD 요일 …' → 올해 이외 'YYYY-MM-DD 요일 …' */
+function fmtOrderDate(ts){
+  const d = new Date(ts), now = new Date();
+  const day = ['일','월','화','수','목','금','토'][d.getDay()];
+  const ap = d.getHours() < 12 ? '오전' : '오후';
+  const hm = `${ap} ${String(d.getHours() % 12 || 12).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  if (now - d < 24 * HOUR) return hm;
+  const md = `${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  if (d.getFullYear() === now.getFullYear()) return `${md} ${day} ${hm}`;
+  return `${d.getFullYear()}-${md} ${day} ${hm}`;
 }
 
 function toast(msg){
@@ -608,7 +625,7 @@ function userOrdersPage(){
     const disabled = o.status !== 'approved';
     return `<tr class="${dim}" data-oid="${o.id}">
       <td>${statusCellUser(o)}</td>
-      <td class="num" style="white-space:nowrap">${o.date}</td>
+      <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td>${o.exp}</td>
       <td>${esc(o.factory)}</td>
@@ -672,7 +689,7 @@ function adminOrdersPage(){
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
     const gid = (o.status === 'rejected' || o.status === 'canceled') ? '<span style="color:var(--gray-400)">-</span>' : gidCell(o);
     return `<tr class="${dim}" data-oid="${o.id}">
-      <td class="num" style="white-space:nowrap">${o.date}</td>
+      <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td>${o.exp}</td>
       <td>${esc(o.factory)}</td>
@@ -961,7 +978,7 @@ function orderDetailHtml(){
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body">
         <div class="od-row"><span class="k">상태</span><span class="v">${st[o.status]}</span></div>
-        <div class="od-row"><span class="k">발주일</span><span class="v num">${o.date}</span></div>
+        <div class="od-row"><span class="k">발주일</span><span class="v num">${fmtOrderDate(o.ts)}</span></div>
         <div class="od-row"><span class="k">QR 그룹별 수량</span><span class="v num">${o.items.map((q,i)=>`QR 그룹 ${i+1} · ${fmt(q)}장`).join('<br>')}</span></div>
         <div class="od-row"><span class="k">총 수량</span><span class="v num"><b>${fmt(sum(o.items))}장</b></span></div>
         <div class="od-row"><span class="k">수출국 코드</span><span class="v">${o.exp}</span></div>
@@ -1172,7 +1189,7 @@ document.addEventListener('click', e => {
     }
     case 'om-submit': {
       const m = modal;
-      state.orders.unshift({ id:oid(), date:nowLabel(), items:[...m.rows],
+      state.orders.unshift({ id:oid(), ts:new Date(), items:[...m.rows],
         exp:m.exp, factory:m.factory + ' 공장', product:m.product, status:'pending', groupIds:[] });
       modal = null; renderModal();
       state.page = 'orders'; render();
