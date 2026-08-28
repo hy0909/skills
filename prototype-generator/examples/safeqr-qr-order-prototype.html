@@ -310,7 +310,7 @@ tr.dim .prod-card{opacity:.6}
   border-radius:99px;background:var(--gray-0);border:1px solid var(--gray-200);
   font-size:13px;font-weight:500;color:var(--gray-500)}
 .btn-add-row:hover{background:var(--gray-100)}
-.btn-add-row:disabled{background:var(--gray-100)}
+.btn-add-row:disabled,.btn-add-row.dim{background:var(--gray-100)}
 .qty-row{display:flex;align-items:center;margin-bottom:4px}
 .qty-row .rl{font-size:16px;color:var(--gray-900);display:flex;align-items:center;gap:4px}
 .qty-row .rl .del{margin-left:2px}
@@ -892,6 +892,7 @@ const QTY_ERR = {
   max:  '최대 주문 가능 수량 600,000장',
   unit: '10,000장 단위 주문 가능',
   min:  '최소 수량 10,000장 이상 주문 가능',
+  rows: 'QR 그룹 최대 5개 생성 가능',
 };
 function showQtyError(kind){
   modal.err = kind;
@@ -925,7 +926,7 @@ function orderModalHtml(){
         <div>
         <div class="qty-head">
           <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
-          <button class="btn-add-row" data-act="om-add-row" ${m.rows.length>=MAX_ROWS?'disabled':''}>${ic.plus} QR 그룹 추가</button>
+          <button class="btn-add-row${m.rows.length>=MAX_ROWS?' dim':''}" data-act="om-add-row">${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
         <div class="qty-total">
@@ -1272,7 +1273,7 @@ document.addEventListener('click', e => {
     case 'open-order': openOrderModal(); return;
     case 'om-close': modal = null; renderModal(); return;
     case 'om-add-row':
-      if (modal.rows.length >= MAX_ROWS) return;
+      if (modal.rows.length >= MAX_ROWS){ showQtyError('rows'); return; }
       if (orderTotal() + UNIT > MAX_TOTAL){ showQtyError('max'); return; }
       modal.rows.push(UNIT); renderModal(); return;
     case 'om-del': modal.rows.splice(+t.dataset.i, 1); renderModal(); return;
