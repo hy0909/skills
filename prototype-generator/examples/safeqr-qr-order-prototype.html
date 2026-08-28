@@ -483,14 +483,13 @@ function nowLabel(){
   return `${d.getMonth()+1}-${d.getDate()} ${day} ${ap} ${h}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-/* 발주일 표기 — 시간 표기 정책(POL-SYS-NOTIFICATION-TIME-001) 테이블 규칙:
-   상대시간 미사용. 24시간 이내 '오전/오후 HH:MM' → 올해 이내 'MM-DD 요일 …' → 올해 이외 'YYYY-MM-DD 요일 …' */
+/* 발주일 표기 — 발주일 표기 정책(qr-order-date-format):
+   상대시간·시간 단독 표기 미사용. 올해 'MM-DD 요일 오전/오후 HH:MM' / 올해 이외 'YYYY-MM-DD 요일 …' */
 function fmtOrderDate(ts){
   const d = new Date(ts), now = new Date();
   const day = ['일','월','화','수','목','금','토'][d.getDay()];
   const ap = d.getHours() < 12 ? '오전' : '오후';
   const hm = `${ap} ${String(d.getHours() % 12 || 12).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-  if (now - d < 24 * HOUR) return hm;
   const md = `${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   if (d.getFullYear() === now.getFullYear()) return `${md} ${day} ${hm}`;
   return `${d.getFullYear()}-${md} ${day} ${hm}`;
