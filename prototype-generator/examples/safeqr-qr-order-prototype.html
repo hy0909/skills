@@ -206,6 +206,10 @@ tr.dim .gid .code{color:var(--gray-400)}
 tr.dim .prod-card .nm{color:var(--gray-400)}
 /* 발주 취소·반려 행: 제품 항목 전체(썸네일 포함) 투명도 60% */
 tr.dim .prod-card{opacity:.6}
+/* 발주 내역 미매핑 행 — '제품 미등록' 박스(제품 카드와 동일 236×56, bg gray50 r10) */
+.prod-none-cell{display:flex;align-items:center;justify-content:center;width:236px;height:56px;
+  background:var(--gray-50);border-radius:10px;font-size:14px;color:var(--gray-500)}
+tr.dim .prod-none-cell{opacity:.6}
 /* 제품 썸네일: 정사각형 + contain(흰 배경 위 이미지 축소 중앙 배치) */
 .thumb{width:40px;height:40px;border-radius:var(--radius-md);border:1px solid var(--gray-300);flex:none;
   background-color:#fff;
@@ -621,8 +625,8 @@ function prodCell(o, dim){
     return `<div class="prod-card"><span class="thumb"></span>
       <span><span class="nm">${esc(o.product.name)}</span><div class="cd">${esc(o.product.code)}</div></span></div>`;
   }
-  if (dim) return '';
-  return `<button class="btn-add-prod" data-act="add-product" data-id="${o.id}">${ic.plus} 제품 등록</button>`;
+  /* 발주 내역에서는 제품 수정 불가 — 미매핑 행은 '제품 미등록' 박스(사용자·관리자 동일), 등록은 QR 그룹 관리에서 */
+  return `<div class="prod-none-cell">제품 미등록</div>`;
 }
 
 function gidCell(o){
@@ -1446,13 +1450,6 @@ document.addEventListener('click', e => {
     case 'od-close': modal = null; renderModal(); return;
 
     /* 제품 등록/그룹 상세 */
-    case 'add-product': {
-      const o = state.orders.find(x => x.id === id);
-      const g = o && o.groupIds.length ? state.groups.find(x => x.id === o.groupIds[0]) : state.groups.find(x => !x.product);
-      if (g) openGroupDetail(g.id);
-      else toast('승인 후 QR 그룹이 생성되면 등록할 수 있어요.');
-      return;
-    }
     case 'open-group': e.stopPropagation(); openGroupDetail(id); return;
     case 'back-to-groups': state.page = 'groups'; state.detailDraft = null; render(); return;
     case 'edit-done': {
