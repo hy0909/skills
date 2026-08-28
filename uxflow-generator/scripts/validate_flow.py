@@ -106,6 +106,26 @@ def validate(flow):
                 f"비인접 엣지 {e.get('from')}({f[0]},{f[1]})→{e.get('to')}({t[0]},{t[1]}) — "
                 "선이 다른 노드를 관통합니다. 중간 노드를 추가하거나 배치를 인접 셀로 조정하세요.")
 
+    # 대각 엣지 X자 교차 — 같은 col 통로에서 반대 방향 대각선 2개는 선·라벨이 겹친다
+    diags = []
+    for e in edges:
+        f, t = pos.get(e.get("from")), pos.get(e.get("to"))
+        if not f or not t or None in f or None in t:
+            continue
+        if abs(t[0] - f[0]) == 1 and t[1] != f[1]:
+            diags.append((min(f[0], t[0]), f[1], t[1], e))
+    for i in range(len(diags)):
+        for j in range(i + 1, len(diags)):
+            c1, fr1, tr1, e1 = diags[i]
+            c2, fr2, tr2, e2 = diags[j]
+            if c1 != c2 or (tr1 - fr1) * (tr2 - fr2) > 0:
+                continue
+            lo1, hi1 = sorted((fr1, tr1)); lo2, hi2 = sorted((fr2, tr2))
+            if lo1 < hi2 and lo2 < hi1:
+                errors.append(
+                    f"대각 엣지 X자 교차: {e1.get('from')}→{e1.get('to')} × {e2.get('from')}→{e2.get('to')} — "
+                    "같은 통로에서 겹칩니다. 노드 배치를 조정하거나 한쪽을 note/details로 빼세요.")
+
     # 해피 패스가 row 0에 있는지 대략 확인
     row0 = [n for n in nodes if n.get("row") == 0 and n.get("type") != "note"]
     if nodes and not row0:
