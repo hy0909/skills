@@ -54,11 +54,11 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 
 | 요소 | 실측값 |
 | --- | --- |
-| 페이지 배경 | **gray50 풀블리드** (흰 표면: 카드·모달 헤더/푸터·페이지네이션 현재 페이지) |
+| 페이지 배경 | **gray50 풀블리드** (흰 표면: **테이블 행 내부**·카드·모달 헤더/푸터·페이지네이션 현재 페이지) |
 | GNB (h44, px24) | 로고 18 Bold white · 메뉴 16 Regular gray300, px20 py4 r4, 간격 12 · 활성 16 **Bold** gray100 + bg gray700 · 설정 14 gray100, border gray500 r999 · [QR 발주서 작성] 15 Regular gray900, white bg r6 px12 py4, 아이콘 16 |
 | 타이틀바 (h56, px24) | 제목 20 Bold · 검색 h32 w300 bg gray100 r6, 텍스트 14, 아이콘 18 |
 | [수정 완료] | h40 w172 r6, 15 Regular white, 활성 bg primary / 비활성 bg **gray400** |
-| 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100 · 수량 16 Bold |
+| 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100, **행 배경 white**(페이지 gray50 위) · 수량 16 Bold |
 | 상태 칩 | 13 Medium, r4, py2 · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 gray500 · 반려/거절: pink600 텍스트 |
 | 승인 후 생성 | 13 Medium violet + **시계 아이콘** 16 (ⓘ 아님) |
 | 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
