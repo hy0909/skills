@@ -272,8 +272,9 @@ tr.dim .prod-card{opacity:.6}
   padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .qr-meta .k{font-size:16px;color:var(--gray-500)}
 .qr-meta .v{font-size:22px;font-weight:700;color:var(--gray-700);margin-top:2px;letter-spacing:-.2px}
-.lbl.muted{color:var(--gray-500)}
-.lbl.muted .req{color:var(--gray-400)}
+.fld > .lbl.muted, .lbl.muted{color:var(--gray-500)}
+.fld > .lbl.muted .req, .lbl.muted .req{color:var(--gray-400)}
+.fld > .lbl.muted .opt{color:var(--gray-400)}
 .fld{margin-bottom:16px}
 .fld > .lbl{display:flex;align-items:center;gap:2px;font-size:15px;color:var(--gray-900);margin-bottom:4px}
 .fld > .lbl .req{color:var(--primary)}
@@ -354,6 +355,8 @@ tr.dim .prod-card{opacity:.6}
 /* 발주서 상세(읽기 전용): 비활성 텍스트 gray500 */
 .od-ro .qty-row .rl{color:var(--gray-500)}
 .od-ro .qty-total .n{color:var(--gray-500)}
+.od-ro .qty-head .lbl{color:var(--gray-500)}
+.od-ro .qty-head .lbl .req{color:var(--gray-400)}
 .qty-total{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
 .qty-total .err{font-size:13px;color:var(--red-600);font-weight:500}
 .qty-total .t{font-size:16px;color:var(--gray-600)}
@@ -1060,7 +1063,7 @@ function orderDetailHtml(){
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body" style="border-radius:0 0 12px 12px">
         <div class="fld">
-          <span class="lbl">제품<span class="opt">(선택)</span></span>
+          <span class="lbl muted">제품<span class="opt">(선택)</span></span>
           <div class="dd">
             <button class="prod-select" data-dd="od-prod"${o.product?' style="gap:20px"':''}>
               ${o.product ? thumb('lg') : emptyThumb('lg')}
