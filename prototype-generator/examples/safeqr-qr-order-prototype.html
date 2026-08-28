@@ -254,7 +254,7 @@ tr.dim .prod-none-cell{opacity:.6}
 /* ============ QR 그룹 카드 ============ */
 .page-gray{background:var(--gray-50)}
 .card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-bottom:8px}
-.gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:20px 24px;
+.gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:24px; /* 상하 20→24 */
   display:flex;flex-direction:column;cursor:pointer;border:1px solid var(--gray-200)}
 .gcard:hover{border-color:var(--gray-900)}
 .gcard-top{display:flex;align-items:flex-start;padding:0 4px}
@@ -994,7 +994,7 @@ function orderTotal(){ return sum(modal.rows); }
 const QTY_ERR = {
   max:  '최대 주문 가능 수량 600,000장',
   unit: '10,000장 단위 주문 가능',
-  min:  '최소 주문 가능 수량 10,000장',
+  min:  '주문 가능 최소 수량: 10,000장',
   rows: 'QR 그룹 최대 5개 생성 가능',
 };
 function showQtyError(kind){
