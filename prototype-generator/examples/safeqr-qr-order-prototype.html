@@ -330,7 +330,10 @@ tr.dim .prod-card{opacity:.6}
 .qty-input:focus{border-color:var(--primary)}
 /* 읽기 전용 스테퍼(발주서 상세) — 피그마 비활성 변형 */
 .stepper.ro .step-btn{background:var(--gray-50);color:var(--gray-400)}
-.stepper.ro .qty-input{background:var(--gray-50);color:var(--gray-600)}
+.stepper.ro .qty-input{background:var(--gray-50);color:var(--gray-500)}
+/* 발주서 상세(읽기 전용): 비활성 텍스트 gray500 */
+.od-ro .qty-row .rl{color:var(--gray-500)}
+.od-ro .qty-total .n{color:var(--gray-500)}
 .qty-total{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
 .qty-total .err{font-size:13px;color:var(--red-600);font-weight:500}
 .qty-total .t{font-size:16px;color:var(--gray-600)}
@@ -1020,7 +1023,7 @@ function orderDetailHtml(){
       </span>
     </div>`).join('');
   return `<div class="dim-layer" data-dim="odetail">
-    <div class="modal order-modal" role="dialog" aria-modal="true" aria-label="QR 발주서 상세">
+    <div class="modal order-modal od-ro" role="dialog" aria-modal="true" aria-label="QR 발주서 상세">
       <div class="modal-head"><h2>QR 발주서 상세</h2>
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body" style="border-radius:0 0 12px 12px">
@@ -1042,18 +1045,18 @@ function orderDetailHtml(){
         </div>
         <div class="fld2" style="gap:16px">
           <div class="fld">
-            <span class="lbl">수출국 코드<span class="req">*</span></span>
+            <span class="lbl muted">수출국 코드<span class="req">*</span></span>
             <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">
               <span style="display:inline-flex;align-items:center;gap:6px">${o.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===o.exp)||[])[1]||''}</span></span> ${ic.chevDown}</button></div>
           </div>
           <div class="fld">
-            <span class="lbl">생산 공장<span class="req">*</span></span>
+            <span class="lbl muted">생산 공장<span class="req">*</span></span>
             <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory.replace(' 공장',''))} ${ic.chevDown}</button></div>
           </div>
         </div>
         <div>
         <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
+          <span class="lbl muted">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
           <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
