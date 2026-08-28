@@ -50,6 +50,27 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | caption/caption1 | 13 / 500 | 1.36 |
 | caption/caption2 | 12 / 500 | 1.3 |
 
+## 컴포넌트별 실측값 (get_design_context로 노드 단위 확인 — 눈대중 금지)
+
+| 요소 | 실측값 |
+| --- | --- |
+| 페이지 배경 | **gray50 풀블리드** (흰 표면: 카드·모달 헤더/푸터·페이지네이션 현재 페이지) |
+| GNB (h44, px24) | 로고 18 Bold white · 메뉴 16 Regular gray300, px20 py4 r4, 간격 12 · 활성 16 **Bold** gray100 + bg gray700 · 설정 14 gray100, border gray500 r999 · [QR 발주서 작성] 15 Regular gray900, white bg r6 px12 py4, 아이콘 16 |
+| 타이틀바 (h56, px24) | 제목 20 Bold · 검색 h32 w300 bg gray100 r6, 텍스트 14, 아이콘 18 |
+| [수정 완료] | h40 w172 r6, 15 Regular white, 활성 bg primary / 비활성 bg **gray400** |
+| 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100 · 수량 16 Bold |
+| 상태 칩 | 13 Medium, r4, py2 · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 gray500 · 반려/거절: pink600 텍스트 |
+| 승인 후 생성 | 13 Medium violet + **시계 아이콘** 16 (ⓘ 아님) |
+| 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
+| [+ 제품 등록] | bg purple100 + border purple200, r10, 14 Regular gray700, plus 16 |
+| 다운로드 버튼 | h30 px8 r6, white bg + border gray200, 아이콘 16 · 비활성: bg gray200 |
+| 페이지네이션 | 아이템 h40 w32 r6, 14 Regular gray900 · 현재 페이지: **bg white**(그림자 없음) · 화살표 16 |
+| 발주 모달 (w560, r12) | 헤더 white px32 py24, 타이틀 **20 Bold**, X 32 · **바디 bg gray50**, p32, 섹션 간격 32 · 푸터 white px32 py28, 버튼 3등분(첫 칸 빈 스페이서) p8 r6 15 Regular — 발주 bg gray900 / 취소 border gray300 / 비활성 bg gray300 |
+| 모달 입력 | 라벨 15 Regular gray900 + `*`는 **primary**(red 아님) + (선택) 12 Medium gray400 · 셀렉트 r8 **border gray300** py10 px12, 값 16 Regular gray900, 국가명 13 Medium gray400, 화살표 16 |
+| 수량 스테퍼 | 행 라벨 'QR 그룹' 16 Regular · 삭제 16 원형 bg gray400 + 흰 x · +/- 버튼 28×28 r8 border gray300(비활성 bg gray50) · 인풋 w112 h32 r8 16 gray700 중앙 · 총 16 gray600(숫자만 Bold) · [QR 그룹 추가] h26 r99 white+border gray200, 13 Medium gray500(비활성 bg gray100) |
+| 발주 단계 안내 | 타이틀 14 Bold gray500 + ⓘ18 · 박스 **bg gray200** r8 px24 py12 — 1행 13 Medium gray400, 2행 14 Regular gray700 · 불릿 13 Medium gray500 |
+| 제품 셀렉트(모달·상세) | r8 border gray300 p12 · 썸네일 64×64 r6(빈 상태 bg gray100 border gray300 + 이미지 아이콘 24) · placeholder 16 gray400 · 제품명 16 Bold gray700 · 코드 14 Regular gray500 |
+
 ## Radius · Shadow · Spacing · Icon
 
 - radius: sm `2px`, md `6px` (+ 시안 관례: 인풋·버튼 `8px`, 카드 `12px`, 모달 `16px`, 칩·GNB 우측 버튼 `999px`)
