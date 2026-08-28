@@ -140,7 +140,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 /* 컬럼 너비 규칙: hug=콘텐츠 폭 고정 · fill=남는 공간 분배 · 제품=260px 고정+말줄임 */
 .tbl .col-hug{width:1%;white-space:nowrap}
 .tbl .col-fixed{width:260px;max-width:260px}
-.tbl .col-status{width:118px;min-width:118px;white-space:nowrap} /* 상태 W118 — 사용자·관리자 공통 규칙 */
+.tbl .col-status{width:122px;min-width:122px;white-space:nowrap} /* 상태 W122 — 사용자·관리자 공통 규칙 */
 .tbl thead th{position:sticky;top:0;z-index:5;background:var(--gray-100);
   box-shadow:inset 0 1px 0 var(--gray-200), inset 0 -1px 0 var(--gray-200);
   font-size:13px;font-weight:500;color:var(--gray-500);text-align:left;
@@ -448,6 +448,7 @@ const ic = {
   back: I('<path d="m15 18-6-6 6-6"/>', 20),
   x: I('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 20),
   xs: I('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 12),
+  x16: I('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 16),
   plus: I('<path d="M5 12h14"/><path d="M12 5v14"/>', 14),
   minus: I('<path d="M5 12h14"/>', 14),
   copy: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.5 5C5.22386 5 5 5.22386 5 5.5V10C5 10.2761 5.22386 10.5 5.5 10.5H10C10.2761 10.5 10.5 10.2761 10.5 10V5.5C10.5 5.22386 10.2761 5 10 5H5.5ZM4 5.5C4 4.67157 4.67157 4 5.5 4H10C10.8284 4 11.5 4.67157 11.5 5.5V10C11.5 10.8284 10.8284 11.5 10 11.5H5.5C4.67157 11.5 4 10.8284 4 10V5.5Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M2 1.5C1.86739 1.5 1.74021 1.55268 1.64645 1.64645C1.55268 1.74021 1.5 1.86739 1.5 2V6.5C1.5 6.63261 1.55268 6.75979 1.64645 6.85355C1.74021 6.94732 1.86739 7 2 7H2.5C2.77614 7 3 7.22386 3 7.5C3 7.77614 2.77614 8 2.5 8H2C1.60218 8 1.22064 7.84196 0.93934 7.56066C0.658035 7.27936 0.5 6.89782 0.5 6.5V2C0.5 1.60218 0.658035 1.22064 0.93934 0.93934C1.22064 0.658035 1.60218 0.5 2 0.5H6.5C6.89782 0.5 7.27936 0.658035 7.56066 0.93934C7.84196 1.22064 8 1.60218 8 2V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V2C7 1.86739 6.94732 1.74021 6.85355 1.64645C6.75979 1.55268 6.63261 1.5 6.5 1.5H2Z" fill="currentColor"/></svg>`,
@@ -690,7 +691,7 @@ function titlebar(){
 function statusCellUser(o){
   switch(o.status){
     case 'pending':  return `<button class="chip-wait" data-act="cancel-order" data-id="${o.id}" title="발주 취소">승인 대기 중
-      <span class="x">${ic.xs}</span></button>`;
+      <span class="x">${ic.x16}</span></button>`;
     case 'approved': return `<span class="chip-ok">승인됨</span>`;
     case 'rejected': return `<span class="txt-rejected">반려됨</span>`;
     case 'canceled': return `<span class="chip-cancel">발주 취소함</span>`;
