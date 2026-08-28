@@ -62,7 +62,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 상태 칩 | 13 Medium, r4, px6 py1(2) · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 **gray600** · 반려됨/거절함: **칩** — bg **pink50 #ffedfa** + pink600 텍스트 |
 | 승인 후 생성 | 13 Medium **gray500** + **시계 아이콘** 16 (ⓘ 아님) |
 | 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
-| [+ 제품 등록] | bg purple100 + border purple200, r10, 14 Regular gray700, plus 16 |
+| [+ 제품 등록] | bg purple100 + border purple200, r10, **h56**, 14 Regular gray700, plus 16 |
 | 다운로드 버튼 | h30 px8 r6, white bg + border gray200, 아이콘 16 · 비활성: bg gray200 |
 | 페이지네이션 | 아이템 h40 w32 r6, 14 Regular gray900 · 현재 페이지: **bg white**(그림자 없음) · 화살표 16 |
 | 발주 모달 (w560, r12) | 헤더 white px32 py24, 타이틀 **20 Bold**, X 32 · **바디 bg gray50**, p32, 섹션 간격 32 · 푸터 white px32 py28, 버튼 3등분(첫 칸 빈 스페이서) p8 r6 15 Regular — 발주 bg gray900 / 취소 border gray300 / 비활성 bg gray300 |
