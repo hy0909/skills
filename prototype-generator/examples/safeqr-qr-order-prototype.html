@@ -1190,7 +1190,7 @@ function confirm2Html(){
   return `<div class="dim-layer" data-dim="confirm2" style="z-index:120">
     <div class="modal confirm" role="dialog" aria-modal="true" aria-label="${esc(c.title)}">
       <div class="modal-head"><h2>${esc(c.title)}</h2></div>
-      <div class="modal-body">${esc(c.body)}</div>
+      <div class="modal-body">${esc(c.body).replace(/\n/g,'<br>')}</div>
       <div class="modal-foot">
         <button class="btn btn-ghost" data-act="cf2-no">${esc(c.noLabel)}</button>
         <button class="btn ${c.danger?'btn-red':'btn-dark'}" data-act="cf2-yes">${esc(c.yesLabel)}</button>
@@ -1330,6 +1330,17 @@ document.addEventListener('click', e => {
     return;
   }
 
+  /* 열린 드롭다운·케밥은 다른 영역의 컨트롤을 눌러도 닫는다 (해당 드롭다운 내부 클릭은 제외) */
+  if (state.ddOpen && !t.dataset.dd && t.dataset.set === undefined && !e.target.closest('.dd')){
+    state.ddOpen = null; state.pdQuery = '';
+    if (modal) renderModal();
+    render();
+  }
+  if (state.kebab && t.dataset.act !== 'kebab' && !e.target.closest('.menu-pop')){
+    state.kebab = null;
+    render();
+  }
+
   /* 권한 토글 */
   if (t.dataset.role){ setRole(t.dataset.role); return; }
 
@@ -1407,7 +1418,7 @@ document.addEventListener('click', e => {
     }
     case 'om-submit': {
       modal2 = { title:'QR 발주 내용 확인',
-        body:'발주 후에는 주문 수량, 생산 공장, 수출국 코드를 변경할 수 없어요. 작성된 내용을 정확히 확인하셨나요?',
+        body:'발주 후에는 작성한 내용을 변경할 수 없어요.\n작성된 내용을 정확히 확인하셨나요?',
         noLabel:'아니요', yesLabel:'네', danger:true };
       renderModal(); return;
     }
