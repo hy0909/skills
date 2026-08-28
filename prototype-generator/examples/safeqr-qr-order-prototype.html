@@ -41,9 +41,12 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 /* ============ 앱 프레임 ============ */
 #app{height:100vh;display:flex;flex-direction:column;min-width:1080px;background:var(--gray-0)}
 
+/* 레이아웃 폭 규칙: 배경은 풀블리드, 콘텐츠(텍스트+패딩)는 최대 1440px 중앙 정렬 */
+.shell{max-width:1440px;margin:0 auto;width:100%}
+
 /* GNB */
-.gnb{height:44px;flex:none;background:var(--gray-900);color:var(--gray-0);
-  display:flex;align-items:center;gap:8px;padding:0 16px}
+.gnb{flex:none;background:var(--gray-900);color:var(--gray-0)}
+.gnb-in{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px}
 .gnb-logo{font-weight:700;font-size:16px;letter-spacing:-.2px;margin-right:16px}
 .gnb-menu{display:flex;align-items:center;gap:4px}
 .gnb-item{padding:6px 12px;border-radius:var(--radius-md);font-size:13px;color:var(--gray-300)}
@@ -58,8 +61,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .gnb-order:hover{background:var(--gray-100)}
 
 /* 타이틀 바 */
-.titlebar{height:56px;flex:none;display:flex;align-items:center;gap:12px;
-  padding:0 24px;background:var(--gray-0);border-bottom:1px solid var(--gray-100)}
+.titlebar{flex:none;background:var(--gray-0);border-bottom:1px solid var(--gray-100)}
+.tb-in{height:56px;display:flex;align-items:center;gap:12px;padding:0 24px}
 .titlebar h1{font-size:20px;font-weight:700;letter-spacing:-.2px}
 .titlebar .back{display:flex;align-items:center;justify-content:center;width:28px;height:28px;
   border-radius:var(--radius-md);color:var(--gray-700)}
@@ -75,11 +78,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 
 /* 콘텐츠 */
 .content{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;position:relative}
-.filterbar{flex:none;display:flex;align-items:center;gap:8px;padding:16px 24px 12px}
+.filterbar{flex:none;display:flex;align-items:center;gap:8px;padding:16px 24px 12px;
+  max-width:1440px;margin:0 auto;width:100%}
 .filterbar .total{font-size:14px;color:var(--gray-500)}
 .filterbar .total b{color:var(--gray-900);margin-left:4px}
 .filterbar .sp{flex:1}
-.list-scroll{flex:1;min-height:0;overflow-y:auto;padding:0 24px}
+.list-scroll{flex:1;min-height:0;overflow-y:auto}
+.list-scroll > .shell{padding:0 24px}
 .pagination{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;padding:14px 0 18px}
 .pagination button{min-width:32px;height:32px;padding:0 6px;border-radius:var(--radius-lg);
   font-size:13px;color:var(--gray-500)}
@@ -210,7 +215,8 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .gcard-bottom .prod-card{max-width:none}
 
 /* ============ QR 그룹 상세 ============ */
-.detail-wrap{flex:1;min-height:0;overflow-y:auto;padding:20px 24px 32px;
+.detail-wrap{flex:1;min-height:0;overflow-y:auto}
+.detail-grid{max-width:1440px;margin:0 auto;padding:20px 24px 32px;
   display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 .dcard{background:var(--gray-0);border-radius:var(--radius-xl);box-shadow:var(--shadow-m);padding:22px}
 .dcard h2{font-size:16px;font-weight:700;margin-bottom:16px}
@@ -241,7 +247,8 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .camp-period{font-size:12px;color:var(--gray-400);margin-left:6px;font-weight:400}
 
 /* ============ 인증 내역 ============ */
-.authchips{display:flex;gap:8px;padding:0 24px 12px;flex:none}
+.authchips{display:flex;gap:8px;padding:0 24px 12px;flex:none;
+  max-width:1440px;margin:0 auto;width:100%}
 .achip{height:32px;padding:0 14px;border-radius:999px;font-size:13px;
   border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0)}
 .achip.on{background:var(--gray-900);border-color:var(--gray-900);color:var(--gray-0);font-weight:500}
@@ -561,7 +568,7 @@ const PAGE_TITLE = { auth:'QR 인증 내역', groups:'QR 그룹 관리', orders:
 function gnb(){
   const menu = state.role === 'user' ? USER_MENU : [['orders','QR 발주내역']];
   const activeKey = state.page === 'groupDetail' ? 'groups' : state.page;
-  return `<header class="gnb">
+  return `<header class="gnb"><div class="shell gnb-in">
     <span class="gnb-logo">SafeQR</span>
     <nav class="gnb-menu">
       ${menu.map(([k,n]) => `<button class="gnb-item ${k===activeKey?'on':''}" data-nav="${k}">${n}</button>`).join('')}
@@ -570,25 +577,25 @@ function gnb(){
       <button class="gnb-set">${ic.gear} 설정</button>
       <button class="gnb-order" data-act="open-order">${ic.pencil} QR 발주서 작성</button>
     </div>
-  </header>`;
+  </div></header>`;
 }
 
 function titlebar(){
   if (state.page === 'groupDetail'){
     const changed = detailChanged();
-    return `<div class="titlebar">
+    return `<div class="titlebar"><div class="shell tb-in">
       <button class="back" data-act="back-to-groups" aria-label="뒤로">${ic.back}</button>
       <h1>QR 그룹 상세</h1>
       <button class="btn-edit-done" data-act="edit-done" ${changed?'':'disabled'}>수정 완료</button>
-    </div>`;
+    </div></div>`;
   }
-  return `<div class="titlebar">
+  return `<div class="titlebar"><div class="shell tb-in">
     <h1>${PAGE_TITLE[state.page]}</h1>
     <div class="search">
       <input id="search-input" placeholder="그룹 ID 검색" value="${esc(state.search)}" aria-label="그룹 ID 검색">
       ${ic.search}
     </div>
-  </div>`;
+  </div></div>`;
 }
 
 /* ================= 사용자: QR 발주내역 ================= */
@@ -630,7 +637,7 @@ function userOrdersPage(){
       <span class="sp"></span>
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
-    <div class="list-scroll">
+    <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
           <th style="width:118px">상태</th><th style="width:150px">발주일</th><th style="width:110px">총 발주 수량</th>
@@ -639,7 +646,7 @@ function userOrdersPage(){
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
-    </div>
+    </div></div>
     ${pagination()}
   </div>`;
 }
@@ -694,7 +701,7 @@ function adminOrdersPage(){
       <span class="sp"></span>
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
-    <div class="list-scroll">
+    <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
           <th style="width:150px">발주일</th><th style="width:110px">총 발주 수량</th><th style="width:90px">수출국 코드</th>
@@ -703,7 +710,7 @@ function adminOrdersPage(){
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
-    </div>
+    </div></div>
     ${pagination()}
   </div>`;
 }
@@ -745,7 +752,7 @@ function groupsPage(){
       ${dd('qrtype','QR 전체', `<button class="sel">QR 전체</button><button>제품 등록</button><button>제품 미등록</button>`)}
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
-    <div class="list-scroll"><div class="card-grid">${cards}</div></div>
+    <div class="list-scroll"><div class="shell"><div class="card-grid">${cards}</div></div></div>
     ${pagination()}
   </div>`;
 }
@@ -775,7 +782,7 @@ function groupDetailPage(){
     `<button data-set="campaign" data-v="y" class="${d.campaign?'sel':''}">${esc(CAMPAIGN.name)}</button>
      <button data-set="campaign" data-v="">선택 안 함</button>`;
   return `<div class="content page-gray">
-    <div class="detail-wrap">
+    <div class="detail-wrap"><div class="detail-grid">
       <section class="dcard">
         <h2>QR코드 정보</h2>
         <div class="qr-box">${qrSvg(g.id, 260)}</div>
@@ -822,7 +829,7 @@ function groupDetailPage(){
           <div class="ro-input">${ic.cal} <span class="num">${g.createdAt}</span></div>
         </div>
       </section>
-    </div>
+    </div></div>
   </div>`;
 }
 
