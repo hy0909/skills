@@ -708,7 +708,6 @@ function userOrdersPage(){
   const list = filteredOrders();
   const rows = pageSlice(list).map(o => {
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
-    const disabled = o.status !== 'approved';
     return `<tr class="${dim}" data-oid="${o.id}">
       <td>${statusCellUser(o)}</td>
       <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
@@ -717,7 +716,6 @@ function userOrdersPage(){
       <td>${o.exp}</td>
       <td>${gidCell(o)}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
-      <td><button class="icon-btn" data-act="download" data-id="${o.id}" ${disabled?'disabled':''} title="QR 데이터 다운로드">${ic.download}</button></td>
       <td>${kebabCell(o)}</td>
     </tr>`;
   }).join('');
@@ -732,7 +730,7 @@ function userOrdersPage(){
         <thead><tr>
           <th class="col-status">상태</th><th class="col-hug">발주일</th><th class="col-fixed">제품</th>
           <th>생산 공장</th><th>수출국 코드</th><th>QR 그룹 ID</th>
-          <th class="col-hug" style="text-align:right">총 발주 수량</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
+          <th class="col-hug" style="text-align:right">총 발주 수량</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
