@@ -152,7 +152,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .tbl .col-fixed{width:260px;max-width:260px}
 .tbl .col-status{width:122px;min-width:122px;white-space:nowrap} /* 상태 W122 — 사용자·관리자 공통 규칙 */
 .tbl .col-action{width:130px;min-width:130px;white-space:nowrap} /* 거절/승인 W130 고정 */
-.tbl .col-date{width:208px;white-space:nowrap} /* 발주일시 W208 — 사용자·관리자 공통 */
+.tbl .col-date{width:208px;white-space:nowrap} /* 발주 일시 W208 — 사용자·관리자 공통 */
 .tbl .col-qty{width:112px;white-space:nowrap}
 .tbl .col-kebab{width:48px}
 .tbl thead th{position:sticky;top:0;z-index:5;background:var(--gray-100);
@@ -782,7 +782,7 @@ function userOrdersPage(){
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th class="col-status">상태</th><th class="col-date">발주일시</th><th class="col-fixed">제품</th>
+          <th class="col-status">상태</th><th class="col-date">발주 일시</th><th class="col-fixed">제품</th>
           <th>생산 공장</th><th>수출국 코드</th><th>QR 그룹 ID</th>
           <th style="text-align:right">총 주문 수량</th><th class="col-kebab"></th>
         </tr></thead>
@@ -840,7 +840,7 @@ function adminOrdersPage(){
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th class="col-date">발주일시</th><th class="col-fixed">제품</th><th>생산 공장</th>
+          <th class="col-date">발주 일시</th><th class="col-fixed">제품</th><th>생산 공장</th>
           <th>수출국 코드</th><th>QR 그룹 ID</th><th style="text-align:right">총 주문 수량</th>
           <th class="col-action" style="text-align:right">거절/승인</th><th class="col-kebab"></th>
         </tr></thead>
