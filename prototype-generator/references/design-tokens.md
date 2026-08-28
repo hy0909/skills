@@ -20,8 +20,9 @@
 | primary | `--primary` | `#3232e2` | 승인 대기 칩, [승인] 버튼, 활성 상태 |
 | purple/100 | `--purple-100` | `#f7f5ff` | [+ 제품 등록] 버튼 배경 |
 | purple/200 | `--purple-200` | `#dcdcff` | [+ 제품 등록] 버튼 보더 |
-| destructive/red 600 | `--red-600` | `#c90104` | [거절]·[네] 등 위험 버튼, 필수(*) 표시, 한도 초과 안내 |
-| pink/600 | `--pink-600` | `#c40d9c` | 반려됨/거절함 텍스트, 병행수입 칩 |
+| destructive/red 600 | `--red-600` | `#c90104` | [거절]·[네] 등 위험 버튼, 한도 초과 안내 |
+| pink/50 | `--pink-50` | `#ffedfa` | 반려됨/거절함 칩 배경 |
+| pink/600 | `--pink-600` | `#c40d9c` | 반려됨/거절함 칩 텍스트, 병행수입 칩 |
 
 ### 파생 색 (토큰 미정의 — 시안에서 추출, 디자이너 확정 필요)
 
@@ -58,7 +59,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 타이틀바 (h56, px24) | 제목 20 Bold · 검색 h32 w300 bg gray100 r6, 텍스트 14, 아이콘 18 |
 | [수정 완료] | h40 w172 r6, 15 Regular white, 활성 bg primary / 비활성 bg **gray400** |
 | 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100, **행 배경 white**(페이지 gray50 위) · 수량 16 Bold |
-| 상태 칩 | 13 Medium, r4, py2 · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 gray500 · 반려/거절: pink600 텍스트 |
+| 상태 칩 | 13 Medium, r4, px6 py1(2) · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 **gray600** · 반려됨/거절함: **칩** — bg **pink50 #ffedfa** + pink600 텍스트 |
 | 승인 후 생성 | 13 Medium **gray500** + **시계 아이콘** 16 (ⓘ 아님) |
 | 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
 | [+ 제품 등록] | bg purple100 + border purple200, r10, 14 Regular gray700, plus 16 |

@@ -13,7 +13,7 @@
   --gray-700:#364050; --gray-900:#121826;
   --primary:#3232e2;
   --purple-100:#f7f5ff; --purple-200:#dcdcff;
-  --red-600:#c90104; --pink-600:#c40d9c;
+  --red-600:#c90104; --pink-50:#ffedfa; --pink-600:#c40d9c;
   /* 파생(토큰 미정의 — 시안 추출값) */
   --chip-pink-bg:#fdeef8;
   --chip-blue-bg:#eef1fd;  --chip-blue-txt:#3b4ee4;
@@ -132,10 +132,11 @@ tr.dim td.c-num{font-weight:400}
   border-radius:4px;border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0);
   font-size:13px;font-weight:500;white-space:nowrap}
 .chip-cancel{display:inline-flex;align-items:center;padding:2px 6px;
-  border-radius:4px;background:var(--gray-100);color:var(--gray-500);
+  border-radius:4px;background:var(--gray-100);color:var(--gray-600);
   font-size:13px;font-weight:500;white-space:nowrap}
-.txt-rejected{color:var(--pink-600);font-size:13px;font-weight:500;white-space:nowrap}
-tr.dim .txt-rejected{color:var(--pink-600)}
+.txt-rejected{display:inline-flex;align-items:center;padding:2px 6px;
+  border-radius:4px;background:var(--pink-50);color:var(--pink-600);
+  font-size:13px;font-weight:500;white-space:nowrap}
 .txt-done{color:var(--gray-500);font-size:13px;white-space:nowrap}
 .pending-gen{display:inline-flex;align-items:center;gap:4px;color:var(--gray-500);font-size:13px;font-weight:500;white-space:nowrap}
 
