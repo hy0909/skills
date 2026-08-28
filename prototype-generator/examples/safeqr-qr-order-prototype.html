@@ -118,9 +118,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 /* 제품 선택 드롭다운 — 피그마 실측(994:22591): 검색 헤더 + 리스트 */
 .pd-pop{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:40}
 .pd-search{display:flex;align-items:center;gap:8px;background:var(--gray-0);
-  border:1px solid var(--gray-200);border-radius:6px 6px 0 0;padding:8px 12px}
+  border:1px solid var(--gray-200);border-radius:6px 6px 0 0;padding:8px 12px;cursor:text}
 .pd-search svg{color:var(--gray-400)}
 .pd-search input{flex:1;font-size:14px}
+.pd-search input:focus-visible{outline:none}
+.pd-search:focus-within{outline:2px solid var(--primary);outline-offset:-1px}
 .pd-search input::placeholder{color:var(--gray-400)}
 .pd-list{background:var(--gray-0);border:1px solid var(--gray-200);border-top:0;
   border-radius:0 0 6px 6px;padding:12px;display:flex;flex-direction:column;gap:2px;
@@ -1239,6 +1241,15 @@ document.addEventListener('input', e => {
   const el = document.getElementById('pd-search-input');
   if (el){ el.focus(); el.setSelectionRange(pos, pos); }
 });
+
+/* 제품 검색 바: 아이콘·여백 포함 어디를 눌러도 인풋 포커스 */
+document.addEventListener('click', e => {
+  const bar = e.target.closest('.pd-search');
+  if (bar && e.target.tagName !== 'INPUT'){
+    const inp = bar.querySelector('input');
+    if (inp){ inp.focus(); e.stopPropagation(); }
+  }
+}, true);
 
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-act],[data-nav],[data-dd],[data-set],[data-role],[data-dim]');
