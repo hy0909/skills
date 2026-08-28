@@ -117,6 +117,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
   padding:6px 12px;white-space:nowrap}
 .tbl tbody td{padding:12px;border-bottom:1px solid var(--gray-100);
   background:var(--gray-0);font-size:16px;vertical-align:middle}
+.tbl tbody tr[data-oid]{cursor:pointer}
+.tbl tbody tr[data-oid]:hover td{background:var(--gray-50)}
 .tbl tbody tr.dim td, .tbl tbody tr.dim td b{color:var(--gray-400)}
 td.c-num{font-weight:700}
 tr.dim td.c-num{font-weight:400}
@@ -594,7 +596,7 @@ function userOrdersPage(){
   const rows = filteredOrders().map(o => {
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
     const disabled = o.status !== 'approved';
-    return `<tr class="${dim}">
+    return `<tr class="${dim}" data-oid="${o.id}">
       <td>${statusCellUser(o)}</td>
       <td class="num" style="white-space:nowrap">${o.date}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
@@ -659,7 +661,7 @@ function adminOrdersPage(){
   const rows = filteredOrders().map(o => {
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
     const gid = (o.status === 'rejected' || o.status === 'canceled') ? '<span style="color:var(--gray-400)">-</span>' : gidCell(o);
-    return `<tr class="${dim}">
+    return `<tr class="${dim}" data-oid="${o.id}">
       <td class="num" style="white-space:nowrap">${o.date}</td>
       <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td>${o.exp}</td>
@@ -1082,8 +1084,14 @@ document.addEventListener('click', e => {
   if (t && t.dataset.dim !== undefined && t === e.target){ return; }
 
   if (!t){
-    if (!e.target.closest('.menu-pop') && state.kebab){ state.kebab = null; render(); }
-    if (!e.target.closest('.dd') && state.ddOpen){ state.ddOpen = null; render(); renderModal(); }
+    if (!e.target.closest('.menu-pop') && state.kebab){ state.kebab = null; render(); return; }
+    if (!e.target.closest('.dd') && state.ddOpen){ state.ddOpen = null; render(); renderModal(); return; }
+    /* 행 전체 클릭 → 신청 내역 상세 (행 내부 버튼 클릭은 제외) */
+    const row = e.target.closest('tr[data-oid]');
+    if (row && !e.target.closest('button') && !modal){
+      modal = { type:'orderDetail', id: row.dataset.oid };
+      renderModal();
+    }
     return;
   }
 
