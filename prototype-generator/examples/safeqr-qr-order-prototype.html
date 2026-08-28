@@ -712,8 +712,8 @@ function dd(key, label, opts){
 }
 
 /* ================= GNB / 타이틀 ================= */
-const USER_MENU = [['groups','QR 그룹 관리'],['orders','QR 발주 내역'],['products','제품 정보 관리'],['marketing','마케팅 관리']];
-const PAGE_TITLE = { groups:'QR 그룹 관리', orders:'QR 발주 내역', products:'제품 정보 관리', marketing:'마케팅 관리' };
+const USER_MENU = [['auth','QR 인증 내역'],['groups','QR 그룹 관리'],['orders','QR 발주 내역'],['products','제품 정보 관리'],['marketing','마케팅 관리']];
+const PAGE_TITLE = { auth:'QR 인증 내역', groups:'QR 그룹 관리', orders:'QR 발주 내역', products:'제품 정보 관리', marketing:'마케팅 관리' };
 
 function gnb(){
   const menu = state.role === 'user' ? USER_MENU : [['orders','QR 발주 내역']];
