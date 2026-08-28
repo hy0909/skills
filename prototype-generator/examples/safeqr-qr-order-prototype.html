@@ -538,6 +538,7 @@ const state = {
 
 /* 모달 상태(발주서·컨펌·상세) */
 let modal = null;   // {type:'order'|'confirm'|'orderDetail', ...}
+let modal2 = null;  // 스택 컨펌(발주 내용 확인) — modal 위에 겹쳐 표시
 let toastTimer = null;
 
 /* ================= 유틸 ================= */
@@ -853,7 +854,7 @@ function groupsPage(){
         </div>
       </div>
       <div class="gcard-rows">
-        <div class="r"><span class="k">수량</span><span class="v num"><b>${fmt(g.qty)}</b>장</span></div>
+        <div class="r"><span class="k">주문 수량</span><span class="v num"><b>${fmt(g.qty)}</b>장</span></div>
         <div class="r"><span class="k">생산공장</span><span class="v">${esc(g.factory)}</span></div>
         <div class="r"><span class="k">수출국</span><span class="v">${g.exp}</span></div>
         <div class="r"><span class="k">생성일</span><span class="v num">${g.created}</span></div>
@@ -902,7 +903,7 @@ function groupDetailPage(){
         <div class="qr-box">${qrSvg(g.id, 160)}</div>
         <div class="qr-meta">
           <div><div class="k">QR 그룹 ID</div><div class="v num">${g.id}</div></div>
-          <div><div class="k">수량</div><div class="v num">${fmt(g.qty)}장</div></div>
+          <div><div class="k">주문 수량</div><div class="v num">${fmt(g.qty)}장</div></div>
         </div>
       </section>
       <section class="dcard">
@@ -1035,7 +1036,7 @@ function orderModalHtml(){
         </div>
         <div>
         <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
+          <span class="lbl">주문 수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
           <button class="btn-add-row${m.rows.length>=MAX_ROWS?' dim':''}" data-act="om-add-row">${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
@@ -1051,7 +1052,6 @@ function orderModalHtml(){
             <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
           </div>
           <div class="info-bullets">
-            <div>· 발주 후에는 내용을 변경할 수 없어요. 입력한 내용을 정확히 확인하세요</div>
             <div>· 새 QR 그룹은 승인 후 ‘QR 관리’에서 확인할 수 있어요</div>
             <div>· QR 스티커는 발주 승인 이후 약 한 달 뒤 배송 완료돼요</div>
           </div>
@@ -1125,7 +1125,7 @@ function orderDetailHtml(){
         </div>
         <div>
         <div class="qty-head">
-          <span class="lbl muted">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
+          <span class="lbl muted">주문 수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
           <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
@@ -1140,7 +1140,6 @@ function orderDetailHtml(){
             <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
           </div>
           <div class="info-bullets">
-            <div>· 발주 후에는 내용을 변경할 수 없어요. 입력한 내용을 정확히 확인하세요</div>
             <div>· 새 QR 그룹은 승인 후 ‘QR 관리’에서 확인할 수 있어요</div>
             <div>· QR 스티커는 발주 승인 이후 약 한 달 뒤 배송 완료돼요</div>
           </div>
@@ -1178,12 +1177,27 @@ function render(){
   renderRoleSeg();
 }
 
+function confirm2Html(){
+  const c = modal2;
+  return `<div class="dim-layer" data-dim="confirm2" style="z-index:120">
+    <div class="modal confirm" role="dialog" aria-modal="true" aria-label="${esc(c.title)}">
+      <div class="modal-head"><h2>${esc(c.title)}</h2></div>
+      <div class="modal-body">${esc(c.body)}</div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-act="cf2-no">${esc(c.noLabel)}</button>
+        <button class="btn ${c.danger?'btn-red':'btn-dark'}" data-act="cf2-yes">${esc(c.yesLabel)}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderModal(){
   const root = document.getElementById('modal-root');
-  if (!modal){ root.innerHTML = ''; return; }
+  if (!modal){ root.innerHTML = ''; modal2 = null; return; }
   if (modal.type === 'order') root.innerHTML = orderModalHtml();
   else if (modal.type === 'confirm') root.innerHTML = confirmHtml();
   else if (modal.type === 'orderDetail') root.innerHTML = orderDetailHtml();
+  if (modal2) root.innerHTML += confirm2Html();
   const inputs = root.querySelectorAll('.qty-input');
   inputs.forEach(inp => {
     inp.addEventListener('change', () => {
@@ -1289,8 +1303,9 @@ document.addEventListener('click', e => {
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-act],[data-nav],[data-dd],[data-set],[data-role],[data-dim]');
 
-  /* 딤 영역 클릭 → 모달 닫기 */
+  /* 딤 영역 클릭 → 모달 닫기 (스택 컨펌이 있으면 그것만) */
   if (t && t.dataset.dim !== undefined && t === e.target){
+    if (modal2){ modal2 = null; renderModal(); return; }
     modal = null; state.ddOpen = null; renderModal();
     return;
   }
@@ -1382,10 +1397,17 @@ document.addEventListener('click', e => {
       return;
     }
     case 'om-submit': {
+      modal2 = { title:'QR 발주 내용 확인',
+        body:'발주 후에는 주문 수량, 생산 공장, 수출국 코드를 변경할 수 없어요. 작성된 내용을 정확히 확인하셨나요?',
+        noLabel:'아니요', yesLabel:'네', danger:true };
+      renderModal(); return;
+    }
+    case 'cf2-no': modal2 = null; renderModal(); return;
+    case 'cf2-yes': {
       const m = modal;
       state.orders.unshift({ id:oid(), ts:new Date(), items:[...m.rows],
         exp:m.exp, factory:m.factory, product:m.product, status:'pending', groupIds:[] });
-      modal = null; renderModal();
+      modal = null; modal2 = null; renderModal();
       state.page = 'orders'; state.pageNum = 1; render();
       toast('QR 발주를 완료했어요.');
       return;
