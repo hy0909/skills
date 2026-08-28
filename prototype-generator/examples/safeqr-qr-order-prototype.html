@@ -663,15 +663,8 @@ function userOrdersPage(){
 
 function kebabCell(o){
   const open = state.kebab && state.kebab.kind === 'order' && state.kebab.id === o.id;
-  let items = '';
-  if (state.role === 'admin' && o.status === 'pending'){
-    items = `<button class="blue" data-act="approve" data-id="${o.id}">승인</button>
-             <button data-act="reject" data-id="${o.id}">거절</button>
-             <button data-act="order-detail" data-id="${o.id}">신청 내역보기</button>`;
-  } else {
-    items = `<button data-act="order-detail" data-id="${o.id}">신청 내역보기</button>` +
-      (o.status === 'approved' ? `<button data-act="download" data-id="${o.id}">QR 데이터 다운로드</button>` : '');
-  }
+  const items = `<button data-act="order-detail" data-id="${o.id}">신청 내역보기</button>` +
+    (o.status === 'approved' ? `<button data-act="download" data-id="${o.id}">QR 데이터 다운로드</button>` : '');
   return `<div class="kebab-wrap">
     <button class="kebab" data-act="kebab" data-kind="order" data-id="${o.id}" aria-label="더보기">${ic.kebab}</button>
     ${open ? `<div class="menu-pop">${items}</div>` : ''}
