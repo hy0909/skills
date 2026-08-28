@@ -298,7 +298,8 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .btn-add-row:hover{background:var(--gray-100)}
 .btn-add-row:disabled{background:var(--gray-100)}
 .qty-row{display:flex;align-items:center;margin-bottom:4px}
-.qty-row .rl{font-size:16px;color:var(--gray-900);display:flex;align-items:center;gap:6px}
+.qty-row .rl{font-size:16px;color:var(--gray-900);display:flex;align-items:center;gap:4px}
+.qty-row .rl .del{margin-left:2px}
 .qty-row .del{display:flex;align-items:center;justify-content:center;width:16px;height:16px;
   border-radius:99px;background:var(--gray-400);color:var(--gray-0)}
 .qty-row .del:hover{background:var(--gray-500)}
@@ -880,7 +881,7 @@ function orderModalHtml(){
   const canSubmit = m.exp && m.factory;
   const rowsHtml = m.rows.map((v,i) => `
     <div class="qty-row">
-      <span class="rl">QR 그룹 ${i>0?`<button class="del" data-act="om-del" data-i="${i}" title="행 삭제">${ic.xs}</button>`:''}</span>
+      <span class="rl"><span>·</span><span>QR 그룹</span>${i>0?`<button class="del" data-act="om-del" data-i="${i}" title="행 삭제">${ic.xs}</button>`:''}</span>
       <span class="stepper">
         <button class="step-btn" data-act="om-minus" data-i="${i}" ${v<=UNIT?'disabled':''} aria-label="감소">${ic.minus}</button>
         <input class="qty-input num" data-i="${i}" value="${fmt(v)}" inputmode="numeric" aria-label="수량">
