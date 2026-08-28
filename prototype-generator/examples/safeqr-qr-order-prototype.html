@@ -474,7 +474,6 @@ const oid = () => 'o' + (++seq);
 const HOUR = 3600 * 1000;
 const T_RECENT = new Date(Date.now() - 3 * HOUR);   // 24시간 이내 → 시간만
 const T_THISYR = new Date(new Date().getFullYear(), 6, 22, 10, 32); // 올해 → MM-DD 요일
-const T_LASTYR = new Date(new Date().getFullYear() - 1, 2, 3, 9, 9); // 작년 → YYYY-MM-DD 요일
 
 function mkGroupId(){
   const A = 'ABCDEFGHJKMNPQRSTUVWXYZ123456789';
@@ -497,7 +496,7 @@ const state = {
     { id:oid(), ts:T_RECENT, items:[10000,10000,10000], exp:'KR', factory:'베트남 공장', product:null,    status:'pending',  groupIds:[] },
     { id:oid(), ts:T_THISYR, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남 공장', product:null, status:'approved',
       groupIds:['K7MD9QPA-1-1','K7MD9QPA-1-2','K7MD9QPA-1-3','K7MD9QPA-1-4','K7MD9QPA-1-5'] },
-    { id:oid(), ts:T_LASTYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
     { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'canceled', groupIds:[] },
     ...Array.from({length:196}, () => ({
       id:oid(), ts:T_THISYR, items:[10000], exp:'KR', factory:'베트남 공장', product:PRODUCT,
@@ -700,8 +699,8 @@ function statusCellUser(o){
 
 function filteredOrders(){
   const q = state.search.trim().toLowerCase();
-  if (!q) return state.orders;
-  return state.orders.filter(o => o.groupIds.some(g => g.toLowerCase().includes(q)));
+  const list = q ? state.orders.filter(o => o.groupIds.some(g => g.toLowerCase().includes(q))) : state.orders;
+  return [...list].sort((a, b) => b.ts - a.ts); // 기본 정렬: 최신순
 }
 
 function userOrdersPage(){
