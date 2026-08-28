@@ -57,6 +57,7 @@ const state = {
 | 상태 칩 | 대기=primary filled+x, 완료=아웃라인, 거절=pink600 텍스트, 취소=gray100 칩 (프로젝트 스펙 우선) |
 | 종결 행 | 행 전체 텍스트 `--gray-400`, ID 빈값, 다운로드류 버튼 disabled |
 | 목록 스크롤 | GNB·타이틀·필터바·페이지네이션 고정, 목록 영역만 `overflow-y:auto` (flex column + min-height:0) |
+| 레이아웃 폭 | **배경색(GNB·타이틀바·본문)은 풀블리드로 좌우 무제한**, 콘텐츠(텍스트+안쪽 패딩)는 `max-width:1440px` 중앙 정렬. 공용 `.shell{max-width:1440px;margin:0 auto;width:100%}`을 각 바(bar)의 안쪽 래퍼로 쓴다 |
 | 빈 상태 | 범위 외 메뉴는 "이 화면은 프로토타입 범위에 포함되지 않아요" 빈 상태로 |
 
 ## 5. 프로토타입 컨트롤 (데모 전용 UI)
