@@ -246,27 +246,6 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
   font-size:16px;color:var(--gray-500)}
 .camp-period{font-size:13px;color:var(--gray-400);margin-left:6px;font-weight:500}
 
-/* ============ 인증 내역 ============ */
-.authchips{display:flex;gap:8px;padding:0 24px 12px;flex:none;
-  max-width:1440px;margin:0 auto;width:100%}
-.achip{height:32px;padding:0 14px;border-radius:999px;font-size:14px;
-  border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0)}
-.achip.on{background:var(--gray-900);border-color:var(--gray-900);color:var(--gray-0);font-weight:500}
-.cat-chip{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;
-  font-size:13px;font-weight:500;white-space:nowrap}
-.cat-chip + .cat-chip{margin-top:4px}
-.cat-parallel{background:var(--chip-pink-bg);color:var(--pink-600)}
-.cat-copy{background:var(--chip-blue-bg);color:var(--chip-blue-txt)}
-.cat-error{background:var(--chip-orange-bg);color:var(--chip-orange-txt)}
-.cat-normal{border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0)}
-.cc-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;
-  border-radius:999px;background:var(--chip-pink-bg);color:var(--pink-600);
-  font-size:10px;font-weight:700;margin-left:5px;padding:0 4px}
-.cnt-hot{color:var(--green-600);font-weight:700}
-.btn-detail{height:30px;padding:0 13px;border:1px solid var(--gray-200);border-radius:var(--radius-md);
-  font-size:13px;font-weight:500;color:var(--gray-700);background:var(--gray-0)}
-.btn-detail:hover{background:var(--gray-100)}
-
 /* ============ 모달 공통 (radius 12, 헤더/푸터 흰색 · 바디 gray50) ============ */
 .dim-layer{position:fixed;inset:0;z-index:100;background:rgba(18,24,38,.62);
   display:flex;align-items:center;justify-content:center}
@@ -443,7 +422,6 @@ const state = {
   search: '',
   kebab: null,                     // {kind:'order'|'card', id}
   ddOpen: null,                    // 열려 있는 셀렉트 key
-  authFilter: new Set(),
   detailGroupId: null,
   detailDraft: null,
   orders: [
@@ -462,16 +440,6 @@ const state = {
     ...Array.from({length:11}, (_,i) => ({
       id:'K7MD9QPA-1-' + (i+2), qty:200000, factory:'베트남', exp:'KR', created:'7-22 목',
       createdAt:'2025-05-21 오전 10:54', campaign: i%3===0 ? CAMPAIGN : null, product:PRODUCT })),
-  ],
-  auth: [
-    { no:15, cats:['parallel'],        product:null,    qr:'SC1A2BF2G9-2-19000', country:'KR', cbadge:2, cnt:120, hot:true,  first:'07-22 목 오전 10:32', last:'-' },
-    { no:14, cats:['parallel','copy'], product:PRODUCT, qr:'SC1A2BF2G9-2-19001', country:'KR', cbadge:0, cnt:1,   hot:false, first:'07-22 목 오전 10:32', last:'-' },
-    { no:13, cats:['error'],           product:PRODUCT, qr:'SC1A2BF2G9-2-19002', country:'KR', cbadge:0, cnt:12,  hot:false, first:'07-22 목 오전 10:32', last:'-' },
-    { no:12, cats:['copy'],            product:PRODUCT, qr:'SC1A2BF2G9-2-19003', country:'KR', cbadge:0, cnt:12,  hot:false, first:'07-22 목 오전 10:32', last:'07-22 목 오전 10:32' },
-    { no:11, cats:['copy'],            product:PRODUCT, qr:'SC1A2BF2G9-2-19004', country:'KR', cbadge:0, cnt:12,  hot:false, first:'07-22 목 오전 10:32', last:'-' },
-    { no:10, cats:['copy'],            product:PRODUCT, qr:'SC1A2BF2G9-2-19005', country:'KR', cbadge:0, cnt:12,  hot:false, first:'07-22 목 오전 10:32', last:'07-22 목 오전 10:32' },
-    { no:9,  cats:[],                  product:PRODUCT, qr:'SC1A2BF2G9-2-19006', country:'KR', cbadge:0, cnt:3,   hot:false, first:'07-22 목 오전 10:32', last:'07-22 목 오전 10:32' },
-    { no:8,  cats:[],                  product:PRODUCT, qr:'SC1A2BF2G9-2-19007', country:'US', cbadge:0, cnt:2,   hot:false, first:'07-22 목 오전 10:32', last:'-' },
   ],
 };
 
@@ -839,59 +807,6 @@ function groupDetailPage(){
   </div>`;
 }
 
-/* ================= QR 인증 내역 ================= */
-const CAT_LABEL = { parallel:['병행수입','cat-parallel'], copy:['불법 복제','cat-copy'], error:['오류','cat-error'] };
-
-function authPage(){
-  const f = state.authFilter;
-  const q = state.search.trim().toLowerCase();
-  let list = state.auth;
-  if (f.size) list = list.filter(r =>
-    r.cats.some(c => f.has(c)) || (f.has('normal') && r.cats.length === 0));
-  if (q) list = list.filter(r => r.qr.toLowerCase().includes(q));
-  const chip = (key,label) =>
-    `<button class="achip ${f.has(key)?'on':''}" data-act="auth-filter" data-v="${key}">${label}</button>`;
-  const rows = list.map(r => `<tr>
-    <td class="num">${r.no}</td>
-    <td><div style="display:flex;flex-direction:column;align-items:flex-start">
-      ${r.cats.length ? r.cats.map(c => `<span class="cat-chip ${CAT_LABEL[c][1]}">${CAT_LABEL[c][0]}</span>`).join('') : '<span class="cat-chip cat-normal">정상</span>'}
-    </div></td>
-    <td>${r.product
-      ? `<div class="prod-card"><span class="thumb"></span><span><span class="nm">${esc(r.product.name)}</span><div class="cd">${esc(r.product.code)}</div></span></div>`
-      : `<button class="btn-add-prod" data-act="auth-add-product">${ic.plus} 제품 등록</button>`}</td>
-    <td><span class="gid"><span class="code num">${r.qr}</span>
-      <button class="icon-copy" data-act="copy" data-v="${r.qr}" title="복사">${ic.copy}</button></span></td>
-    <td><b style="${r.cbadge?'color:var(--pink-600)':''}">${r.country}</b>${r.cbadge?`<span class="cc-badge num">${r.cbadge}</span>`:''}</td>
-    <td class="num ${r.hot?'cnt-hot':''}">${r.cnt}</td>
-    <td class="num" style="white-space:nowrap">${r.first}</td>
-    <td class="num" style="white-space:nowrap;color:${r.last==='-'?'var(--gray-400)':'inherit'}">${r.last}</td>
-    <td><button class="btn-detail" data-act="auth-detail">상세</button></td>
-  </tr>`).join('');
-  return `<div class="content">
-    <div class="filterbar">
-      <span class="total">전체 <b class="num">${list.length}</b></span>
-      <span class="sp"></span>
-      ${dd('a-prod','제품 선택', `<button>${esc(PRODUCT.name)}</button><button>전체</button>`)}
-      ${dd('period', `${ic.cal} <span class="num">2025-05-21 ~ 2025-06-21</span>`, `<button class="sel">2025-05-21 ~ 2025-06-21</button>`)}
-      ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
-    </div>
-    <div class="authchips">
-      ${chip('parallel','병행수입 의심')}${chip('copy','불법 복제 의심')}${chip('error','오류')}${chip('normal','정상')}
-    </div>
-    <div class="list-scroll">
-      <table class="tbl">
-        <thead><tr>
-          <th style="width:44px">번호</th><th style="width:100px">구분</th><th style="width:250px">제품</th>
-          <th>QR ID</th><th style="width:110px">유입 국가 코드</th><th style="width:80px">인증횟수</th>
-          <th style="width:150px">최초 QR 인증 일시</th><th style="width:150px">마지막 QR 인증 일시</th><th style="width:70px"></th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-    ${pagination()}
-  </div>`;
-}
-
 /* ================= 범위 외 페이지 ================= */
 function placeholderPage(){
   return `<div class="content">
@@ -1050,7 +965,6 @@ function pageHtml(){
     case 'orders':      return state.role === 'admin' ? adminOrdersPage() : userOrdersPage();
     case 'groups':      return groupsPage();
     case 'groupDetail': return groupDetailPage();
-    case 'auth':        return authPage();
     default:            return placeholderPage();
   }
 }
@@ -1278,14 +1192,6 @@ document.addEventListener('click', e => {
         }};
       renderModal(); return;
 
-    /* 인증 내역 */
-    case 'auth-filter': {
-      const v = t.dataset.v;
-      state.authFilter.has(v) ? state.authFilter.delete(v) : state.authFilter.add(v);
-      render(); return;
-    }
-    case 'auth-detail': case 'auth-add-product':
-      openGroupDetail(state.groups[0].id); return;
   }
 });
 
