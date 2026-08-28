@@ -97,7 +97,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .dd{position:relative}
 .dd-btn{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;
   background:var(--gray-0);border:1px solid var(--gray-200);border-radius:var(--radius-md);
-  font-size:14px;color:var(--gray-600)}
+  font-size:14px;color:var(--gray-600);white-space:nowrap}
 .dd-btn svg{color:var(--gray-400);margin-left:auto}
 .dd-btn:hover{border-color:var(--gray-300)}
 .dd-btn:disabled{background:var(--gray-100);color:var(--gray-500)}
@@ -106,7 +106,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
   box-shadow:var(--shadow-m);padding:4px;max-height:280px;overflow-y:auto}
 .dd-pop button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
   padding:9px 12px;border-radius:var(--radius-md);font-size:14px;color:var(--gray-700);white-space:nowrap}
-.dd-pop button:hover{background:var(--gray-50)}
+.dd-pop button:hover{background:var(--gray-100)}
 .dd-pop button.sel{color:var(--primary);font-weight:700}
 
 /* ============ 테이블 ============ */
@@ -118,7 +118,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .tbl tbody td{padding:12px;border-bottom:1px solid var(--gray-100);
   background:var(--gray-0);font-size:16px;vertical-align:middle}
 .tbl tbody tr[data-oid]{cursor:pointer}
-.tbl tbody tr[data-oid]:hover td{background:var(--gray-50)}
+.tbl tbody tr[data-oid]:hover td{background:var(--gray-100)}
 .tbl tbody tr.dim td, .tbl tbody tr.dim td b{color:var(--gray-400)}
 td.c-num{font-weight:700}
 tr.dim td.c-num{font-weight:400}
@@ -184,7 +184,7 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
   box-shadow:var(--shadow-m);padding:4px}
 .menu-pop button{display:block;width:100%;text-align:left;padding:9px 12px;
   border-radius:var(--radius-md);font-size:14px;color:var(--gray-700);white-space:nowrap}
-.menu-pop button:hover{background:var(--gray-50)}
+.menu-pop button:hover{background:var(--gray-100)}
 .menu-pop button.blue{color:var(--primary);font-weight:500}
 
 /* 관리자 거절/승인 */
@@ -200,11 +200,11 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:8px}
 .gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:20px;
   display:flex;flex-direction:column;cursor:pointer;border:1px solid var(--gray-200)}
-.gcard:hover{border-color:var(--gray-300)}
+.gcard:hover{border-color:var(--gray-900)}
 .gcard-top{display:flex;align-items:flex-start;padding:0 4px}
 .gcard-top .lbl{font-size:12px;font-weight:500;color:var(--gray-400)}
 .gcard-top .id{font-size:18px;font-weight:700;margin-top:4px;letter-spacing:-.2px}
-.gcard-top .kebab-wrap{margin-left:auto;margin-right:-10px;margin-top:-6px}
+.gcard-top .kebab-wrap{margin-left:auto;margin-right:-18px;margin-top:-6px}
 .gcard-rows{margin-top:20px;display:flex;flex-direction:column;gap:6px;padding:0 4px}
 .gcard-rows .r{display:flex;align-items:center;font-size:15px}
 .gcard-rows .k{width:64px;flex:none;color:var(--gray-400);font-size:14px}
@@ -269,7 +269,7 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
   border-radius:0 0 12px 12px}
 .btn{flex:1;padding:8px;border-radius:var(--radius-md);font-size:15px}
 .btn-ghost{border:1px solid var(--gray-300);background:var(--gray-0);color:var(--gray-900)}
-.btn-ghost:hover{background:var(--gray-50)}
+.btn-ghost:hover{background:var(--gray-100)}
 .btn-dark{background:var(--gray-900);color:var(--gray-0)}
 .btn-dark:disabled{background:var(--gray-300)}
 .btn-red{background:var(--red-600);color:var(--gray-0)}
@@ -290,7 +290,7 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .btn-add-row{margin-left:auto;display:flex;align-items:center;gap:2px;height:26px;padding:2px 12px;
   border-radius:99px;background:var(--gray-0);border:1px solid var(--gray-200);
   font-size:13px;font-weight:500;color:var(--gray-500)}
-.btn-add-row:hover{background:var(--gray-50)}
+.btn-add-row:hover{background:var(--gray-100)}
 .btn-add-row:disabled{background:var(--gray-100)}
 .qty-row{display:flex;align-items:center;margin-bottom:6px}
 .qty-row .rl{font-size:16px;color:var(--gray-900);display:flex;align-items:center;gap:6px}
@@ -733,7 +733,7 @@ function groupsPage(){
     <div class="filterbar">
       <span class="total">전체 <b class="num">${list.length}</b></span>
       <span class="sp"></span>
-      ${dd('period', `${ic.cal} <span class="num">2025-05-21 ~ 2025-06-21</span>`, `<button class="sel">2025-05-21 ~ 2025-06-21</button><button>2025-04-21 ~ 2025-05-21</button>`)}
+      ${dd('period', `${ic.cal} <span class="num" style="font-size:13px">2025-05-21 ~ 2025-06-21</span>`, `<button class="sel">2025-05-21 ~ 2025-06-21</button><button>2025-04-21 ~ 2025-05-21</button>`)}
       ${dd('qrtype','QR 전체', `<button class="sel">QR 전체</button><button>제품 등록</button><button>제품 미등록</button>`)}
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
