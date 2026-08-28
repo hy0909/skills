@@ -612,9 +612,9 @@ function statusCellUser(o){
   switch(o.status){
     case 'pending':  return `<button class="chip-wait" data-act="cancel-order" data-id="${o.id}" title="발주 취소">승인 대기 중
       <span class="x">${ic.xs}</span></button>`;
-    case 'approved': return `<span class="chip-ok">승인</span>`;
+    case 'approved': return `<span class="chip-ok">승인됨</span>`;
     case 'rejected': return `<span class="txt-rejected">반려됨</span>`;
-    case 'canceled': return `<span class="chip-cancel">취소함</span>`;
+    case 'canceled': return `<span class="chip-cancel">발주 취소</span>`;
   }
 }
 
@@ -982,7 +982,7 @@ function confirmHtml(){
 function orderDetailHtml(){
   const o = state.orders.find(x => x.id === modal.id);
   if (!o) return '';
-  const st = { pending:'승인 대기 중', approved:'승인', rejected:'반려됨', canceled:'취소함' };
+  const st = { pending:'승인 대기 중', approved:'승인됨', rejected:'반려됨', canceled:'발주 취소' };
   return `<div class="dim-layer" data-dim="odetail">
     <div class="modal od-detail" role="dialog" aria-modal="true" aria-label="신청 내역보기">
       <div class="modal-head"><h2>신청 내역보기</h2>
