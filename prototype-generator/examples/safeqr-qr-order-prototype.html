@@ -236,9 +236,9 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .lbl.muted{color:var(--gray-500)}
 .lbl.muted .req{color:var(--gray-400)}
 .fld{margin-bottom:16px}
-.fld > .lbl{display:block;font-size:15px;color:var(--gray-900);margin-bottom:4px}
+.fld > .lbl{display:flex;align-items:center;gap:2px;font-size:15px;color:var(--gray-900);margin-bottom:4px}
 .fld > .lbl .req{color:var(--primary)}
-.fld > .lbl .opt{color:var(--gray-400);font-weight:500;font-size:12px}
+.fld > .lbl .opt{color:var(--gray-400);font-weight:500;font-size:12px;margin-left:2px}
 .fld .dd-btn{width:100%;height:44px;font-size:16px;border-color:var(--gray-300);color:var(--gray-900)}
 .fld .dd-btn .ph{color:var(--gray-400)}
 .fld2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -253,7 +253,7 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .ro-input{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;
   background:var(--gray-100);border:1px solid var(--gray-300);border-radius:var(--radius-lg);
   font-size:16px;color:var(--gray-500)}
-.camp-period{font-size:13px;color:var(--gray-400);margin-left:6px;font-weight:500}
+.camp-period{font-size:13px;color:var(--gray-400);font-weight:500}
 
 /* ============ 모달 공통 (radius 12, 헤더/푸터 흰색 · 바디 gray50) ============ */
 .dim-layer{position:fixed;inset:0;z-index:100;background:rgba(18,24,38,.62);
@@ -294,7 +294,7 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
   font-size:13px;font-weight:500;color:var(--gray-500)}
 .btn-add-row:hover{background:var(--gray-100)}
 .btn-add-row:disabled{background:var(--gray-100)}
-.qty-row{display:flex;align-items:center;margin-bottom:6px}
+.qty-row{display:flex;align-items:center;margin-bottom:4px}
 .qty-row .rl{font-size:16px;color:var(--gray-900);display:flex;align-items:center;gap:6px}
 .qty-row .del{display:flex;align-items:center;justify-content:center;width:16px;height:16px;
   border-radius:99px;background:var(--gray-400);color:var(--gray-0)}
@@ -307,11 +307,11 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .qty-input{width:112px;height:32px;border:1px solid var(--gray-300);border-radius:var(--radius-lg);
   text-align:center;font-size:16px;color:var(--gray-700);background:var(--gray-0)}
 .qty-input:focus{border-color:var(--primary)}
-.qty-total{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:8px}
+.qty-total{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
 .qty-total .err{font-size:13px;color:var(--red-600);font-weight:500}
 .qty-total .t{font-size:16px;color:var(--gray-600)}
 .qty-total .n{font-size:16px;font-weight:700;color:var(--gray-600)}
-.info-title{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:700;
+.info-title{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:400;
   color:var(--gray-500);margin-bottom:6px}
 .info-title svg{color:var(--gray-400)}
 .info-box{background:var(--gray-200);border-radius:var(--radius-lg);padding:12px 24px;text-align:center}
@@ -799,9 +799,9 @@ function groupDetailPage(){
         <h2>제품 정보</h2>
         <div class="dfields">
         <div class="fld">
-          <span class="lbl">제품 <span class="opt">(선택)</span></span>
+          <span class="lbl">제품<span class="opt">(선택)</span></span>
           <div class="dd">
-            <button class="prod-select" data-dd="d-prod">
+            <button class="prod-select" data-dd="d-prod"${d.product?' style="gap:20px"':''}>
               ${d.product ? thumb('lg') : emptyThumb('lg')}
               ${d.product
                 ? `<span><span class="nm">${esc(d.product.name)}</span><div class="cd">${esc(d.product.code)}</div></span>`
@@ -813,19 +813,19 @@ function groupDetailPage(){
         </div>
         <div class="fld2">
           <div class="fld">
-            <span class="lbl muted">생산 공장 <span class="req">*</span></span>
+            <span class="lbl muted">생산 공장<span class="req">*</span></span>
             <div class="dd"><button class="dd-btn" disabled style="border-color:var(--gray-300)">${esc(g.factory)} ${ic.chevDown}</button></div>
           </div>
           <div class="fld">
-            <span class="lbl">수출국 코드 <span class="req">*</span></span>
-            ${dd('d-exp', `${d.exp}&nbsp;<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===d.exp)||[])[1]||''}</span>`, expOpts)}
+            <span class="lbl">수출국 코드<span class="req">*</span></span>
+            ${dd('d-exp', `<span style="display:inline-flex;align-items:center;gap:6px">${d.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===d.exp)||[])[1]||''}</span></span>`, expOpts)}
           </div>
         </div>
         <hr class="hr">
         <div class="fld">
-          <span class="lbl">마케팅 캠페인 <span class="opt">(선택)</span></span>
+          <span class="lbl">마케팅 캠페인<span class="opt">(선택)</span></span>
           ${dd('d-camp', d.campaign
-            ? `${esc(d.campaign.name)}<span class="camp-period">${esc(d.campaign.period)}</span>`
+            ? `<span style="display:inline-flex;align-items:center;gap:6px">${esc(d.campaign.name)}<span class="camp-period">${esc(d.campaign.period)}</span></span>`
             : `<span class="ph" style="color:var(--gray-400)">캠페인을 선택하세요</span>`, campOpts)}
         </div>
         <hr class="hr">
@@ -879,7 +879,7 @@ function orderModalHtml(){
       </span>
     </div>`).join('');
   const expLabel = m.exp
-    ? `${m.exp}&nbsp;<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===m.exp)||[])[1]}</span>`
+    ? `<span style="display:inline-flex;align-items:center;gap:6px">${m.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===m.exp)||[])[1]}</span></span>`
     : `<span class="ph" style="color:var(--gray-400)">수출국 코드를 선택하세요</span>`;
   const facLabel = m.factory || `<span class="ph" style="color:var(--gray-400)">생산 공장을 선택하세요</span>`;
   return `<div class="dim-layer" data-dim="order">
@@ -889,25 +889,25 @@ function orderModalHtml(){
       <div class="modal-body">
         <div>
         <div class="qty-head">
-          <span class="lbl">수량 <span class="req">*</span> ${ic.infoLg}</span>
+          <span class="lbl">수량<span class="req">*</span>${ic.infoLg}</span>
           <button class="btn-add-row" data-act="om-add-row" ${m.rows.length>=MAX_ROWS?'disabled':''}>${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
         <div class="qty-total">
           ${m.err ? `<span class="err">최대 주문 가능 수량 600,000장</span>` : ''}
-          <span class="t">총</span><span class="n num">${fmt(total)}</span><span class="t">장</span>
+          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(total)}</span><span class="t">장</span></span>
         </div>
         </div>
         <div class="fld2" style="gap:16px">
           <div class="fld">
-            <span class="lbl">수출국 코드 <span class="req">*</span></span>
+            <span class="lbl">수출국 코드<span class="req">*</span></span>
             <div class="dd"><button class="dd-btn" data-dd="om-exp" style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${expLabel} ${ic.chevDown}</button>
               ${state.ddOpen==='om-exp' ? `<div class="dd-pop">${EXPORTS.map(([c,n]) =>
                 `<button data-set="om-exp" data-v="${c}" class="${m.exp===c?'sel':''}"><b>${c}</b> ${n}</button>`).join('')}</div>` : ''}
             </div>
           </div>
           <div class="fld">
-            <span class="lbl">생산 공장 <span class="req">*</span></span>
+            <span class="lbl">생산 공장<span class="req">*</span></span>
             <div class="dd"><button class="dd-btn" data-dd="om-fac" style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${facLabel} ${ic.chevDown}</button>
               ${state.ddOpen==='om-fac' ? `<div class="dd-pop">${FACTORIES.map(f =>
                 `<button data-set="om-fac" data-v="${f}" class="${m.factory===f?'sel':''}">${f}</button>`).join('')}</div>` : ''}
@@ -915,9 +915,9 @@ function orderModalHtml(){
           </div>
         </div>
         <div class="fld">
-          <span class="lbl">제품 <span class="opt">(선택)</span></span>
+          <span class="lbl">제품<span class="opt">(선택)</span></span>
           <div class="dd">
-            <button class="prod-select" data-dd="om-prod">
+            <button class="prod-select" data-dd="om-prod"${m.product?' style="gap:20px"':''}>
               ${m.product ? thumb('lg') : emptyThumb('lg')}
               ${m.product
                 ? `<span><span class="nm">${esc(m.product.name)}</span><div class="cd">${esc(m.product.code)}</div></span>`
@@ -931,14 +931,14 @@ function orderModalHtml(){
           </div>
         </div>
         <div>
-          <div class="info-title">${ic.infoLg} 발주 단계 안내</div>
+          <div class="info-title">발주 단계 안내${ic.infoLg}</div>
           <div class="info-box">
             <div class="s1">발주 신청 후</div>
             <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
           </div>
           <div class="info-bullets">
-            <div>· 발주 후에는 내용을 변경할 수 없어요. 입력한 내용을 정확히 확인해 주세요</div>
-            <div>· 새 QR 그룹은 승인 후 ‘QR 그룹 관리’에서 확인할 수 있어요</div>
+            <div>· 발주 후에는 내용을 변경할 수 없어요. 입력한 내용을 정확히 확인하세요</div>
+            <div>· 새 QR 그룹은 승인 후 ‘QR 관리’에서 확인할 수 있어요</div>
             <div>· QR 스티커는 발주 승인 이후 약 한 달 뒤 배송 완료돼요</div>
           </div>
         </div>
