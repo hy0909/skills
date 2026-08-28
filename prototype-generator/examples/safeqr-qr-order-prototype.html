@@ -536,6 +536,7 @@ const state = {
     { id:oid(), ts:T_RECENT, items:[10000,10000,10000], exp:'KR', factory:'베트남', product:null,    status:'pending',  groupIds:[] },
     { id:oid(), ts:T_THISYR, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남', product:null, status:'approved',
       groupIds:['K7MD9QPA-1-1','K7MD9QPA-1-2','K7MD9QPA-1-3','K7MD9QPA-1-4','K7MD9QPA-1-5'] },
+    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남', product:null,    status:'canceled', groupIds:[] }, /* 제품 미등록 + 사용자 취소 */
     { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남', product:PRODUCT, status:'rejected', groupIds:[] },
     { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남', product:PRODUCT, status:'canceled', groupIds:[] },
     ...Array.from({length:196}, () => ({
