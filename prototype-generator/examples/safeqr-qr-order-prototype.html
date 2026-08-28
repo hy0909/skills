@@ -141,9 +141,10 @@ td.c-num{font-weight:400;text-align:right} /* 수량 — body1 Regular(디자인
 .chip-wait:hover{filter:brightness(.88)}
 .chip-wait .x{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;
   color:var(--gray-0)}
-.chip-ok{padding:0 6px;border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0)}
-.chip-cancel{padding:0 6px;background:var(--gray-100);color:var(--gray-600)}
-.txt-rejected{padding:0 6px;background:var(--pink-50);color:var(--pink-600)}
+.chip-ok{padding:0 6px;border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0);
+  font-size:14px;font-weight:400}
+.chip-cancel{padding:0 6px;background:var(--gray-100);color:var(--gray-600);font-size:14px;font-weight:400}
+.txt-rejected{padding:0 6px;background:var(--pink-50);color:var(--pink-600);font-size:14px;font-weight:400}
 .txt-done{color:var(--gray-500);font-size:13px;white-space:nowrap}
 /* 관리자 처리 상태 텍스트 — 칩 아님, 14 Regular 우측 정렬 */
 .adm-st{font-size:14px;color:var(--gray-400);white-space:nowrap}
@@ -650,7 +651,7 @@ function statusCellUser(o){
       <span class="x">${ic.xs}</span></button>`;
     case 'approved': return `<span class="chip-ok">승인됨</span>`;
     case 'rejected': return `<span class="txt-rejected">반려됨</span>`;
-    case 'canceled': return `<span class="chip-cancel">발주 취소</span>`;
+    case 'canceled': return `<span class="chip-cancel">발주 취소함</span>`;
   }
 }
 
