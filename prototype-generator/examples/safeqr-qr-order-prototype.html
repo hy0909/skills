@@ -115,6 +115,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 
 /* ============ 테이블 ============ */
 .tbl{width:100%;border-collapse:collapse}
+/* 컬럼 너비 규칙: hug=콘텐츠 폭 고정 · fill=남는 공간 분배 · 제품=260px 고정+말줄임 */
+.tbl .col-hug{width:1%;white-space:nowrap}
+.tbl .col-fixed{width:260px;max-width:260px}
 .tbl thead th{position:sticky;top:0;z-index:5;background:var(--gray-100);
   box-shadow:inset 0 1px 0 var(--gray-200), inset 0 -1px 0 var(--gray-200);
   font-size:13px;font-weight:500;color:var(--gray-500);text-align:left;
@@ -158,8 +161,9 @@ tr.dim .gid .code{color:var(--gray-400)}
 /* 제품 셀 */
 .prod-card{display:flex;align-items:center;gap:12px;background:var(--gray-50);
   border-radius:10px;padding:8px;max-width:260px;text-align:left}
-.prod-card .nm{font-size:14px;color:var(--gray-500);font-weight:700;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px}
+.prod-card > span:last-child{flex:1;min-width:0}
+.prod-card .nm{display:block;font-size:14px;color:var(--gray-500);font-weight:700;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prod-card .cd{font-size:12px;color:var(--gray-400);font-weight:500;margin-top:2px}
 tr.dim .prod-card .nm{color:var(--gray-400)}
 /* 발주 취소·반려 행: 제품 항목 전체(썸네일 포함) 투명도 60% */
@@ -440,9 +444,11 @@ function mkGroupId(){
   return s + '-1-1';
 }
 
+const PAGE_SIZE = 20;              // 목록 페이지당 20개
 const state = {
   role: 'user',                    // 'user' | 'admin'
   page: 'orders',                  // auth | groups | orders | products | marketing | groupDetail
+  pageNum: 1,                      // 목록 페이지네이션 현재 페이지
   search: '',
   kebab: null,                     // {kind:'order'|'card', id}
   ddOpen: null,                    // 열려 있는 셀렉트 key
@@ -454,14 +460,14 @@ const state = {
       groupIds:['K7MD9QPA-1-1','K7MD9QPA-1-2','K7MD9QPA-1-3','K7MD9QPA-1-4','K7MD9QPA-1-5'] },
     { id:oid(), ts:T_LASTYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
     { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'canceled', groupIds:[] },
-    ...Array.from({length:6}, () => ({
+    ...Array.from({length:196}, () => ({
       id:oid(), ts:T_THISYR, items:[10000], exp:'KR', factory:'베트남 공장', product:PRODUCT,
       status:'approved', groupIds:['K7MD9QPA-1-1'] })),
   ],
   groups: [
     { id:'K7MD9QPA-1-1', qty:200000, factory:'베트남', exp:'KR', created:'7-22 목',
       createdAt:'2025-05-21 오전 10:54', campaign:null, product:null },
-    ...Array.from({length:11}, (_,i) => ({
+    ...Array.from({length:199}, (_,i) => ({
       id:'K7MD9QPA-1-' + (i+2), qty:200000, factory:'베트남', exp:'KR', created:'7-22 목',
       createdAt:'2025-05-21 오전 10:54', campaign: i%3===0 ? CAMPAIGN : null, product:PRODUCT })),
   ],
@@ -553,14 +559,26 @@ function gidCell(o){
      <button class="icon-copy" data-act="copy" data-v="${g}" title="복사">${ic.copy}</button></span>`).join('');
 }
 
-function pagination(){
-  const pages = [1,2,3,4,5,6,7,8];
+/* 목록 페이지네이션 — 페이지당 20개, 실제 페이지 이동 동작 */
+function pagination(total){
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const cur = Math.min(state.pageNum, pages);
+  let nums = [];
+  if (pages <= 10) nums = Array.from({length:pages}, (_,i) => i+1);
+  else if (cur <= 6) nums = [1,2,3,4,5,6,7,8,'…',pages];
+  else if (cur >= pages-5) nums = [1,'…',...Array.from({length:8},(_,i)=>pages-7+i)];
+  else nums = [1,'…',cur-2,cur-1,cur,cur+1,cur+2,'…',pages];
   return `<div class="pagination">
-    <button class="arr" aria-label="이전">${ic.chevLeft}</button>
-    ${pages.map(p => `<button class="${p===1?'cur':''} num">${p}</button>`).join('')}
-    <span class="dots">…</span><button class="num">20</button>
-    <button class="arr" aria-label="다음">${ic.chevRight}</button>
+    <button class="arr" data-act="pg" data-p="${cur-1}" ${cur<=1?'disabled':''} aria-label="이전">${ic.chevLeft}</button>
+    ${nums.map(p => p==='…' ? `<span class="dots">…</span>`
+      : `<button class="${p===cur?'cur':''} num" data-act="pg" data-p="${p}">${p}</button>`).join('')}
+    <button class="arr" data-act="pg" data-p="${cur+1}" ${cur>=pages?'disabled':''} aria-label="다음">${ic.chevRight}</button>
   </div>`;
+}
+function pageSlice(list){
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const cur = Math.min(state.pageNum, pages);
+  return list.slice((cur-1)*PAGE_SIZE, cur*PAGE_SIZE);
 }
 
 /* 필터 셀렉트 고정 폭 — 피그마 실측: 최신순 104 / QR 전체 142 / 기간 240 (h36) */
@@ -629,7 +647,8 @@ function filteredOrders(){
 }
 
 function userOrdersPage(){
-  const rows = filteredOrders().map(o => {
+  const list = filteredOrders();
+  const rows = pageSlice(list).map(o => {
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
     const disabled = o.status !== 'approved';
     return `<tr class="${dim}" data-oid="${o.id}">
@@ -646,21 +665,21 @@ function userOrdersPage(){
   }).join('');
   return `<div class="content">
     <div class="filterbar">
-      <span class="total">전체<b class="num">${filteredOrders().length}</b></span>
+      <span class="total">전체<b class="num">${list.length}</b></span>
       <span class="sp"></span>
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th style="width:118px">상태</th><th style="width:150px">발주일</th><th style="width:110px">총 발주 수량</th>
-          <th style="width:90px">수출국 코드</th><th style="width:120px">생산 공장</th><th>그룹 ID</th>
-          <th style="width:250px">제품</th><th style="width:70px">데이터</th><th style="width:48px"></th>
+          <th class="col-hug">상태</th><th class="col-hug">발주일</th><th style="text-align:right">총 발주 수량</th>
+          <th class="col-hug">수출국 코드</th><th>생산 공장</th><th>그룹 ID</th>
+          <th class="col-fixed">제품</th><th class="col-hug">데이터</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div></div>
-    ${pagination()}
+    ${pagination(list.length)}
   </div>`;
 }
 
@@ -687,7 +706,8 @@ function adminActionCell(o){
 }
 
 function adminOrdersPage(){
-  const rows = filteredOrders().map(o => {
+  const list = filteredOrders();
+  const rows = pageSlice(list).map(o => {
     const dim = (o.status === 'rejected' || o.status === 'canceled') ? 'dim' : '';
     const gid = (o.status === 'rejected' || o.status === 'canceled') ? '<span style="color:var(--gray-400)">-</span>' : gidCell(o);
     return `<tr class="${dim}" data-oid="${o.id}">
@@ -703,21 +723,21 @@ function adminOrdersPage(){
   }).join('');
   return `<div class="content">
     <div class="filterbar">
-      <span class="total">전체<b class="num">${filteredOrders().length}</b></span>
+      <span class="total">전체<b class="num">${list.length}</b></span>
       <span class="sp"></span>
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th style="width:150px">발주일</th><th style="width:110px">총 발주 수량</th><th style="width:90px">수출국 코드</th>
-          <th style="width:120px">생산 공장</th><th>그룹 ID</th><th style="width:250px">제품</th>
-          <th style="width:160px;text-align:right">거절/승인</th><th style="width:48px"></th>
+          <th class="col-hug">발주일</th><th style="text-align:right">총 발주 수량</th><th class="col-hug">수출국 코드</th>
+          <th>생산 공장</th><th>그룹 ID</th><th class="col-fixed">제품</th>
+          <th class="col-hug" style="text-align:right">거절/승인</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div></div>
-    ${pagination()}
+    ${pagination(list.length)}
   </div>`;
 }
 
@@ -725,7 +745,7 @@ function adminOrdersPage(){
 function groupsPage(){
   const q = state.search.trim().toLowerCase();
   const list = q ? state.groups.filter(g => g.id.toLowerCase().includes(q)) : state.groups;
-  const cards = list.map(g => {
+  const cards = pageSlice(list).map(g => {
     const open = state.kebab && state.kebab.kind === 'card' && state.kebab.id === g.id;
     return `<div class="gcard" data-act="open-group" data-id="${g.id}" role="button" tabindex="0">
       <div class="gcard-top">
@@ -759,7 +779,7 @@ function groupsPage(){
       ${dd('sort','최신순', `<button class="sel">최신순</button><button>오래된순</button>`)}
     </div>
     <div class="list-scroll"><div class="shell"><div class="card-grid">${cards}</div></div></div>
-    ${pagination()}
+    ${pagination(list.length)}
   </div>`;
 }
 
@@ -1061,7 +1081,7 @@ function render(){
   const si = document.getElementById('search-input');
   if (si){
     si.addEventListener('input', e => {
-      state.search = e.target.value;
+      state.search = e.target.value; state.pageNum = 1;
       const keep = document.activeElement === si;
       const pos = si.selectionStart;
       render();
@@ -1109,7 +1129,7 @@ function renderRoleSeg(){
 /* ================= 액션 ================= */
 function setRole(r){
   state.role = r;
-  state.page = 'orders';
+  state.page = 'orders'; state.pageNum = 1;
   state.kebab = null; state.ddOpen = null; state.search = '';
   modal = null; renderModal(); render();
 }
@@ -1190,7 +1210,7 @@ document.addEventListener('click', e => {
   /* GNB */
   if (t.dataset.nav){
     state.page = t.dataset.nav;
-    state.kebab = null; state.ddOpen = null; state.search = '';
+    state.kebab = null; state.ddOpen = null; state.search = ''; state.pageNum = 1;
     render(); return;
   }
 
@@ -1225,6 +1245,11 @@ document.addEventListener('click', e => {
       state.ddOpen = null;
       e.stopPropagation(); render(); return;
     case 'copy': copyText(t.dataset.v); e.stopPropagation(); return;
+    case 'pg': {
+      state.pageNum = +t.dataset.p; render();
+      const sc = document.querySelector('.list-scroll'); if (sc) sc.scrollTop = 0;
+      return;
+    }
     case 'download': toast('QR 데이터(CSV)를 다운로드해요.'); state.kebab = null; render(); return;
 
     /* 발주서 모달 */
@@ -1249,7 +1274,7 @@ document.addEventListener('click', e => {
       state.orders.unshift({ id:oid(), ts:new Date(), items:[...m.rows],
         exp:m.exp, factory:m.factory + ' 공장', product:m.product, status:'pending', groupIds:[] });
       modal = null; renderModal();
-      state.page = 'orders'; render();
+      state.page = 'orders'; state.pageNum = 1; render();
       toast('QR 발주를 완료했어요.');
       return;
     }
