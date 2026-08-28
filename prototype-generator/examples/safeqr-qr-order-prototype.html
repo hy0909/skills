@@ -372,7 +372,7 @@ tr.dim .prod-card{opacity:.6}
 .info-bullets{margin-top:6px;display:flex;flex-direction:column;gap:2px}
 .info-bullets div{font-size:13px;font-weight:500;color:var(--gray-500)}
 
-/* 신청 내역보기(읽기 전용) */
+/* 발주 상세보기(읽기 전용) */
 .od-detail{width:420px}
 .od-detail .modal-body{display:flex;flex-direction:column;gap:0;background:var(--gray-0);padding:8px 32px 24px}
 .modal-body .fld{margin-bottom:0}
@@ -742,7 +742,7 @@ function userOrdersPage(){
 
 function kebabCell(o){
   const open = state.kebab && state.kebab.kind === 'order' && state.kebab.id === o.id;
-  const items = `<button data-act="order-detail" data-id="${o.id}">신청 내역보기</button>` +
+  const items = `<button data-act="order-detail" data-id="${o.id}">발주 상세보기</button>` +
     (o.status === 'approved' ? `<button data-act="download" data-id="${o.id}">QR 데이터 다운로드</button>` : '');
   return `<div class="kebab-wrap">
     <button class="kebab" data-act="kebab" data-kind="order" data-id="${o.id}" aria-label="더보기">${ic.kebab}</button>
@@ -1046,7 +1046,7 @@ function confirmHtml(){
   </div>`;
 }
 
-/* ================= QR 발주서 상세(신청 내역보기 — 읽기 전용) ================= */
+/* ================= QR 발주서 상세(발주 상세보기 — 읽기 전용) ================= */
 function orderDetailHtml(){
   const o = state.orders.find(x => x.id === modal.id);
   if (!o) return '';
@@ -1366,7 +1366,7 @@ document.addEventListener('click', e => {
       fn(); render(); return;
     }
 
-    /* 신청 내역보기 */
+    /* 발주 상세보기 */
     case 'order-detail': state.kebab = null; modal = { type:'orderDetail', id }; render(); renderModal(); return;
     case 'od-close': modal = null; renderModal(); return;
 
