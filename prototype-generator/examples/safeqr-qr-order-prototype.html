@@ -207,9 +207,10 @@ tr.dim .gid .code{color:var(--gray-400)}
 tr.dim .prod-card .nm{color:var(--gray-400)}
 /* 발주 취소·반려 행: 제품 항목 전체(썸네일 포함) 투명도 60% */
 tr.dim .prod-card{opacity:.6}
-/* 발주 내역 미매핑 행 — '제품 미등록' 박스(제품 카드와 동일 236×56, bg gray50 r10) */
+/* 발주 내역 미매핑 행 — '제품 미등록' 박스(피그마 1964:209449: bg gray100 + border gray300, H56 r10) */
 .prod-none-cell{display:flex;align-items:center;justify-content:center;width:236px;height:56px;
-  background:var(--gray-50);border-radius:10px;font-size:14px;color:var(--gray-500)}
+  background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;
+  font-size:14px;color:var(--gray-500);box-sizing:border-box}
 tr.dim .prod-none-cell{opacity:.6}
 /* 제품 썸네일: 정사각형 + contain(흰 배경 위 이미지 축소 중앙 배치) */
 .thumb{width:40px;height:40px;border-radius:var(--radius-md);border:1px solid var(--gray-300);flex:none;
