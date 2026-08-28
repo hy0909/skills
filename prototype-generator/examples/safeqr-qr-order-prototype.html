@@ -567,7 +567,7 @@ function fmtOrderDate(ts){
   const day = ['일','월','화','수','목','금','토'][d.getDay()];
   const ap = d.getHours() < 12 ? '오전' : '오후';
   const hm = `${ap} ${String(d.getHours() % 12 || 12).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-  const md = `${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const md = `${d.getMonth()+1}-${d.getDate()}`; /* 월·일 제로패딩 없음: 7-22 */
   if (d.getFullYear() === now.getFullYear()) return `${md} ${day} ${hm}`;
   return `${d.getFullYear()}-${md} ${day} ${hm}`;
 }
