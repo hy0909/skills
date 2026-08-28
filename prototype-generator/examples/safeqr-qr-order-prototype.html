@@ -162,7 +162,7 @@ tr.dim .gid .code{color:var(--gray-400)}
 
 /* 제품 셀 */
 .prod-card{display:flex;align-items:center;gap:12px;background:var(--gray-50);
-  border-radius:10px;padding:8px;max-width:260px;text-align:left}
+  border-radius:10px;padding:8px;width:236px;max-width:236px;text-align:left}
 .prod-card > span:last-child{flex:1;min-width:0}
 .prod-card .nm{display:block;font-size:14px;color:var(--gray-500);font-weight:700;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -227,7 +227,7 @@ tr.dim .prod-card{opacity:.6}
 .mkt-chip{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;
   background:var(--gray-50);color:var(--gray-500);font-size:13px;font-weight:500}
 .gcard-bottom{margin-top:24px}
-.gcard-bottom .prod-card{max-width:none}
+.gcard-bottom .prod-card{width:auto;max-width:none}
 
 /* ============ QR 그룹 상세 ============ */
 .detail-wrap{flex:1;min-height:0;overflow-y:auto}
@@ -554,7 +554,7 @@ function prodCell(o, dim){
 
 function gidCell(o){
   if (o.status === 'pending')
-    return `<span class="pending-gen">승인 후 생성 ${ic.clock}</span>`;
+    return `<span class="pending-gen">${ic.clock} 승인 후 생성</span>`;
   if (o.status === 'rejected' || o.status === 'canceled') return '';
   return `<div class="gid-list">` + o.groupIds.map(g =>
     `<span class="gid"><span class="code num">${g}</span>
