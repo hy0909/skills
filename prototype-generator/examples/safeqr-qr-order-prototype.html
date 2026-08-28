@@ -314,6 +314,9 @@ tr.dim .prod-card{opacity:.6}
 .qty-input{width:112px;height:32px;border:1px solid var(--gray-300);border-radius:var(--radius-lg);
   text-align:center;font-size:16px;color:var(--gray-700);background:var(--gray-0)}
 .qty-input:focus{border-color:var(--primary)}
+/* 읽기 전용 스테퍼(발주서 상세) — 피그마 비활성 변형 */
+.stepper.ro .step-btn{background:var(--gray-50);color:var(--gray-400)}
+.stepper.ro .qty-input{background:var(--gray-50);color:var(--gray-600)}
 .qty-total{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
 .qty-total .err{font-size:13px;color:var(--red-600);font-weight:500}
 .qty-total .t{font-size:16px;color:var(--gray-600)}
@@ -972,25 +975,72 @@ function confirmHtml(){
   </div>`;
 }
 
-/* ================= 신청 내역보기(읽기 전용) ================= */
+/* ================= QR 발주서 상세(신청 내역보기 — 읽기 전용) ================= */
 function orderDetailHtml(){
   const o = state.orders.find(x => x.id === modal.id);
   if (!o) return '';
-  const st = { pending:'승인 대기 중', approved:'승인됨', rejected:'반려됨', canceled:'발주 취소' };
+  const rowsHtml = o.items.map(v => `
+    <div class="qty-row">
+      <span class="rl"><span>·</span><span>QR 그룹</span></span>
+      <span class="stepper ro">
+        <button class="step-btn" disabled aria-hidden="true">${ic.minus}</button>
+        <input class="qty-input num" value="${fmt(v)}" disabled aria-label="수량">
+        <button class="step-btn" disabled aria-hidden="true">${ic.plus}</button>
+      </span>
+    </div>`).join('');
   return `<div class="dim-layer" data-dim="odetail">
-    <div class="modal od-detail" role="dialog" aria-modal="true" aria-label="신청 내역보기">
-      <div class="modal-head"><h2>신청 내역보기</h2>
+    <div class="modal order-modal" role="dialog" aria-modal="true" aria-label="QR 발주서 상세">
+      <div class="modal-head"><h2>QR 발주서 상세</h2>
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body">
-        <div class="od-row"><span class="k">상태</span><span class="v">${st[o.status]}</span></div>
-        <div class="od-row"><span class="k">발주일</span><span class="v num">${fmtOrderDate(o.ts)}</span></div>
-        <div class="od-row"><span class="k">QR 그룹별 수량</span><span class="v num">${o.items.map((q,i)=>`QR 그룹 ${i+1} · ${fmt(q)}장`).join('<br>')}</span></div>
-        <div class="od-row"><span class="k">총 수량</span><span class="v num"><b>${fmt(sum(o.items))}장</b></span></div>
-        <div class="od-row"><span class="k">수출국 코드</span><span class="v">${o.exp}</span></div>
-        <div class="od-row"><span class="k">생산 공장</span><span class="v">${esc(o.factory)}</span></div>
-        <div class="od-row"><span class="k">제품</span><span class="v">${o.product ? esc(o.product.name) : '미선택'}</span></div>
-        <div class="od-row"><span class="k">그룹 ID</span><span class="v num">${o.groupIds.length ? o.groupIds.join('<br>') : '승인 후 생성'}</span></div>
-        <div class="od-tbd">· 세부 레이아웃 미확정 — 프로토타입 임의 구성 (qr-order-detail REQ-OD02)</div>
+        <div>
+        <div class="qty-head">
+          <span class="lbl">수량<span class="req">*</span>${ic.infoLg}</span>
+          <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
+        </div>
+        ${rowsHtml}
+        <div class="qty-total">
+          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(sum(o.items))}</span><span class="t">장</span></span>
+        </div>
+        </div>
+        <div class="fld2" style="gap:16px">
+          <div class="fld">
+            <span class="lbl">수출국 코드<span class="req">*</span></span>
+            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">
+              <span style="display:inline-flex;align-items:center;gap:6px">${o.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===o.exp)||[])[1]||''}</span></span> ${ic.chevDown}</button></div>
+          </div>
+          <div class="fld">
+            <span class="lbl">생산 공장<span class="req">*</span></span>
+            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory.replace(' 공장',''))} ${ic.chevDown}</button></div>
+          </div>
+        </div>
+        <div class="fld">
+          <span class="lbl">제품<span class="opt">(선택)</span></span>
+          <button class="prod-select" disabled${o.product?' style="gap:20px"':''}>
+            ${o.product ? thumb('lg') : emptyThumb('lg')}
+            ${o.product
+              ? `<span><span class="nm">${esc(o.product.name)}</span><div class="cd">${esc(o.product.code)}</div></span>`
+              : `<span class="ph">제품 미선택</span>`}
+            ${ic.chevDown}
+          </button>
+        </div>
+        <div>
+          <div class="info-title">발주 단계 안내${ic.infoLg}</div>
+          <div class="info-box">
+            <div class="s1">발주 신청 후</div>
+            <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
+          </div>
+          <div class="info-bullets">
+            <div>· 발주 후에는 내용을 변경할 수 없어요. 입력한 내용을 정확히 확인하세요</div>
+            <div>· 새 QR 그룹은 승인 후 ‘QR 관리’에서 확인할 수 있어요</div>
+            <div>· QR 스티커는 발주 승인 이후 약 한 달 뒤 배송 완료돼요</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <span style="flex:1"></span>
+        <span style="flex:1"></span>
+        <button class="btn btn-ghost" data-act="od-close">닫기</button>
       </div>
     </div>
   </div>`;
