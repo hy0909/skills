@@ -81,7 +81,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .filterbar{flex:none;display:flex;align-items:center;gap:8px;padding:16px 24px 12px;
   max-width:1440px;margin:0 auto;width:100%}
 .filterbar .total{font-size:15px;color:var(--gray-500)}
-.filterbar .total b{color:var(--gray-900);margin-left:4px}
+.filterbar .total b{color:var(--gray-500);margin-left:6px}
 .filterbar .sp{flex:1}
 .list-scroll{flex:1;min-height:0;overflow-y:auto}
 .list-scroll > .shell{padding:0 24px}
@@ -96,8 +96,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 /* 셀렉트(필터·폼 공용) */
 .dd{position:relative}
 .dd-btn{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;
-  background:var(--gray-0);border:1px solid var(--gray-200);border-radius:var(--radius-lg);
-  font-size:14px;color:var(--gray-700)}
+  background:var(--gray-0);border:1px solid var(--gray-200);border-radius:var(--radius-md);
+  font-size:14px;color:var(--gray-600)}
 .dd-btn svg{color:var(--gray-400);margin-left:auto}
 .dd-btn:hover{border-color:var(--gray-300)}
 .dd-btn:disabled{background:var(--gray-100);color:var(--gray-500)}
@@ -200,35 +200,41 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 /* ============ QR 그룹 카드 ============ */
 .page-gray{background:var(--gray-50)}
 .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:8px}
-.gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:18px;box-shadow:var(--shadow-m);
-  display:flex;flex-direction:column;cursor:pointer;border:1px solid transparent}
-.gcard:hover{border-color:var(--gray-200)}
-.gcard-top{display:flex;align-items:flex-start}
+.gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:20px;
+  display:flex;flex-direction:column;cursor:pointer;border:1px solid var(--gray-200)}
+.gcard:hover{border-color:var(--gray-300)}
+.gcard-top{display:flex;align-items:flex-start;padding:0 4px}
 .gcard-top .lbl{font-size:12px;font-weight:500;color:var(--gray-400)}
-.gcard-top .id{font-size:16px;font-weight:700;margin-top:3px;letter-spacing:-.2px}
-.gcard-top .kebab-wrap{margin-left:auto}
-.gcard-rows{margin-top:14px;display:flex;flex-direction:column;gap:8px}
-.gcard-rows .r{display:flex;align-items:center;gap:10px;font-size:14px}
-.gcard-rows .k{width:56px;flex:none;color:var(--gray-400);font-size:13px}
-.gcard-rows .v{color:var(--gray-900);font-weight:500}
-.gcard-rows .v.strong{font-weight:700}
-.mkt-chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;
-  background:var(--gray-100);color:var(--gray-500);font-size:12px;font-weight:500}
-.gcard-bottom{margin-top:14px}
+.gcard-top .id{font-size:18px;font-weight:700;margin-top:4px;letter-spacing:-.2px}
+.gcard-top .kebab-wrap{margin-left:auto;margin-right:-10px;margin-top:-6px}
+.gcard-rows{margin-top:20px;display:flex;flex-direction:column;gap:6px;padding:0 4px}
+.gcard-rows .r{display:flex;align-items:center;font-size:15px}
+.gcard-rows .k{width:64px;flex:none;color:var(--gray-400);font-size:14px}
+.gcard-rows .v{color:var(--gray-700);font-weight:400}
+.gcard-rows .v b{font-weight:700}
+.mkt-chip{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;
+  background:var(--gray-50);color:var(--gray-500);font-size:13px;font-weight:500}
+.gcard-bottom{margin-top:24px}
 .gcard-bottom .prod-card{max-width:none}
 
 /* ============ QR 그룹 상세 ============ */
 .detail-wrap{flex:1;min-height:0;overflow-y:auto}
 .detail-grid{max-width:1440px;margin:0 auto;padding:20px 24px 32px;
   display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.dcard{background:var(--gray-0);border-radius:var(--radius-xl);box-shadow:var(--shadow-m);padding:22px}
-.dcard h2{font-size:16px;font-weight:700;margin-bottom:16px}
+.dcard{background:var(--gray-0);border-radius:var(--radius-xl);border:1px solid var(--gray-200);padding:32px}
+.dcard h2{font-size:18px;font-weight:700;margin-bottom:28px}
+.dfields{display:flex;flex-direction:column;gap:48px}
+.dfields .hr{margin:0}
+.dcard .fld{margin-bottom:0}
+.dcard .fld2{gap:40px}
 .qr-box{border:1px solid var(--gray-200);border-radius:var(--radius-lg);
   display:flex;align-items:center;justify-content:center;padding:44px 0;background:var(--gray-0)}
-.qr-meta{margin-top:14px;background:var(--gray-50);border-radius:var(--radius-lg);
-  padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.qr-meta .k{font-size:12px;color:var(--gray-400)}
-.qr-meta .v{font-size:18px;font-weight:700;margin-top:4px;letter-spacing:-.2px}
+.qr-meta{margin-top:20px;background:var(--gray-0);border:1px solid var(--gray-200);border-radius:16px;
+  padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.qr-meta .k{font-size:16px;color:var(--gray-500)}
+.qr-meta .v{font-size:22px;font-weight:700;color:var(--gray-700);margin-top:2px;letter-spacing:-.2px}
+.lbl.muted{color:var(--gray-500)}
+.lbl.muted .req{color:var(--gray-400)}
 .fld{margin-bottom:16px}
 .fld > .lbl{display:block;font-size:15px;color:var(--gray-900);margin-bottom:4px}
 .fld > .lbl .req{color:var(--primary)}
@@ -269,12 +275,14 @@ tr.dim .prod-card .nm{color:var(--gray-400)}
 .btn-dark{background:var(--gray-900);color:var(--gray-0)}
 .btn-dark:disabled{background:var(--gray-300)}
 .btn-red{background:var(--red-600);color:var(--gray-0)}
-/* 확인(컨펌) 모달 */
-.confirm{width:400px}
-.confirm .modal-head{padding:24px 32px 16px}
-.confirm .modal-head h2{font-size:18px}
-.confirm .modal-body{background:var(--gray-0);padding:0 32px 24px;font-size:15px;color:var(--gray-700);gap:0}
-.confirm .modal-foot{padding:0 32px 28px}
+/* 확인(컨펌) 모달 — w448, border gray900, 타이틀 22 Bold, 본문 18 */
+.confirm{width:448px;border:1px solid var(--gray-900);
+  box-shadow:2px 2px 16px rgba(0,0,0,.2)}
+.confirm .modal-head{padding:28px 32px}
+.confirm .modal-head h2{font-size:22px}
+.confirm .modal-body{background:var(--gray-0);padding:8px 32px;font-size:18px;color:var(--gray-900);gap:0}
+.confirm .modal-foot{padding:28px 32px;justify-content:flex-end}
+.confirm .btn{flex:0 0 120px;height:40px;padding:0}
 
 /* ============ 발주서 모달 (560px) ============ */
 .order-modal{width:560px}
@@ -707,7 +715,7 @@ function groupsPage(){
         </div>
       </div>
       <div class="gcard-rows">
-        <div class="r"><span class="k">수량</span><span class="v strong num">${fmt(g.qty)}장</span></div>
+        <div class="r"><span class="k">수량</span><span class="v num"><b>${fmt(g.qty)}</b>장</span></div>
         <div class="r"><span class="k">생산공장</span><span class="v">${esc(g.factory)}</span></div>
         <div class="r"><span class="k">수출국</span><span class="v">${g.exp}</span></div>
         <div class="r"><span class="k">생성일</span><span class="v num">${g.created}</span></div>
@@ -770,6 +778,7 @@ function groupDetailPage(){
       </section>
       <section class="dcard">
         <h2>제품 정보</h2>
+        <div class="dfields">
         <div class="fld">
           <span class="lbl">제품 <span class="opt">(선택)</span></span>
           <div class="dd">
@@ -785,8 +794,8 @@ function groupDetailPage(){
         </div>
         <div class="fld2">
           <div class="fld">
-            <span class="lbl">생산 공장 <span class="req">*</span></span>
-            <div class="dd"><button class="dd-btn" disabled>${esc(g.factory)} ${ic.chevDown}</button></div>
+            <span class="lbl muted">생산 공장 <span class="req">*</span></span>
+            <div class="dd"><button class="dd-btn" disabled style="border-color:var(--gray-300)">${esc(g.factory)} ${ic.chevDown}</button></div>
           </div>
           <div class="fld">
             <span class="lbl">수출국 코드 <span class="req">*</span></span>
@@ -802,8 +811,9 @@ function groupDetailPage(){
         </div>
         <hr class="hr">
         <div class="fld">
-          <span class="lbl">생성일시</span>
+          <span class="lbl muted">생성일시</span>
           <div class="ro-input">${ic.cal} <span class="num">${g.createdAt}</span></div>
+        </div>
         </div>
       </section>
     </div></div>
