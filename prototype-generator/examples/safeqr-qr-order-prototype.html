@@ -1090,8 +1090,11 @@ function openGroupDetail(gid){
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-act],[data-nav],[data-dd],[data-set],[data-role],[data-dim]');
 
-  /* 딤 클릭 → 발주서/상세 모달은 유지(오입력 보호), 컨펌만 유지 */
-  if (t && t.dataset.dim !== undefined && t === e.target){ return; }
+  /* 딤 영역 클릭 → 모달 닫기 */
+  if (t && t.dataset.dim !== undefined && t === e.target){
+    modal = null; state.ddOpen = null; renderModal();
+    return;
+  }
 
   if (!t){
     if (!e.target.closest('.menu-pop') && state.kebab){ state.kebab = null; render(); return; }
