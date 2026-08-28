@@ -59,7 +59,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 타이틀바 (h56, px24) | 제목 20 Bold · 검색 h32 w300 bg gray100 r6, 텍스트 14, 아이콘 18 |
 | [수정 완료] | h40 w172 r6, 15 Regular white, 활성 bg primary / 비활성 bg **gray400** |
 | 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100, **행 배경 white**(페이지 gray50 위) · 수량도 **16 Regular**(Bold 아님), 우측 정렬 |
-| 상태 칩 | 13 Medium, r4, px6 py1(2) · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 **gray600** · 반려됨/거절함: **칩** — bg **pink50 #ffedfa** + pink600 텍스트 |
+| 상태 칩 (1820:133289·1967:210169) | 공통 **H20**(py1) px6 r4 **14 Regular** lh1.3 · 대기: bg primary white, pl6 pr4 gap4 + x16 · 관리자 승인: white + border gray200, gray500 · 관리자 거절: white + **border gray200**(핑크 보더 아님), **pink600 텍스트** · 발주 취소/사용자 취소: **bg gray100 필**, gray600 — 사용자·관리자 동일 |
 | 승인 후 생성 | 13 Medium **gray500** + **시계 아이콘** 16 (ⓘ 아님) |
 | 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
 | [+ 제품 등록] | bg purple100 + border purple200, r10, **h56**, 14 Regular gray700, plus 16 |
@@ -76,7 +76,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 그룹 상세 카드 | **그림자 없음** — white bg + border gray200, r12, p32 · 카드 타이틀 **18 Bold** · 섹션 간격 48 + 구분선 gray200 · 2단 gap 40 · 비활성 필드: bg gray100 + **border gray300**, 라벨 15 **gray500**, `*` gray400, 값 16 gray500 |
 | QR 정보 박스(상세 좌측) | white bg + border gray200, **r16**, px24 py20, 2열 · 라벨 16 Regular gray500 · 값 **22 Bold gray700** |
 | QR 이미지 박스(상세 좌측) | white bg + border gray200, r16, h440 · **QR 이미지 160×160 중앙** |
-| 관리자 처리 상태 | **칩 아님 — 우측 정렬 14 Regular 텍스트**: 승인함 gray700 · 거절함 gray400 · 사용자가 취소 gray400 (반려됨 핑크 칩은 **사용자 목록 전용**) |
+| 관리자 처리 상태 | 사용자와 **같은 칩 컴포넌트**(state_관리자 1967:210169) — 관리자 승인/관리자 거절/사용자 취소, 스펙은 위 상태 칩 행과 동일 |
 
 ## Radius · Shadow · Spacing · Icon
 
