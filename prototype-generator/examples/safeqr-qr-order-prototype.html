@@ -131,7 +131,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .tbl tbody tr[data-oid]{cursor:pointer}
 .tbl tbody tr[data-oid]:hover td{background:var(--gray-100)}
 .tbl tbody tr.dim td, .tbl tbody tr.dim td b{color:var(--gray-400)}
-td.c-num{font-weight:400;text-align:right} /* 수량 — body1 Regular(디자인시스템) */
+td.c-num{font-weight:400;text-align:right;white-space:nowrap} /* 수량 — body1 Regular(디자인시스템) */
 
 /* 상태 칩 */
 /* 상태 칩 — 높이 22px 통일 */
@@ -206,10 +206,10 @@ tr.dim .prod-card{opacity:.6}
 .menu-pop button.blue{color:var(--primary);font-weight:500}
 
 /* 관리자 거절/승인 */
-.btn-reject{height:30px;padding:0 12px;border:1px solid var(--gray-200);border-radius:var(--radius-md);
+.btn-reject{height:36px;width:50px;padding:0;border:1px solid var(--gray-200);border-radius:var(--radius-md);
   font-size:14px;color:var(--gray-700);background:var(--gray-0);white-space:nowrap}
 .btn-reject:hover{background:var(--gray-100)}
-.btn-approve{height:30px;padding:0 12px;border-radius:var(--radius-md);
+.btn-approve{height:36px;width:50px;padding:0;border-radius:var(--radius-md);
   font-size:14px;color:var(--gray-0);background:var(--primary);white-space:nowrap}
 .btn-approve:hover{filter:brightness(1.08)}
 
@@ -670,11 +670,11 @@ function userOrdersPage(){
     return `<tr class="${dim}" data-oid="${o.id}">
       <td>${statusCellUser(o)}</td>
       <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
-      <td class="c-num num">${fmt(sum(o.items))}장</td>
-      <td>${o.exp}</td>
-      <td>${esc(o.factory)}</td>
-      <td>${gidCell(o)}</td>
       <td>${prodCell(o, dim)}</td>
+      <td>${esc(o.factory)}</td>
+      <td>${o.exp}</td>
+      <td>${gidCell(o)}</td>
+      <td class="c-num num">${fmt(sum(o.items))}장</td>
       <td><button class="icon-btn" data-act="download" data-id="${o.id}" ${disabled?'disabled':''} title="QR 데이터 다운로드">${ic.download}</button></td>
       <td>${kebabCell(o)}</td>
     </tr>`;
@@ -688,9 +688,9 @@ function userOrdersPage(){
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th class="col-status">상태</th><th class="col-hug">발주일</th><th>총 발주 수량</th>
-          <th>수출국 코드</th><th>생산 공장</th><th>QR 그룹 ID</th>
-          <th class="col-fixed">제품</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
+          <th class="col-status">상태</th><th class="col-hug">발주일</th><th class="col-fixed">제품</th>
+          <th>생산 공장</th><th>수출국 코드</th><th>QR 그룹 ID</th>
+          <th class="col-hug">총 발주 수량</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
@@ -712,7 +712,7 @@ function kebabCell(o){
 /* ================= 관리자: QR 발주 내역 ================= */
 function adminActionCell(o){
   switch(o.status){
-    case 'pending': return `<div style="display:flex;gap:8px;justify-content:flex-end">
+    case 'pending': return `<div style="display:flex;gap:6px">
       <button class="btn-reject" data-act="reject" data-id="${o.id}">거절</button>
       <button class="btn-approve" data-act="approve" data-id="${o.id}">승인</button></div>`;
     case 'approved': return `<span class="adm-st ok">승인함</span>`;
@@ -728,12 +728,12 @@ function adminOrdersPage(){
     const gid = (o.status === 'rejected' || o.status === 'canceled') ? '<span style="color:var(--gray-400)">-</span>' : gidCell(o);
     return `<tr class="${dim}" data-oid="${o.id}">
       <td class="num" style="white-space:nowrap">${fmtOrderDate(o.ts)}</td>
-      <td class="c-num num">${fmt(sum(o.items))}장</td>
-      <td>${o.exp}</td>
-      <td>${esc(o.factory)}</td>
-      <td>${gid}</td>
       <td>${prodCell(o, dim)}</td>
-      <td style="text-align:right">${adminActionCell(o)}</td>
+      <td>${esc(o.factory)}</td>
+      <td>${o.exp}</td>
+      <td>${gid}</td>
+      <td class="c-num num">${fmt(sum(o.items))}장</td>
+      <td>${adminActionCell(o)}</td>
       <td>${kebabCell(o)}</td>
     </tr>`;
   }).join('');
@@ -746,9 +746,9 @@ function adminOrdersPage(){
     <div class="list-scroll"><div class="shell">
       <table class="tbl">
         <thead><tr>
-          <th class="col-hug">발주일</th><th>총 발주 수량</th><th>수출국 코드</th>
-          <th>생산 공장</th><th>QR 그룹 ID</th><th class="col-fixed">제품</th>
-          <th class="col-hug" style="text-align:right">거절/승인</th><th class="col-hug"></th>
+          <th class="col-hug">발주일</th><th class="col-fixed">제품</th><th>생산 공장</th>
+          <th>수출국 코드</th><th>QR 그룹 ID</th><th>총 발주 수량</th>
+          <th class="col-hug">거절/승인</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
