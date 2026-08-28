@@ -124,10 +124,10 @@ tr.dim td.c-num{font-weight:400}
 /* 상태 칩 */
 .chip-wait{display:inline-flex;align-items:center;gap:4px;padding:2px 4px 2px 6px;
   border-radius:4px;background:var(--primary);color:var(--gray-0);
-  font-size:13px;font-weight:500;white-space:nowrap}
-.chip-wait .x{display:flex;align-items:center;justify-content:center;width:16px;height:16px;
-  border-radius:4px;color:var(--gray-0)}
-.chip-wait .x:hover{background:rgba(255,255,255,.22)}
+  font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer}
+.chip-wait:hover{filter:brightness(.88)}
+.chip-wait .x{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;
+  color:var(--gray-0)}
 .chip-ok{display:inline-flex;align-items:center;padding:2px 6px;
   border-radius:4px;border:1px solid var(--gray-200);color:var(--gray-500);background:var(--gray-0);
   font-size:13px;font-weight:500;white-space:nowrap}
@@ -576,8 +576,8 @@ function titlebar(){
 /* ================= 사용자: QR 발주내역 ================= */
 function statusCellUser(o){
   switch(o.status){
-    case 'pending':  return `<span class="chip-wait">승인 대기 중
-      <button class="x" data-act="cancel-order" data-id="${o.id}" title="발주 취소">${ic.xs}</button></span>`;
+    case 'pending':  return `<button class="chip-wait" data-act="cancel-order" data-id="${o.id}" title="발주 취소">승인 대기 중
+      <span class="x">${ic.xs}</span></button>`;
     case 'approved': return `<span class="chip-ok">승인</span>`;
     case 'rejected': return `<span class="txt-rejected">반려됨</span>`;
     case 'canceled': return `<span class="chip-cancel">취소함</span>`;
