@@ -115,6 +115,23 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .dd-pop button.sel{color:var(--primary);font-weight:700}
 /* 폼 셀렉트(필드) 옵션은 필드 값과 동일한 16px */
 .fld .dd-pop button{font-size:16px}
+/* 제품 선택 드롭다운 — 피그마 실측(994:22591): 검색 헤더 + 리스트 */
+.pd-pop{position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:40}
+.pd-search{display:flex;align-items:center;gap:8px;background:var(--gray-0);
+  border:1px solid var(--gray-200);border-radius:6px 6px 0 0;padding:8px 12px}
+.pd-search svg{color:var(--gray-400)}
+.pd-search input{flex:1;font-size:14px}
+.pd-search input::placeholder{color:var(--gray-400)}
+.pd-list{background:var(--gray-0);border:1px solid var(--gray-200);border-top:0;
+  border-radius:0 0 6px 6px;padding:12px;display:flex;flex-direction:column;gap:2px;
+  max-height:300px;overflow-y:auto}
+.pd-item{display:flex;align-items:center;gap:16px;width:100%;text-align:left;
+  padding:4px;border-radius:var(--radius-md)}
+.pd-item:hover,.pd-item.sel{background:var(--gray-50)}
+.pd-item .thumb{width:52px;height:52px;border-radius:5px}
+.pd-item .nm{display:block;font-size:14px;font-weight:700;color:var(--gray-700)}
+.pd-item .cd{font-size:13px;font-weight:500;color:var(--gray-500);margin-top:4px}
+.pd-empty{padding:8px 4px;font-size:14px;color:var(--gray-400)}
 
 /* ============ 테이블 ============ */
 .tbl{width:100%;border-collapse:collapse}
@@ -599,6 +616,25 @@ function pageSlice(list){
 
 /* 필터 셀렉트 고정 폭 — 피그마 실측: 최신순 104 / QR 전체 142 / 기간 240 (h36) */
 const DD_W = { sort:104, qrtype:142, period:240 };
+/* 제품 선택 드롭다운(검색 포함) — data-set=key 로 선택 */
+function productDropdown(key, selectedCode){
+  const q = (state.pdQuery || '').toLowerCase();
+  const items = PRODUCTS.filter(p =>
+    !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q));
+  return `<div class="pd-pop">
+    <div class="pd-search">${ic.search}
+      <input id="pd-search-input" placeholder="제품명/SKU 검색" value="${esc(state.pdQuery||'')}" aria-label="제품명/SKU 검색"></div>
+    <div class="pd-list">
+      ${items.length ? items.map(p =>
+        `<button class="pd-item ${selectedCode===p.code?'sel':''}" data-set="${key}" data-v="${p.code}">
+          <span class="thumb"></span>
+          <span><span class="nm">${esc(p.name)}</span><span class="cd">${esc(p.code)}</span></span>
+        </button>`).join('') : `<div class="pd-empty">검색 결과가 없어요</div>`}
+      <button class="pd-item" data-set="${key}" data-v=""><span style="font-size:14px;color:var(--gray-500);padding:4px 0">선택 안 함</span></button>
+    </div>
+  </div>`;
+}
+
 function dd(key, label, opts){
   const open = state.ddOpen === key;
   const w = DD_W[key] ? ` style="width:${DD_W[key]}px"` : '';
@@ -814,10 +850,6 @@ function groupDetailPage(){
   const g = state.groups.find(x => x.id === state.detailGroupId);
   const d = state.detailDraft;
   if (!g || !d) return '<div class="content"></div>';
-  const prodOpts = PRODUCTS.map(p =>
-    `<button data-set="product" data-v="${p.code}" class="${d.product && d.product.code===p.code?'sel':''}">
-      <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('') +
-    `<button data-set="product" data-v="">선택 안 함</button>`;
   const expOpts = EXPORTS.map(([c,n]) =>
     `<button data-set="exp" data-v="${c}" class="${d.exp===c?'sel':''}"><b>${c}</b> ${n}</button>`).join('');
   const campOpts =
@@ -846,7 +878,7 @@ function groupDetailPage(){
                 : `<span class="ph">제품을 선택하세요</span>`}
               ${ic.chevDown}
             </button>
-            ${state.ddOpen==='d-prod' ? `<div class="dd-pop" style="width:100%">${prodOpts}</div>` : ''}
+            ${state.ddOpen==='d-prod' ? productDropdown('product', d.product && d.product.code) : ''}
           </div>
         </div>
         <div class="fld2">
@@ -942,10 +974,7 @@ function orderModalHtml(){
                 : `<span class="ph">제품을 선택하세요</span>`}
               ${ic.chevDown}
             </button>
-            ${state.ddOpen==='om-prod' ? `<div class="dd-pop" style="width:100%">${PRODUCTS.map(p =>
-              `<button data-set="om-prod" data-v="${p.code}" class="${m.product&&m.product.code===p.code?'sel':''}">
-                <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('')}
-              <button data-set="om-prod" data-v="">선택 안 함</button></div>` : ''}
+            ${state.ddOpen==='om-prod' ? productDropdown('om-prod', m.product && m.product.code) : ''}
           </div>
         </div>
         <div class="fld2" style="gap:16px">
@@ -1040,10 +1069,7 @@ function orderDetailHtml(){
                 : `<span class="ph">제품을 선택하세요</span>`}
               ${ic.chevDown}
             </button>
-            ${state.ddOpen==='od-prod' ? `<div class="dd-pop" style="width:100%">${PRODUCTS.map(p =>
-              `<button data-set="od-prod" data-v="${p.code}" class="${o.product&&o.product.code===p.code?'sel':''}">
-                <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('')}
-              <button data-set="od-prod" data-v="">선택 안 함</button></div>` : ''}
+            ${state.ddOpen==='od-prod' ? productDropdown('od-prod', o.product && o.product.code) : ''}
           </div>
         </div>
         <div class="fld2" style="gap:16px">
@@ -1201,6 +1227,16 @@ function openGroupDetail(gid){
 }
 
 /* ================= 이벤트 위임 ================= */
+/* 제품 드롭다운 검색 — 입력 위임 + 포커스 유지 */
+document.addEventListener('input', e => {
+  if (e.target.id !== 'pd-search-input') return;
+  state.pdQuery = e.target.value;
+  const pos = e.target.selectionStart;
+  if (modal) renderModal(); else render();
+  const el = document.getElementById('pd-search-input');
+  if (el){ el.focus(); el.setSelectionRange(pos, pos); }
+});
+
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-act],[data-nav],[data-dd],[data-set],[data-role],[data-dim]');
 
@@ -1235,6 +1271,7 @@ document.addEventListener('click', e => {
   /* 셀렉트 열기/닫기 */
   if (t.dataset.dd){
     state.ddOpen = state.ddOpen === t.dataset.dd ? null : t.dataset.dd;
+    state.pdQuery = '';
     state.kebab = null;
     if (modal) renderModal();
     if (!t.closest('#modal-root')) render();
