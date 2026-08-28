@@ -27,7 +27,6 @@
 
 | CSS 변수 | 값 | 용도 |
 | --- | --- | --- |
-| `--violet-txt` | `#8f8cf0` | '승인 후 생성 ⓘ' 연보라 텍스트 |
 | `--chip-pink-bg` | `#fdeef8` | 병행수입 칩 배경 |
 | `--chip-blue-bg` / `--chip-blue-txt` | `#eef1fd` / `#3b4ee4` | 불법 복제 칩 |
 | `--chip-orange-bg` / `--chip-orange-txt` | `#fff3e8` / `#e8590c` | 오류 칩 |
@@ -60,7 +59,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | [수정 완료] | h40 w172 r6, 15 Regular white, 활성 bg primary / 비활성 bg **gray400** |
 | 테이블 | 헤더 13 Medium gray500, bg **gray100**, py6 px12, 상하 보더 gray200 · 본문 **16 Regular** gray900, p12, 하단 보더 gray100, **행 배경 white**(페이지 gray50 위) · 수량 16 Bold |
 | 상태 칩 | 13 Medium, r4, py2 · 대기: bg primary white + x12 · 승인: white bg + border gray200, gray500 · 취소함: bg gray100 gray500 · 반려/거절: pink600 텍스트 |
-| 승인 후 생성 | 13 Medium violet + **시계 아이콘** 16 (ⓘ 아님) |
+| 승인 후 생성 | 13 Medium **gray500** + **시계 아이콘** 16 (ⓘ 아님) |
 | 테이블 제품 카드 | bg gray50 r10 p8 · 썸네일 40×40 r6 border gray300 · 제품명 **14 Bold gray500** · 코드 12 Medium gray400 |
 | [+ 제품 등록] | bg purple100 + border purple200, r10, 14 Regular gray700, plus 16 |
 | 다운로드 버튼 | h30 px8 r6, white bg + border gray200, 아이콘 16 · 비활성: bg gray200 |
