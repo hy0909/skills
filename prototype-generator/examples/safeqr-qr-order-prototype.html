@@ -213,7 +213,7 @@ tr.dim .prod-card{opacity:.6}
 
 /* ============ QR 그룹 카드 ============ */
 .page-gray{background:var(--gray-50)}
-.card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:8px}
+.card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-bottom:8px}
 .gcard{background:var(--gray-0);border-radius:var(--radius-xl);padding:20px;
   display:flex;flex-direction:column;cursor:pointer;border:1px solid var(--gray-200)}
 .gcard:hover{border-color:var(--gray-900)}
@@ -226,10 +226,13 @@ tr.dim .prod-card{opacity:.6}
 .gcard-rows .k{width:64px;flex:none;color:var(--gray-400);font-size:14px}
 .gcard-rows .v{color:var(--gray-700);font-weight:400}
 .gcard-rows .v b{font-weight:700}
-.mkt-chip{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;
-  background:var(--gray-50);color:var(--gray-500);font-size:13px;font-weight:500}
+.mkt-chip{display:inline-block;padding:2px 6px;border-radius:999px;
+  background:var(--gray-50);color:var(--gray-500);font-size:13px;font-weight:500;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gcard-rows .r > :last-child{min-width:0}
 .gcard-bottom{margin-top:24px}
-.gcard-bottom .prod-card{width:auto;max-width:none}
+/* 그룹 카드 제품 컴포넌트: 가로 fill, 제품명은 항상 1줄 + 말줄임 */
+.gcard-bottom .prod-card{width:100%;max-width:none;min-width:0}
 
 /* ============ QR 그룹 상세 ============ */
 .detail-wrap{flex:1;min-height:0;overflow-y:auto}
