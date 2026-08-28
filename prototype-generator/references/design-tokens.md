@@ -70,6 +70,11 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 수량 스테퍼 | 행 라벨 'QR 그룹' 16 Regular · 삭제 16 원형 bg gray400 + 흰 x · +/- 버튼 28×28 r8 border gray300(비활성 bg gray50) · 인풋 w112 h32 r8 16 gray700 중앙 · 총 16 gray600(숫자만 Bold) · [QR 그룹 추가] h26 r99 white+border gray200, 13 Medium gray500(비활성 bg gray100) |
 | 발주 단계 안내 | 타이틀 14 Bold gray500 + ⓘ18 · 박스 **bg gray200** r8 px24 py12 — 1행 13 Medium gray400, 2행 14 Regular gray700 · 불릿 13 Medium gray500 |
 | 제품 셀렉트(모달·상세) | r8 border gray300 p12 · 썸네일 64×64 r6(빈 상태 bg gray100 border gray300 + 이미지 아이콘 24) · placeholder 16 gray400 · 제품명 16 Bold gray700 · 코드 14 Regular gray500 |
+| 필터바 | '전체' 15 Regular + 카운트 15 **Bold, 둘 다 gray500** · 셀렉트 h36 r6 border gray200, 14 Regular **gray600**, 화살표 16 |
+| QR 그룹 카드 | **그림자 없음** — white bg + **border gray200**, r12, p20 · '그룹 ID' 라벨 12 Medium gray400 · ID **18 Bold** gray900 · 필드 라벨 14 Regular gray400(폭 64) · 값 15 Regular **gray700**(수량 숫자만 15 Bold) · 행 간격 6, ID↔필드 20, 필드↔제품 24 · 마케팅 칩 bg **gray50 r999** 13 Medium gray500 |
+| 컨펌 모달 | w448 r12, **border gray900** + shadow 2px 2px 16px rgba(0,0,0,.2) · 헤더 px32 py28 타이틀 **22 Bold** · 본문 px32 py8 **18 Regular gray900** · 푸터 px32 py28 우측 정렬, 버튼 **120×40 r6** 15 Regular, gap12 (ghost border gray300 / 확정 gray900 / 위험 red600) |
+| 그룹 상세 카드 | **그림자 없음** — white bg + border gray200, r12, p32 · 카드 타이틀 **18 Bold** · 섹션 간격 48 + 구분선 gray200 · 2단 gap 40 · 비활성 필드: bg gray100 + **border gray300**, 라벨 15 **gray500**, `*` gray400, 값 16 gray500 |
+| QR 정보 박스(상세 좌측) | white bg + border gray200, **r16**, px24 py20, 2열 · 라벨 16 Regular gray500 · 값 **22 Bold gray700** |
 
 ## Radius · Shadow · Spacing · Icon
 
