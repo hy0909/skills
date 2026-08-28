@@ -56,7 +56,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
   border:1px solid var(--gray-500);border-radius:999px;padding:6px 12px}
 .gnb-set:hover{border-color:var(--gray-300)}
 .gnb-order{display:flex;align-items:center;gap:6px;font-size:15px;
-  color:var(--gray-900);background:var(--gray-0);border-radius:999px;padding:4px 12px}
+  color:var(--gray-900);background:var(--gray-0);border-radius:var(--radius-md);padding:4px 12px}
 .gnb-order svg{color:var(--gray-400)}
 .gnb-order:hover{background:var(--gray-100)}
 
@@ -919,7 +919,7 @@ function orderModalHtml(){
       <div class="modal-body">
         <div>
         <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span>${ic.infoLg}</span>
+          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
           <button class="btn-add-row" data-act="om-add-row" ${m.rows.length>=MAX_ROWS?'disabled':''}>${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
@@ -961,7 +961,7 @@ function orderModalHtml(){
           </div>
         </div>
         <div>
-          <div class="info-title">발주 단계 안내${ic.infoLg}</div>
+          <div class="info-title">발주 단계 안내<span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></div>
           <div class="info-box">
             <div class="s1">발주 신청 후</div>
             <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
@@ -1017,7 +1017,7 @@ function orderDetailHtml(){
       <div class="modal-body" style="border-radius:0 0 12px 12px">
         <div>
         <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span>${ic.infoLg}</span>
+          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
           <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
         </div>
         ${rowsHtml}
@@ -1053,7 +1053,7 @@ function orderDetailHtml(){
           </div>
         </div>
         <div>
-          <div class="info-title">발주 단계 안내${ic.infoLg}</div>
+          <div class="info-title">발주 단계 안내<span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></div>
           <div class="info-box">
             <div class="s1">발주 신청 후</div>
             <div class="s2">대기 → 승인 → 새 QR 그룹 생성 → 새 QR 스티커 배송</div>
