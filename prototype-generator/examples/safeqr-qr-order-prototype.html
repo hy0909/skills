@@ -232,7 +232,10 @@ tr.dim .prod-card{opacity:.6}
 /* ============ QR 그룹 상세 ============ */
 .detail-wrap{flex:1;min-height:0;overflow-y:auto}
 .detail-grid{max-width:1440px;margin:0 auto;padding:20px 24px 32px;
-  display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+/* QR코드 정보 카드: 타이틀 아래 영역 fill — 오른쪽 제품 정보 카드와 높이 동일 */
+.qr-card{display:flex;flex-direction:column}
+.qr-card .qr-box{flex:1;height:auto;min-height:280px}
 .dcard{background:var(--gray-0);border-radius:var(--radius-xl);border:1px solid var(--gray-200);padding:32px}
 .dcard h2{font-size:18px;font-weight:700;margin-bottom:28px}
 .dfields{display:flex;flex-direction:column;gap:48px}
@@ -811,7 +814,7 @@ function groupDetailPage(){
      <button data-set="campaign" data-v="">선택 안 함</button>`;
   return `<div class="content page-gray">
     <div class="detail-wrap"><div class="detail-grid">
-      <section class="dcard">
+      <section class="dcard qr-card">
         <h2>QR코드 정보</h2>
         <div class="qr-box">${qrSvg(g.id, 160)}</div>
         <div class="qr-meta">
