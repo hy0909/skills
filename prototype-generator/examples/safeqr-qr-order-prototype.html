@@ -150,8 +150,8 @@ td.c-num{font-weight:400;text-align:right} /* 수량 — body1 Regular(디자인
 .pending-gen{display:inline-flex;align-items:center;gap:4px;color:var(--gray-500);font-size:13px;font-weight:500;white-space:nowrap}
 .pending-gen svg{color:var(--gray-300)} /* 시계 아이콘 fill — 피그마 실측(gray/300) */
 
-/* 그룹 ID + 복사 */
-/* 그룹 ID 목록(1~5개): 항목 간격 -2px, 최대 높이 136px */
+/* QR 그룹 ID + 복사 */
+/* QR 그룹 ID 목록(1~5개): 항목 간격 -2px, 최대 높이 136px */
 .gid-list{max-height:136px;overflow:hidden}
 .gid{display:flex;align-items:center;gap:8px;white-space:nowrap}
 .gid + .gid{margin-top:-2px}
@@ -205,10 +205,10 @@ tr.dim .prod-card{opacity:.6}
 
 /* 관리자 거절/승인 */
 .btn-reject{height:30px;padding:0 12px;border:1px solid var(--gray-200);border-radius:var(--radius-md);
-  font-size:14px;color:var(--gray-700);background:var(--gray-0)}
+  font-size:14px;color:var(--gray-700);background:var(--gray-0);white-space:nowrap}
 .btn-reject:hover{background:var(--gray-100)}
 .btn-approve{height:30px;padding:0 12px;border-radius:var(--radius-md);
-  font-size:14px;color:var(--gray-0);background:var(--primary)}
+  font-size:14px;color:var(--gray-0);background:var(--primary);white-space:nowrap}
 .btn-approve:hover{filter:brightness(1.08)}
 
 /* ============ QR 그룹 카드 ============ */
@@ -276,7 +276,7 @@ tr.dim .prod-card{opacity:.6}
 .camp-period{font-size:13px;color:var(--gray-400);font-weight:500}
 
 /* ============ 모달 공통 (radius 12, 헤더/푸터 흰색 · 바디 gray50) ============ */
-.dim-layer{position:fixed;inset:0;z-index:100;background:rgba(18,24,38,.62);
+.dim-layer{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);
   display:flex;align-items:center;justify-content:center}
 .modal{background:var(--gray-0);border-radius:12px;box-shadow:var(--shadow-modal);
   display:flex;flex-direction:column;max-height:88vh}
@@ -524,7 +524,7 @@ function toast(msg){
 
 function copyText(s){
   if (navigator.clipboard) navigator.clipboard.writeText(s).catch(()=>{});
-  toast('그룹 ID를 복사했어요.');
+  toast('QR 그룹 ID를 복사했어요.');
 }
 
 /* 유사 QR 이미지(SVG) — 프로토타입용 더미 */
@@ -603,11 +603,11 @@ function dd(key, label, opts){
 }
 
 /* ================= GNB / 타이틀 ================= */
-const USER_MENU = [['auth','QR 인증내역'],['groups','QR 그룹 관리'],['orders','QR 발주내역'],['products','제품 정보 관리'],['marketing','마케팅 관리']];
-const PAGE_TITLE = { auth:'QR 인증 내역', groups:'QR 그룹 관리', orders:'QR 발주내역', products:'제품 정보 관리', marketing:'마케팅 관리' };
+const USER_MENU = [['auth','QR 인증 내역'],['groups','QR 그룹 관리'],['orders','QR 발주 내역'],['products','제품 정보 관리'],['marketing','마케팅 관리']];
+const PAGE_TITLE = { auth:'QR 인증 내역', groups:'QR 그룹 관리', orders:'QR 발주 내역', products:'제품 정보 관리', marketing:'마케팅 관리' };
 
 function gnb(){
-  const menu = state.role === 'user' ? USER_MENU : [['orders','QR 발주내역']];
+  const menu = state.role === 'user' ? USER_MENU : [['orders','QR 발주 내역']];
   const activeKey = state.page === 'groupDetail' ? 'groups' : state.page;
   return `<header class="gnb"><div class="shell gnb-in">
     <span class="gnb-logo">SafeQR</span>
@@ -633,13 +633,13 @@ function titlebar(){
   return `<div class="titlebar"><div class="shell tb-in">
     <h1>${PAGE_TITLE[state.page]}</h1>
     <div class="search">
-      <input id="search-input" placeholder="그룹 ID 검색" value="${esc(state.search)}" aria-label="그룹 ID 검색">
+      <input id="search-input" placeholder="QR 그룹 ID 검색" value="${esc(state.search)}" aria-label="QR 그룹 ID 검색">
       ${ic.search}
     </div>
   </div></div>`;
 }
 
-/* ================= 사용자: QR 발주내역 ================= */
+/* ================= 사용자: QR 발주 내역 ================= */
 function statusCellUser(o){
   switch(o.status){
     case 'pending':  return `<button class="chip-wait" data-act="cancel-order" data-id="${o.id}" title="발주 취소">승인 대기 중
@@ -683,7 +683,7 @@ function userOrdersPage(){
       <table class="tbl">
         <thead><tr>
           <th class="col-status">상태</th><th class="col-hug">발주일</th><th>총 발주 수량</th>
-          <th class="col-hug">수출국 코드</th><th>생산 공장</th><th>그룹 ID</th>
+          <th class="col-hug">수출국 코드</th><th>생산 공장</th><th>QR 그룹 ID</th>
           <th class="col-fixed">제품</th><th class="col-hug"><span style="display:inline-flex;align-items:center;gap:2px">데이터 <span style="color:var(--gray-400);display:inline-flex">${ic.info}</span></span></th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
@@ -703,7 +703,7 @@ function kebabCell(o){
   </div>`;
 }
 
-/* ================= 관리자: QR 발주내역 ================= */
+/* ================= 관리자: QR 발주 내역 ================= */
 function adminActionCell(o){
   switch(o.status){
     case 'pending': return `<div style="display:flex;gap:8px;justify-content:flex-end">
@@ -741,7 +741,7 @@ function adminOrdersPage(){
       <table class="tbl">
         <thead><tr>
           <th class="col-hug">발주일</th><th>총 발주 수량</th><th class="col-hug">수출국 코드</th>
-          <th>생산 공장</th><th>그룹 ID</th><th class="col-fixed">제품</th>
+          <th>생산 공장</th><th>QR 그룹 ID</th><th class="col-fixed">제품</th>
           <th class="col-hug" style="text-align:right">거절/승인</th><th class="col-hug"></th>
         </tr></thead>
         <tbody>${rows}</tbody>
@@ -759,7 +759,7 @@ function groupsPage(){
     const open = state.kebab && state.kebab.kind === 'card' && state.kebab.id === g.id;
     return `<div class="gcard" data-act="open-group" data-id="${g.id}" role="button" tabindex="0">
       <div class="gcard-top">
-        <div><div class="lbl">그룹 ID</div><div class="id num">${g.id}</div></div>
+        <div><div class="lbl">QR 그룹 ID</div><div class="id num">${g.id}</div></div>
         <div class="kebab-wrap">
           <button class="kebab" data-act="kebab" data-kind="card" data-id="${g.id}" aria-label="더보기">${ic.kebab}</button>
           ${open ? `<div class="menu-pop"><button data-act="open-group" data-id="${g.id}">수정</button></div>` : ''}
@@ -823,7 +823,7 @@ function groupDetailPage(){
         <h2>QR코드 정보</h2>
         <div class="qr-box">${qrSvg(g.id, 160)}</div>
         <div class="qr-meta">
-          <div><div class="k">그룹 ID</div><div class="v num">${g.id}</div></div>
+          <div><div class="k">QR 그룹 ID</div><div class="v num">${g.id}</div></div>
           <div><div class="k">수량</div><div class="v num">${fmt(g.qty)}장</div></div>
         </div>
       </section>
@@ -926,16 +926,21 @@ function orderModalHtml(){
       <div class="modal-head"><h2>QR 발주서 작성</h2>
         <button class="x" data-act="om-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body">
-        <div>
-        <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
-          <button class="btn-add-row${m.rows.length>=MAX_ROWS?' dim':''}" data-act="om-add-row">${ic.plus} QR 그룹 추가</button>
-        </div>
-        ${rowsHtml}
-        <div class="qty-total">
-          ${m.err ? `<span class="err">${QTY_ERR[m.err]}</span>` : ''}
-          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(total)}</span><span class="t">장</span></span>
-        </div>
+        <div class="fld">
+          <span class="lbl">제품<span class="opt">(선택)</span></span>
+          <div class="dd">
+            <button class="prod-select" data-dd="om-prod"${m.product?' style="gap:20px"':''}>
+              ${m.product ? thumb('lg') : emptyThumb('lg')}
+              ${m.product
+                ? `<span><span class="nm">${esc(m.product.name)}</span><div class="cd">${esc(m.product.code)}</div></span>`
+                : `<span class="ph">제품을 선택하세요</span>`}
+              ${ic.chevDown}
+            </button>
+            ${state.ddOpen==='om-prod' ? `<div class="dd-pop" style="width:100%">${PRODUCTS.map(p =>
+              `<button data-set="om-prod" data-v="${p.code}" class="${m.product&&m.product.code===p.code?'sel':''}">
+                <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('')}
+              <button data-set="om-prod" data-v="">선택 안 함</button></div>` : ''}
+          </div>
         </div>
         <div class="fld2" style="gap:16px">
           <div class="fld">
@@ -953,21 +958,16 @@ function orderModalHtml(){
             </div>
           </div>
         </div>
-        <div class="fld">
-          <span class="lbl">제품<span class="opt">(선택)</span></span>
-          <div class="dd">
-            <button class="prod-select" data-dd="om-prod"${m.product?' style="gap:20px"':''}>
-              ${m.product ? thumb('lg') : emptyThumb('lg')}
-              ${m.product
-                ? `<span><span class="nm">${esc(m.product.name)}</span><div class="cd">${esc(m.product.code)}</div></span>`
-                : `<span class="ph">제품을 선택하세요</span>`}
-              ${ic.chevDown}
-            </button>
-            ${state.ddOpen==='om-prod' ? `<div class="dd-pop" style="width:100%">${PRODUCTS.map(p =>
-              `<button data-set="om-prod" data-v="${p.code}" class="${m.product&&m.product.code===p.code?'sel':''}">
-                <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('')}
-              <button data-set="om-prod" data-v="">선택 안 함</button></div>` : ''}
-          </div>
+        <div>
+        <div class="qty-head">
+          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
+          <button class="btn-add-row${m.rows.length>=MAX_ROWS?' dim':''}" data-act="om-add-row">${ic.plus} QR 그룹 추가</button>
+        </div>
+        ${rowsHtml}
+        <div class="qty-total">
+          ${m.err ? `<span class="err">${QTY_ERR[m.err]}</span>` : ''}
+          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(total)}</span><span class="t">장</span></span>
+        </div>
         </div>
         <div>
           <div class="info-title">발주 단계 안내<span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></div>
@@ -1024,27 +1024,6 @@ function orderDetailHtml(){
       <div class="modal-head"><h2>QR 발주서 상세</h2>
         <button class="x" data-act="od-close" aria-label="닫기">${ic.x}</button></div>
       <div class="modal-body" style="border-radius:0 0 12px 12px">
-        <div>
-        <div class="qty-head">
-          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
-          <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
-        </div>
-        ${rowsHtml}
-        <div class="qty-total">
-          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(sum(o.items))}</span><span class="t">장</span></span>
-        </div>
-        </div>
-        <div class="fld2" style="gap:16px">
-          <div class="fld">
-            <span class="lbl">수출국 코드<span class="req">*</span></span>
-            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">
-              <span style="display:inline-flex;align-items:center;gap:6px">${o.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===o.exp)||[])[1]||''}</span></span> ${ic.chevDown}</button></div>
-          </div>
-          <div class="fld">
-            <span class="lbl">생산 공장<span class="req">*</span></span>
-            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory.replace(' 공장',''))} ${ic.chevDown}</button></div>
-          </div>
-        </div>
         <div class="fld">
           <span class="lbl">제품<span class="opt">(선택)</span></span>
           <div class="dd">
@@ -1060,6 +1039,27 @@ function orderDetailHtml(){
                 <span class="thumb" style="width:22px;height:28px"></span>${esc(p.name)}</button>`).join('')}
               <button data-set="od-prod" data-v="">선택 안 함</button></div>` : ''}
           </div>
+        </div>
+        <div class="fld2" style="gap:16px">
+          <div class="fld">
+            <span class="lbl">수출국 코드<span class="req">*</span></span>
+            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">
+              <span style="display:inline-flex;align-items:center;gap:6px">${o.exp}<span style="color:var(--gray-400);font-size:13px;font-weight:500">${(EXPORTS.find(e=>e[0]===o.exp)||[])[1]||''}</span></span> ${ic.chevDown}</button></div>
+          </div>
+          <div class="fld">
+            <span class="lbl">생산 공장<span class="req">*</span></span>
+            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory.replace(' 공장',''))} ${ic.chevDown}</button></div>
+          </div>
+        </div>
+        <div>
+        <div class="qty-head">
+          <span class="lbl">수량<span class="req">*</span><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></span>
+          <button class="btn-add-row" disabled>${ic.plus} QR 그룹 추가</button>
+        </div>
+        ${rowsHtml}
+        <div class="qty-total">
+          <span class="t">총</span><span style="display:inline-flex;align-items:center;gap:2px"><span class="n num">${fmt(sum(o.items))}</span><span class="t">장</span></span>
+        </div>
         </div>
         <div>
           <div class="info-title">발주 단계 안내<span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center">${ic.infoLg}</span></div>
