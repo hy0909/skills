@@ -494,13 +494,13 @@ const state = {
   detailGroupId: null,
   detailDraft: null,
   orders: [
-    { id:oid(), ts:T_RECENT, items:[10000,10000,10000], exp:'KR', factory:'베트남 공장', product:null,    status:'pending',  groupIds:[] },
-    { id:oid(), ts:T_THISYR, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남 공장', product:null, status:'approved',
+    { id:oid(), ts:T_RECENT, items:[10000,10000,10000], exp:'KR', factory:'베트남', product:null,    status:'pending',  groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000,10000,10000,10000,360000], exp:'KR', factory:'베트남', product:null, status:'approved',
       groupIds:['K7MD9QPA-1-1','K7MD9QPA-1-2','K7MD9QPA-1-3','K7MD9QPA-1-4','K7MD9QPA-1-5'] },
-    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'rejected', groupIds:[] },
-    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남 공장', product:PRODUCT, status:'canceled', groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남', product:PRODUCT, status:'rejected', groupIds:[] },
+    { id:oid(), ts:T_THISYR, items:[10000],  exp:'KR', factory:'베트남', product:PRODUCT, status:'canceled', groupIds:[] },
     ...Array.from({length:196}, () => ({
-      id:oid(), ts:T_THISYR, items:[10000], exp:'KR', factory:'베트남 공장', product:PRODUCT,
+      id:oid(), ts:T_THISYR, items:[10000], exp:'KR', factory:'베트남', product:PRODUCT,
       status:'approved', groupIds:['K7MD9QPA-1-1'] })),
   ],
   groups: [
@@ -1086,7 +1086,7 @@ function orderDetailHtml(){
           </div>
           <div class="fld">
             <span class="lbl muted">생산 공장<span class="req">*</span></span>
-            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory.replace(' 공장',''))} ${ic.chevDown}</button></div>
+            <div class="dd"><button class="dd-btn" disabled style="width:100%;height:44px;font-size:16px;border-color:var(--gray-300)">${esc(o.factory)} ${ic.chevDown}</button></div>
           </div>
         </div>
         <div>
@@ -1194,7 +1194,7 @@ function approveOrder(id){
         o.groupIds = o.items.map(() => mkGroupId());
         const created = nowLabel().split(' ').slice(0,2).join(' ');
         o.items.forEach((q,i) => state.groups.unshift({
-          id:o.groupIds[i], qty:q, factory:o.factory.replace(' 공장',''), exp:o.exp,
+          id:o.groupIds[i], qty:q, factory:o.factory, exp:o.exp,
           created, createdAt:'2025-05-21 오전 10:54', campaign:null, product:o.product }));
         toast('QR 발주 신청을 승인했어요.');
       }
@@ -1350,7 +1350,7 @@ document.addEventListener('click', e => {
     case 'om-submit': {
       const m = modal;
       state.orders.unshift({ id:oid(), ts:new Date(), items:[...m.rows],
-        exp:m.exp, factory:m.factory + ' 공장', product:m.product, status:'pending', groupIds:[] });
+        exp:m.exp, factory:m.factory, product:m.product, status:'pending', groupIds:[] });
       modal = null; renderModal();
       state.page = 'orders'; state.pageNum = 1; render();
       toast('QR 발주를 완료했어요.');
