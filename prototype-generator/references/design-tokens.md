@@ -69,7 +69,8 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 | 모달 입력 | 라벨 15 Regular gray900 + `*`는 **primary**(red 아님) + (선택) 12 Medium gray400 · 셀렉트 r8 **border gray300** py10 px12, 값 16 Regular gray900, 국가명 13 Medium gray400, 화살표 16 |
 | 수량 스테퍼 | 행 라벨 'QR 그룹' 16 Regular · 삭제 16 원형 bg gray400 + 흰 x · +/- 버튼 28×28 r8 border gray300(비활성 bg gray50) · 인풋 w112 h32 r8 16 gray700 중앙 · 총 16 gray600(숫자만 Bold) · [QR 그룹 추가] h26 r99 white+border gray200, 13 Medium gray500(비활성 bg gray100) |
 | 발주 단계 안내 | 타이틀 14 Bold gray500 + ⓘ18 · 박스 **bg gray200** r8 px24 py12 — 1행 13 Medium gray400, 2행 14 Regular gray700 · 불릿 13 Medium gray500 |
-| 제품 셀렉트(모달·상세) | r8 border gray300 p12 · 썸네일 64×64 r6(빈 상태 bg gray100 border gray300 + 이미지 아이콘 24) · placeholder 16 gray400 · 제품명 16 Bold gray700 · 코드 14 Regular gray500 |
+| 제품 셀렉트(작성 모달) | r8 border gray300 p12 · 썸네일 64×64 r6(빈 상태 bg gray100 border gray300 + 이미지 아이콘 24) · placeholder 16 gray400 · 제품명 16 Bold gray700 · 코드 14 Regular gray500 |
+| 제품 셀렉트(발주서 상세 1967:210575) | 등록: **bg gray100** border gray300, 제품명 16 Bold **gray500**, 코드 14 **gray400**, 라벨 gray500 — 클릭해 수정은 가능 · 미등록(1967:212993): **'제품 미등록' 박스 H56 r10 bg gray100 border gray300, 14 Regular gray500 중앙**, 클릭 불가 |
 | 필터바 | '전체' 15 Regular + 카운트 15 **Bold**, **둘 다 gray500**(확대 스크린샷으로 확정) · 셀렉트 h36 r6 border gray200, 14 Regular **gray600**, 화살표 16 · 고정 폭: 최신순 104 / QR 전체 142 / 기간 240(날짜 13px) |
 | QR 그룹 카드 | **그림자 없음** — white bg + **border gray200**, r12, p20 · '그룹 ID' 라벨 12 Medium gray400 · ID **18 Bold** gray900 · 필드 라벨 14 Regular gray400(폭 64) · 값 15 Regular **gray700**(수량 숫자만 15 Bold) · 행 간격 6, ID↔필드 20, 필드↔제품 24 · 마케팅 칩 bg **gray50 r999** 13 Medium gray500 |
 | 컨펌 모달 | w448 r12, **border gray900** + shadow 2px 2px 16px rgba(0,0,0,.2) · 헤더 px32 py28 타이틀 **20 Bold** · 본문 px32 py8 **16 Regular gray900** · 푸터 px32 py28 우측 정렬, 버튼 **120×40 r6** 15 Regular(크기 유지), gap12 (ghost border gray300 / 확정 gray900 / 위험 red600) |
