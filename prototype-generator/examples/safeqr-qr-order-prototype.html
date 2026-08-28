@@ -140,6 +140,7 @@ tr.dim td.c-num{font-weight:400}
 .adm-st{font-size:14px;color:var(--gray-400);white-space:nowrap}
 .adm-st.ok{color:var(--gray-700)}
 .pending-gen{display:inline-flex;align-items:center;gap:4px;color:var(--gray-500);font-size:13px;font-weight:500;white-space:nowrap}
+.pending-gen svg{color:#c3c3fa} /* 파생(토큰 미정의) — 시계 아이콘 fill 실측 */
 
 /* 그룹 ID + 복사 */
 .gid{display:flex;align-items:center;gap:8px;white-space:nowrap}
@@ -388,7 +389,7 @@ const ic = {
   search: I('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
   gear: I('<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>', 14),
   pencil: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
-  clock: I('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', 16),
+  clock: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M7.99333 1.33333C4.31333 1.33333 1.33333 4.32 1.33333 8C1.33333 11.68 4.31333 14.6667 7.99333 14.6667C11.68 14.6667 14.6667 11.68 14.6667 8C14.6667 4.32 11.68 1.33333 7.99333 1.33333ZM10.1933 11.14L7.33333 8.27333V4.66667H8.66667V7.72667L11.14 10.2L10.1933 11.14V11.14Z" fill="currentColor"/></svg>`,
   chevDown: I('<path d="m6 9 6 6 6-6"/>', 14),
   chevLeft: I('<path d="m15 18-6-6 6-6"/>'),
   chevRight: I('<path d="m9 18 6-6-6-6"/>'),
