@@ -80,7 +80,7 @@ base64로 HTML에 임베드한다 — Artifact CSP에서도, 오프라인에서�
 
 ## Radius · Shadow · Spacing · Icon
 
-- radius: sm `2px`, md `6px` (+ 시안 관례: 인풋·버튼 `8px`, 카드 `12px`, 모달 `16px`, 칩·GNB 우측 버튼 `999px`)
-- shadow_m: `1px 2px 8px rgba(0,0,0,.10)` (카드, 페이지네이션 현재 페이지)
+- radius: sm `2px`, md `6px` (+ 시안 관례: 인풋·버튼 `8px`, 카드 `12px`, 상세 정보 박스 `16px`, 칩·GNB 우측 버튼 `999px`)
+- shadow: **카드·테이블·페이지네이션은 그림자 없음(보더로 구분)** · shadow_m 토큰 `1px 2px 8px rgba(0,0,0,.10)` = 드롭다운·토스트 · 모달 실측 `2px 2px 16px rgba(0,0,0,.2)`
 - spacing 스케일: 0/2/4/6/8/12/16/20/24/32
 - 아이콘: **lucide** (stroke ≈ 1.33px, 시안 커스텀 값) — 프로토타입에는 인라인 SVG로 넣는다
