@@ -86,7 +86,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outlin
 .filterbar .total{font-size:15px;color:var(--gray-500);display:inline-flex;align-items:center;gap:6px}
 .filterbar .total b{color:var(--gray-500)}
 .filterbar .sp{flex:1}
-.list-scroll{flex:1;min-height:0;overflow-y:auto}
+.list-scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none}
+.list-scroll::-webkit-scrollbar{display:none} /* 스크롤바 공간 제거 — 타이틀·필터·테이블 좌우 라인 정렬 */
 .list-scroll > .shell{padding:0 24px}
 .pagination{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 0 18px}
 .pagination button{min-width:32px;height:40px;padding:0 6px;border-radius:var(--radius-md);
