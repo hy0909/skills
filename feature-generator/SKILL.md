@@ -32,9 +32,15 @@ Use three `<br>` lines before each `##` heading.
 
 ## Top Source Links
 
+- Show Figma source links only when they materially help the reader or the user asks for them.
 - When a Figma source exists, place it immediately below the metadata block as a clickable Markdown link.
 - Do not put Figma URLs or Figma labels inside the metadata code block because links do not render there.
-- Use this format: `> Figma: [조달과제 건축현장안전관리 — 화면명](https://...)`
+- Use the original Figma link provided by the user as the source link.
+- Prefer the broad source link that gathers the relevant functions and screens in one place.
+- Do not create or expose additional Figma links for individual frames, pages, subframes, or MCP-discovered nodes.
+- If the Figma frame or page is later deleted, the MD should still rely on the stable user-provided source link, not generated per-frame links.
+- Use this format: `> Figma: [서비스명 — 출처명](https://...)`
+- If the top Figma source link already appears, do not repeat the same Figma link in `## 4. 연관 링크`.
 
 ## 목적·범위
 
@@ -107,7 +113,8 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Preserve source meaning; do not invent scope.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
-- For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
+- For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text only when the source link is needed.
+- Do not add per-frame, per-page, or per-node Figma links from MCP output. Use only the user-provided broad source link unless the user explicitly asks for a specific link.
 - When editing an existing document, preserve every existing change-history row.
 - Add the current work as the newest row at the top. Combine changes made on the same date into one complete row unless the user requests separate rows.
 - Never delete, shorten, reorder, or rewrite previous history without an explicit user request.
