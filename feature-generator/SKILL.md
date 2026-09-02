@@ -97,6 +97,11 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Use concise lowercase kebab-case: `<topic>.md`, `<topic>.xlsx`.
 - Do not include `feature`, `기능명세서`, dates, versions, `draft`, or `final`.
 
+## Metadata
+
+- Always write `owner_team: AI Platform Team` in the metadata block.
+- Never copy another team name (for example `AI Research team`) from neighboring or older documents. When editing an existing document whose metadata has a different `owner_team`, change it to `AI Platform Team`.
+
 ## Guardrails
 
 - Preserve source meaning; do not invent scope.

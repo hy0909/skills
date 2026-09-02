@@ -68,6 +68,7 @@ effective_date: {{YYYY-MM-DD}}
 
 Rules:
 
+- `owner_team` is always `AI Platform Team`. Do not copy a different team name from other documents.
 - Write only `목적` and `범위` bullets.
 - Do not add IA summary, role summary, alert summary, status summary, or backend summary sections unless the user asks.
 - Use easy words and short noun-style endings.
