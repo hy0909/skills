@@ -1,11 +1,28 @@
 ---
 name: feature-generator
-description: Create concise Korean 기능명세서 Markdown or XLSX files from raw text, existing XLSX, or MD tables. Use when the user wants a feature spec with 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, no duplicated FE/BE summaries, and standard XLSX export.
+description: Create concise Korean 기능명세서 Markdown or XLSX files from Figma screens, raw text, existing XLSX, or MD tables. Use for a new service or feature and for improvements to an existing product when the user wants 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, complete screen/function coverage, an optional exception-policy gap review, and standard XLSX export.
 ---
 
 # Feature Generator
 
 Create concise Korean 기능명세서 files.
+
+## Workflow
+
+1. Identify whether the source is Figma, text, an existing document, or a combination.
+2. Determine whether the work is a blank-slate service/feature or a change to an existing product.
+3. Read `references/coverage_exception_review.md` and build an internal coverage inventory before drafting.
+4. Write the initial MD from source-confirmed scope and rules. Include exception behavior already defined by the source, but do not invent unspecified policy.
+5. Verify that every in-scope screen, function, action, and explicitly shown state maps to a requirement row or a documented out-of-scope decision.
+6. After the initial MD is complete, offer the optional exception and missing-policy review described in `references/coverage_exception_review.md`.
+7. When commit/push was requested, do not commit or push until the user answers that review offer and any approved changes are reflected.
+
+## Input Context
+
+- For Figma-based work, inspect all in-scope screens, variants, overlays, tabs, actions, and explicitly designed states. Keep the source link near the top of the MD.
+- For text-based work, extract screens, roles, actions, states, data, results, and stated exception paths from the source.
+- For an existing product change, inspect relevant neighboring feature documents and linked policies before treating a rule as missing. Search the repository's feature or feature-spec documentation area when it is available.
+- If the required product context is unavailable or conflicting and would materially change the recommendation, ask for the missing source or decision. Do not criticize the user for rules that may exist outside the provided context.
 
 ## Output Principle
 
@@ -106,6 +123,8 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 
 - Preserve source meaning; do not invent scope.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
+- Treat the exception checklist as a coverage and recommendation tool, not permission to add unsupported policy to the MD.
+- Describe missing context neutrally as `현재 자료에서 확인되지 않음`, `추가 정의 권장`, or `맥락 확인 필요`. Do not frame it as the user's mistake.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
 - For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
 - When editing an existing document, preserve every existing change-history row.
