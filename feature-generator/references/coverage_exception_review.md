@@ -63,17 +63,13 @@ The initial MD must include:
 
 Do not add guessed permissions, deletion rules, retry behavior, notification delivery, external-system behavior, or audit policy as if they were confirmed.
 
-## 4. Mandatory Review Offer
+## 4. Exception Review When Selected
 
-After the initial MD is complete, ask:
+Use the review gate in `post_draft_reviews.md` after the initial MD is complete.
 
-> 작성된 기능명세를 기준으로 예외 케이스 및 누락 정책의 추가 작성을 검토해드릴까요?
-
-If commit/push was requested, ask before committing or pushing.
-
-- If the user declines, keep the initial MD and continue with any already requested finalization.
-- If the user agrees, perform the context review and checklist below, then present recommendations before adding unsupported policy.
-- After presenting recommendations, ask which recommendations to reflect. Update the MD only with the user's selection or confirmation, then recheck coverage and proceed with any requested commit/push.
+- If the user selects the exception review, perform the context review and checklist below, then present recommendations before adding unsupported policy.
+- After presenting recommendations, ask which recommendations to reflect. Update the MD only with the user's selection or confirmation, then recheck coverage.
+- If the user declines, keep the initial MD unchanged for this review category.
 
 ## 5. Exception and Policy Checklist
 
