@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Generator"
-  short_description: "Create concise feature MD or XLSX files."
-  default_prompt: "텍스트, 기능명세서 XLSX, 또는 기능명세서 MD를 받아 목적·범위, 핵심 기획 규칙, 기능명세서 표 중심의 짧은 문서로 작성합니다."
+  short_description: "Create and review concise feature specs."
+  default_prompt: "Figma 화면, 텍스트, 기능명세서 XLSX 또는 MD를 받아 화면·기능 누락 없이 짧은 기능명세서를 작성하고, 완료 후 예외 케이스와 누락 정책의 추가 검토를 제안합니다."
