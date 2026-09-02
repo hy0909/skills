@@ -1,6 +1,6 @@
 ---
 name: feature-generator
-description: Create concise Korean 기능명세서 Markdown or XLSX files from Figma screens, raw text, existing XLSX, or MD tables. Use for a new service or feature and for improvements to an existing product when the user wants 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, complete screen/function coverage, an optional exception-policy gap review, and standard XLSX export.
+description: Create concise Korean 기능명세서 Markdown or XLSX files from Figma screens, raw text, existing XLSX, or MD tables. Use for a new service or feature and for improvements to an existing product when the user wants 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, complete screen/function coverage, optional exception-policy review, peer feature-MD consistency review, Figma-to-spec alignment review, and standard XLSX export.
 ---
 
 # Feature Generator
@@ -14,8 +14,8 @@ Create concise Korean 기능명세서 files.
 3. Read `references/coverage_exception_review.md` and build an internal coverage inventory before drafting.
 4. Write the initial MD from source-confirmed scope and rules. Include exception behavior already defined by the source, but do not invent unspecified policy.
 5. Verify that every in-scope screen, function, action, and explicitly shown state maps to a requirement row or a documented out-of-scope decision.
-6. After the initial MD is complete, offer the optional exception and missing-policy review described in `references/coverage_exception_review.md`.
-7. When commit/push was requested, do not commit or push until the user answers that review offer and any approved changes are reflected.
+6. After the initial MD is complete, read `references/post_draft_reviews.md` and separately offer all three reviews: exception-policy gaps, consistency with other MD files in the feature folder, and Figma-to-MD alignment.
+7. When commit/push was requested, do not commit or push until the user answers all three review offers and any approved changes are reflected.
 
 ## Input Context
 
