@@ -26,11 +26,34 @@ Create concise Korean 기능명세서 files.
 
 ## Output Principle
 
-- Keep the MD short.
+- Keep each MD short. Split by page (see Document Split) rather than growing one file.
 - Use easy, clear Korean. Prefer short noun-style endings such as `데이터 출처 정의`, not long `~한다` prose.
 - Write only planning information needed for implementation.
 - Do not repeat the same rule in both the top section and the table unless it prevents misunderstanding.
 - FE/BE-owned details belong in FE/BE documents. Feature MD keeps only planning meaning.
+
+## Document Split
+
+- One MD per page or screen. A flow with several screens becomes several MDs, not one long MD.
+- Give a shared component (a dropdown, a card, a GNB element used by several pages) its own MD.
+- Add one overview MD per flow only when there are two or more page MDs. It holds the flow order, cross-page rules, open decisions (`기획 결정 현황`), and links to every page MD. It does not repeat page rows.
+- A single-screen feature stays in one MD. Do not split for the sake of splitting.
+- Name page MDs `<flow>-<page>.md`, the component MD `<flow>-<component>.md`, the overview `<flow>.md`.
+
+## No Duplication Across MDs
+
+- Write each rule, copy string, and value once, in the MD that owns it. Other MDs link to it as `[file](file.md) REQ-ID` instead of restating it.
+- Reason: when the same sentence lives in two files, one copy gets edited and the other goes stale.
+- Allowed duplication is only what prevents a row from being misread on its own, for example a one-line state definition next to the row that depends on it. Keep it to a phrase and add the owner link in the same cell.
+- Never duplicate: 문구표 rows, design values, permission tables, open-decision lists.
+- Before finishing, search the page MDs for sentences that also appear in the overview MD and replace one side with a link.
+
+## Copy (i18n) Table
+
+- Multilingual copy (한국어 SSOT + English, Tiếng Việt, ...) goes in a separate MD, `<flow>-i18n.md`, in the same folder as the page MDs. It is the only place copy strings appear with their translations.
+- Structure: metadata block, one table with columns `화면 | 요소 | 한국어 (SSOT) | English | ...`, a `번역 제외` list, change history.
+- Page MDs name the element (`타이틀`, `버튼`) and link to the i18n MD. They may quote the Korean string once when the row is unreadable without it, never the translations.
+- Tools that replace copy (Figma language plugin, i18n JSON export) read the i18n MD directly, so keep its table headers exactly as the language names.
 
 ## MD Structure
 
