@@ -10,9 +10,9 @@ Figma is the SSOT for 화면·문구·컴포넌트 상태. The spec mds addition
 ## Defaults (this project)
 
 - Figma file: 스크럽대디 `SBGmrsYE4ooIBMwXvdtJ7S`, section `1851:88883` (v4.0 수정사항)
-- Spec mds: clone of `safeai-kr/safe-qr-docs`, branch `docs/qr-order-group-spec`, folder `general/feature/`
+- Spec mds: clone of `safeai-kr/safe-qr-docs` (`main`, or the open docs branch), folder `general/feature/admin/` (관리 웹 문서; 소비자 문서는 `general/feature/consumer/`)
 - Local mirror: `/Users/khy/Downloads/figmaplugin_260531/specs/`
-- State file: `general/feature/.sync-state.json` (committed with the specs)
+- State file: `general/feature/admin/.sync-state.json` (committed with the specs)
 - Frame → md mapping:
   - QR 그룹 관리 목록 frames → `qr-group-list.md`
   - QR 그룹 상세 frames → `qr-group-detail.md`
