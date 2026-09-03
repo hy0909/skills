@@ -76,3 +76,5 @@ Rules:
 - Add the current work as the newest row and include every material change made in the task.
 - Combine same-day changes into one row by default; split them only when the user requests separate entries.
 - Do not rewrite or remove earlier rows without an explicit request.
+- One MD per page. Shared rules live in one owner MD and are linked, not copied (see SKILL.md `No Duplication Across MDs`).
+- Multilingual copy tables live in `<flow>-i18n.md`, never inside page MDs.
