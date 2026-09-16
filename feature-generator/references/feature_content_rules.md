@@ -28,6 +28,7 @@ Writing rules:
 - Remove duplication and merge scattered requirements.
 - Do not invent API, DB, enum, FE component, event, analytics, or state machine.
 - Keep BE/FE-owned details out unless the user explicitly asks this MD to own them.
+- No colors or design values in any cell. Do not write color names, hex codes, px sizes, fonts, or tokens. Name the state and the visible difference instead (`선택됨`, `점검 완료 열은 체크박스 미노출`) and let Figma define the look. Write a color only when the user explicitly asks for it.
 
 ## Figma Scroll Mapping
 

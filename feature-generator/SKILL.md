@@ -31,6 +31,7 @@ Create concise Korean 기능명세서 files.
 - Write only planning information needed for implementation.
 - Do not repeat the same rule in both the top section and the table unless it prevents misunderstanding.
 - FE/BE-owned details belong in FE/BE documents. Feature MD keeps only planning meaning.
+- Never write design values: no color names (보라, 남색, 초록, 주황...), no hex codes, no px/rem sizes, no font names or sizes, no spacing/radius, no design tokens. Figma owns how things look; the MD names the element, its state, and its behavior (e.g. `점검 완료 열은 체크박스 없이 구분 표시`, not `남색으로 표시`). Write a color or value only when the user explicitly asks for it in the current request — a color visible in Figma is not a request.
 
 ## Document Split
 
@@ -145,6 +146,7 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 ## Guardrails
 
 - Preserve source meaning; do not invent scope.
+- Do not add colors, hex codes, sizes, or other design values unless the user asked for them. If a source doc already contains them, remove them when asked to sync with Figma, and point to Figma instead.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
 - Treat the exception checklist as a coverage and recommendation tool, not permission to add unsupported policy to the MD.
 - Describe missing context neutrally as `현재 자료에서 확인되지 않음`, `추가 정의 권장`, or `맥락 확인 필요`. Do not frame it as the user's mistake.

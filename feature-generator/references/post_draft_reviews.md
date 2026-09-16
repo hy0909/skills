@@ -79,6 +79,8 @@ Verify that every in-scope screen, meaningful variant, overlay, tab, visible con
 
 Verify that each screen or UI-specific claim in the MD has support in Figma. Planning-only policy, security, data, and nonvisual process rules may have no visual counterpart; label them `비시각 기획 규칙` rather than mismatches.
 
+Also scan the MD for design values (color names, hex codes, px sizes, fonts, tokens). Report each one as a violation to remove, even when it matches Figma — the MD must not carry them.
+
 ### Comparison Points
 
 Check:
