@@ -15,6 +15,9 @@ owner_team: AI Platform Team
 effective_date: {{YYYY-MM-DD}}
 ```
 
+> Figma: [조달과제 건축현장안전관리 — {{화면명}}](https://...)
+> 문서 내 링크는 main 브랜치 기준입니다. main 병합 후 열립니다.
+
 <br>
 <br>
 <br>
@@ -78,3 +81,4 @@ Rules:
 - Do not rewrite or remove earlier rows without an explicit request.
 - One MD per page. Shared rules live in one owner MD and are linked, not copied (see SKILL.md `No Duplication Across MDs`).
 - Multilingual copy tables live in `<flow>-i18n.md`, never inside page MDs.
+- GitHub links point to `main`, never to a feature branch. Keep the `main 병합 후 열립니다` note line while the linked files are unmerged (see SKILL.md `Repository Links`).

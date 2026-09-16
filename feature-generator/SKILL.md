@@ -77,6 +77,14 @@ Use three `<br>` lines before each `##` heading.
 - Do not put Figma URLs or Figma labels inside the metadata code block because links do not render there.
 - Use this format: `> Figma: [조달과제 건축현장안전관리 — 화면명](https://...)`
 
+## Repository Links
+
+- Every GitHub URL to a document in a SafeAI repo points to the `main` branch (`https://github.com/<org>/<repo>/blob/main/...`). Never link to a feature branch: branches are deleted after merge, so those links stop opening.
+- Inside the same repo, prefer relative links (`./other.md`, `../policy/x.md`). They follow whatever branch the reader is on.
+- When the MD links to files or sections that exist only on the current branch (a new MD, a new REQ row), add this line right under the top source link so readers know why a link may not open yet:
+  `> 문서 내 링크는 main 브랜치 기준입니다. main 병합 후 열립니다.`
+  Remove the line only when the user asks after merge.
+
 ## 목적·범위
 
 Write only two bullets:
@@ -151,6 +159,7 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Treat the exception checklist as a coverage and recommendation tool, not permission to add unsupported policy to the MD.
 - Describe missing context neutrally as `현재 자료에서 확인되지 않음`, `추가 정의 권장`, or `맥락 확인 필요`. Do not frame it as the user's mistake.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
+- Never paste a feature-branch GitHub URL into an MD, issue, or PR body. Use the `main` path and the note from `Repository Links`.
 - For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
 - When editing an existing document, preserve every existing change-history row.
 - Add the current work as the newest row at the top. Combine changes made on the same date into one complete row unless the user requests separate rows.
