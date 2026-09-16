@@ -81,4 +81,4 @@ Rules:
 - Do not rewrite or remove earlier rows without an explicit request.
 - One MD per page. Shared rules live in one owner MD and are linked, not copied (see SKILL.md `No Duplication Across MDs`).
 - Multilingual copy tables live in `<flow>-i18n.md`, never inside page MDs.
-- GitHub links point to `main`, never to a feature branch. Keep the `main 병합 후 열립니다` note line while the linked files are unmerged (see SKILL.md `Repository Links`).
+- GitHub links: `main` path first, plus `[브랜치에서 보기](branch-url) (브랜치 삭제 예정)` while unmerged. Keep the `main 병합 후 열립니다` note line until merge (see SKILL.md `Repository Links`).

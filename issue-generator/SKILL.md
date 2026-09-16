@@ -28,7 +28,7 @@ Use this skill for SafeAI GitHub issue work. The user is a planner, so planning 
 - Default start date to today's local date from the active environment context unless the user says otherwise.
 - If an issue is accidentally created in a non-docs repository, transfer it to the matching docs repository immediately and verify the new URL.
 - After creating, transferring, or editing an issue, verify the result with `gh issue view`.
-- Every document link in an issue body or comment points to the `main` branch (`.../blob/main/...`), never to a feature branch — branches are deleted after merge and the links die. When the linked file or change is not merged yet, add one line at the top or bottom of the body: `※ 문서 링크는 main 브랜치 기준이라 main 병합 후 열립니다.`
+- Document links in an issue body or comment: the permanent link is the `main` path (`.../blob/main/...`) because feature branches are deleted after merge. While the change is unmerged, write both, main first: `[file.md](main-url) · [브랜치에서 보기](branch-url) (브랜치 삭제 예정)`, and add one line at the bottom: `※ 문서 링크는 main 기준이라 병합 후 열립니다. 병합 전에는 옆의 브랜치 링크로 확인해 주세요. 브랜치는 병합 후 삭제됩니다.`
 - Whenever this skill itself is modified, keep the installed local skill and GitHub source repository in sync, then commit and push the change.
 
 ## Repository Routing
@@ -45,7 +45,7 @@ If both a development repo and a docs repo appear in context, use the docs repo 
 1. Parse the user's request and identify whether it is a plain issue or sub-issue.
 2. Extract the referenced repository and issue number or URL, if present.
 3. Resolve the creation repository to a docs repository.
-4. Draft the issue in Korean, matching the user's concise planning style. Use `main` paths for every repo link and add the `main 병합 후 열립니다` line when the target is unmerged.
+4. Draft the issue in Korean, matching the user's concise planning style. Pair every repo link as `main` + `브랜치에서 보기 (브랜치 삭제 예정)` while unmerged, and add the note line.
 5. Handle assignees before creation:
    - Always mention `Assignees: hy0909` before creating.
    - If no assignees were specified, proceed with `hy0909`.

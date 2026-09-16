@@ -95,9 +95,10 @@ Use three `<br>` lines before each `##` heading.
 
 - Every GitHub URL to a document in a SafeAI repo points to the `main` branch (`https://github.com/<org>/<repo>/blob/main/...`). Never link to a feature branch: branches are deleted after merge, so those links stop opening.
 - Inside the same repo, prefer relative links (`./other.md`, `../policy/x.md`). They follow whatever branch the reader is on.
-- When the MD links to files or sections that exist only on the current branch (a new MD, a new REQ row), add this line right under the top source link so readers know why a link may not open yet:
-  `> 문서 내 링크는 main 브랜치 기준입니다. main 병합 후 열립니다.`
-  Remove the line only when the user asks after merge.
+- While the change is still on a feature branch, write BOTH links so reviewers can read the file before merge: the `main` link first, then the branch link marked as temporary —
+  `[structure-inspection.md](https://github.com/<org>/<repo>/blob/main/plan/feature/structure-inspection.md) · [브랜치에서 보기](https://github.com/<org>/<repo>/blob/<branch>/plan/feature/structure-inspection.md) (브랜치 삭제 예정)`
+  The `main` link is the permanent one; the branch link dies with the branch, so it must carry the `(브랜치 삭제 예정)` tag.
+- Under the top source link of an MD whose linked files are unmerged, add one line: `> 문서 내 링크는 main 브랜치 기준입니다. main 병합 후 열립니다.` Remove it only when the user asks after merge.
 
 ## 목적·범위
 
@@ -173,7 +174,7 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Treat the exception checklist as a coverage and recommendation tool, not permission to add unsupported policy to the MD.
 - Describe missing context neutrally as `현재 자료에서 확인되지 않음`, `추가 정의 권장`, or `맥락 확인 필요`. Do not frame it as the user's mistake.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
-- Never paste a feature-branch GitHub URL into an MD, issue, or PR body. Use the `main` path and the note from `Repository Links`.
+- Never use a feature-branch GitHub URL as the only link in an MD, issue, or PR body. Pair it with the `main` link and tag it `(브랜치 삭제 예정)` as described in `Repository Links`.
 - For Figma references, do not expose raw Figma URLs. Put the real URL behind Markdown link text near the top source link and in `## 4. 연관 링크`.
 - When editing an existing document, preserve every existing change-history row.
 - Add the current work as the newest row at the top. Combine changes made on the same date into one complete row unless the user requests separate rows.
