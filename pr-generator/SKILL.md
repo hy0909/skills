@@ -20,7 +20,7 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 - If Reviewers were already specified in the same request, state them back before creating the PR.
 - Default PRs to draft unless the user explicitly asks for ready-for-review.
 - Never stage unrelated user changes silently.
-- Document links in the PR body: write the `main` path first (permanent — the head branch is deleted after merge), then the head-branch link tagged as temporary: `[file.md](main-url) · [브랜치에서 보기](head-branch-url) (브랜치 삭제 예정)`. Add one line at the bottom: `※ 문서 링크는 main 기준이라 병합 후 열립니다. 병합 전에는 옆의 브랜치 링크로 확인해 주세요. 브랜치는 병합 후 삭제됩니다.`
+- Document links in the PR body: write the `main` path first (permanent — the head branch is deleted after merge), then the head-branch link, each labeled so the reader can tell which is which: `[file.md (main 기준)](main-url) · [같은 파일 (브랜치 <head-branch-name>, 병합 후 삭제 예정)](head-branch-url)`. Always write the real branch name; a bare `브랜치에서 보기` is not enough. Add one line at the bottom: `※ 문서 링크는 main 기준이라 병합 후 열립니다. 병합 전에는 옆의 브랜치 링크로 확인해 주세요. 브랜치는 병합 후 삭제됩니다.`
 - After creating or editing a PR, verify the PR URL, title, assignees, reviewers, base branch, head branch, and draft state.
 - Whenever this skill itself is modified, keep the installed local skill and GitHub source repository in sync, then commit and push the change.
 
