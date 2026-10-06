@@ -167,7 +167,7 @@ svg{display:block}
 <div class="ctl">
   <span class="lbl">프로토타입 컨트롤</span>
   <span class="seg" data-key="page"><button data-v="sop" class="on">위험 알림 SOP</button><button data-v="voice">현장 음성 확인</button></span>
-  <span class="seg" data-key="field"><button data-v="site" class="on">긴 값: 현장·위치</button><button data-v="loc">긴 값: 위치만</button></span>
+  <span id="ctl-dyn"></span>
   <span class="note">각 패널의 1·2·3줄 버튼으로 값 길이를 바꿔 보세요. 표 치수는 피그마 실측값입니다.</span>
 </div>
 
@@ -201,7 +201,10 @@ const LOC=['A동 3층 외곽',
  'A동 3층 외곽 비계 작업 구간 동측 난간 끝 자재 반입구 옆 임시 통로 부근 가설 계단 아래'];
 const TAGS=['추락(추측)','구조 요청 완료','비명소리','구조 신호'];
 
-const state={page:'sop',field:'site',lines:{pc1:1,pc3:3,mo1:1,mo3:3}};
+const state={page:'sop',field:'site',vfield:'both',tagLayout:'col',lines:{pc1:1,pc3:3,mo1:1,mo3:3}};
+const CTL={sop:[['field','긴 값',[['site','현장·위치'],['loc','위치만']]]],
+           voice:[['vfield','긴 값',[['both','위치·상황 분류'],['loc','위치만'],['tags','상황 분류만']]],['tagLayout','PC 뱃지 배치',[['col','세로 쌓기'],['row','가로 흐름']]]]};
+function renderCtl(){document.getElementById('ctl-dyn').innerHTML=CTL[state.page].map(([key,lbl,opts])=>`<span class="lbl" style="margin-left:8px">${lbl}</span><span class="seg" data-key="${key}">${opts.map(([v,t])=>`<button data-v="${v}" class="${state[key]===v?'on':''}">${t}</button>`).join('')}</span>`).join('');}
 
 /* ───── 공통 조각 ───── */
 const camTag=n=>`<span class="cam">${I.cam}<span>${n}</span></span>`;
@@ -223,8 +226,9 @@ const guideCard=()=>`<div class="guide"><div class="t">9분 전 알림 발생</d
 const titleRow=()=>`<div class="ttl"><span class="badge-l">사고발생</span><span class="kind">추락</span><span class="sub">비계</span></div>`;
 
 function voiceTable(n,mobile){
-  const loc=LOC[n-1], locMulti=n>1;
-  const tagN=Math.min(n===1?1:n===2?2:4, 4);
+  const f=state.vfield;
+  const locN=(f==='loc'||f==='both')?n:1, tagN=(f==='tags'||f==='both')?n:1;
+  const loc=LOC[locN-1], locMulti=locN>1;
   const tags=TAGS.slice(0,tagN).map(t=>`<span class="tag">${t}</span>`).join('');
   if(mobile){
     return `<div class="itbl v m last-open" style="--lw:88px">
@@ -237,7 +241,7 @@ function voiceTable(n,mobile){
   return `<div class="vgrid">
     <div class="itbl v last-open" style="--lw:100px;grid-template-columns:100px 284px">
       <div class="lb">인식 일시</div><div class="vl">05-31 수 오전 11:03</div>
-      <div class="lb row-wrap">상황 분류</div><div class="vl row-wrap"><div class="tags">${tags}</div></div>
+      <div class="lb row-wrap">상황 분류</div><div class="vl row-wrap"><div class="tags ${state.tagLayout==='col'?'col':''}">${tags}</div></div>
     </div>
     <div class="itbl v last-open" style="--lw:100px">
       <div class="lb ${locMulti?'row-wrap':''}">위치</div><div class="vl ${locMulti?'row-wrap':''}">${locCell(loc,locMulti).replace('CAM-01','CAM-07')}</div>
@@ -291,7 +295,7 @@ function render(){
   fit();
   document.getElementById('foot').innerHTML = state.page==='sop'
    ? '위험 알림 SOP 상세의 정보 카드 표. 라벨 열 <code>72px</code>, 1줄 행 높이 <code>44px</code>. 값이 2줄 이상이면 행이 내용만큼 늘어나고 상하 <code>12px</code> 여백, 라벨은 첫 줄에 맞춰 위 정렬. <code>현장 음성 확인</code> 버튼은 현장명 아래 <code>6px</code> 간격(2·3단계만). 말줄임 없음, 단어 단위 줄바꿈.'
-   : '현장 음성 확인 창의 표. PC는 라벨 <code>100px</code> 2열(인식 일시·위치 / 상황 분류), 모바일은 라벨 <code>88px</code> 세로 1열. 상황 분류 뱃지는 PC에서 가로로 흐르다 줄바꿈, 모바일은 세로로 쌓임(피그마 기준). 뱃지는 최대 4개라 PC는 2줄까지만 생김. 위치는 카메라 태그와 글이 한 흐름으로 이어지고 둘째 줄부터 카메라 태그 아래에서 시작.';
+   : '현장 음성 확인 창의 표. PC는 라벨 <code>100px</code> 2열(인식 일시·위치 / 상황 분류), 모바일은 라벨 <code>88px</code> 세로 1열. 상황 분류 뱃지는 모바일에서 세로로 쌓임(피그마 기준). PC는 <code>세로 쌓기</code>와 <code>가로 흐름</code> 중 고를 수 있고 아직 미확정. 위치는 카메라 태그와 글이 한 흐름으로 이어지고 둘째 줄부터 카메라 태그 아래에서 시작. 뱃지 n줄 = 뱃지 n개.';
 }
 function fit(){
   document.querySelectorAll('.stage.pc').forEach(s=>{const w=s.clientWidth;s.querySelector('.fit').style.transform=`scale(${w/1280})`;});
@@ -300,9 +304,9 @@ window.addEventListener('resize',fit);
 document.addEventListener('click',e=>{
   const b=e.target.closest('button[data-v]'); if(!b) return;
   const seg=b.parentElement;
-  if(seg.dataset.key){state[seg.dataset.key]=b.dataset.v;seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render();return;}
+  if(seg.dataset.key){state[seg.dataset.key]=b.dataset.v;seg.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderCtl();render();return;}
   if(seg.dataset.lines){state.lines[seg.dataset.lines]=+b.dataset.v;render();}
-  if(e.target.closest('[data-open="voice"]')){state.page='voice';document.querySelectorAll('.seg[data-key=page] button').forEach(x=>x.classList.toggle('on',x.dataset.v==='voice'));render();}
+  if(e.target.closest('[data-open="voice"]')){state.page='voice';document.querySelectorAll('.seg[data-key=page] button').forEach(x=>x.classList.toggle('on',x.dataset.v==='voice'));renderCtl();render();}
 });
-render();
+renderCtl();render();
 </script>
