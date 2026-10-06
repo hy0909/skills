@@ -263,7 +263,7 @@ function pcApp(n,withModal){
       <div class="pc-hd"><h1>위험 알림 SOP</h1>${progress()}<div class="acts"><button class="btn outline">알림 오류</button><button class="btn primary">확인</button><span style="color:#0f172a">${I.x}</span></div></div>
       <div class="pc-body"><div class="sop-pc"><div class="media"></div><div class="sop-card">${titleRow()}${guideCard()}<div class="card">${sopTable(n,state.field,false)}</div></div></div></div>
     </div>
-    ${withModal?`<div class="dim"><div class="vm"><div class="vt"><b>음성 분석</b><span style="color:#0f172a">${I.x}</span></div><div class="vs">${notice()}<div class="vtbl">${voiceTable(n,false)}</div><div class="cams">${camCard(1)}${camCard(2)}</div></div><div class="vf"><button class="btn">닫기</button></div></div></div>`:''}
+    ${withModal?`<div class="dim"><div class="vm"><div class="vt"><b>음성 분석</b><span style="color:#0f172a">${I.x}</span></div><div class="vs">${notice()}<div class="vtbl">${voiceTable(n,false)}</div></div><div class="vf"><button class="btn">닫기</button></div></div></div>`:''}
   </div>`;
 }
 /* ───── 모바일 화면 ───── */
@@ -276,7 +276,7 @@ function moApp(n,withModal){
       <div class="m-tbl">${sopTable(n,state.field,true)}</div>
     </div>
     <div class="m-foot"><button class="btn outline">알림 오류</button><button class="btn primary">확인</button></div>
-    ${withModal?`<div class="m-dim"><div class="mvm"><div class="vt">음성 분석</div><div class="vs">${notice()}<div class="vtbl">${voiceTable(n,true)}</div><div class="cams">${camCard(1,1)}${camCard(2,1)}</div></div><div class="vf"><button class="btn">닫기</button></div></div></div>`:''}
+    ${withModal?`<div class="m-dim"><div class="mvm"><div class="vt">음성 분석</div><div class="vs">${notice()}<div class="vtbl">${voiceTable(n,true)}</div></div><div class="vf"><button class="btn">닫기</button></div></div></div>`:''}
   </div>`;
 }
 
