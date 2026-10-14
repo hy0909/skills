@@ -33,6 +33,26 @@ Create concise Korean 기능명세서 files.
 - FE/BE-owned details belong in FE/BE documents. Feature MD keeps only planning meaning.
 - Never write design values: no color names (보라, 남색, 초록, 주황...), no hex codes, no px/rem sizes, no font names or sizes, no spacing/radius, no design tokens. Figma owns how things look; the MD names the element, its state, and its behavior (e.g. `점검 완료 열은 체크박스 없이 구분 표시`, not `남색으로 표시`). Write a color or value only when the user explicitly asks for it in the current request — a color visible in Figma is not a request.
 
+## 쉽게 쓰기 (2026-10-14 사용자 피드백)
+
+사용자가 "더 정확하고 쉽게", "명확하고 짧고 쉽게"라고 한 기준이다. 새로 쓰든 고치든 똑같이 적용한다.
+
+- 규칙을 추상 단위로 쓰지 않는다. 읽는 사람이 바로 그림을 그릴 수 있게 구체 예를 붙인다.
+  - 나쁨: `위험 알림은 하위 종류 1개당 1건`
+  - 좋음: `감지한 위험 하나마다 위험 알림 1건. 한 사람이 안전모와 하네스를 같이 안 썼으면 알림 2건, 같은 상황이 2단계에서 3단계로 올라가면 3단계 알림 1건 추가`
+- 예시에 쓰는 낱말은 그 문서에 이미 있는 용어만 쓴다. PPE는 `안전모·하네스·각반`이지 `안전대`가 아니다. 새 용어를 만들지 않는다.
+- 한 문장에 조건 하나. `A이고 B이며 C인 경우`는 세 문장이나 표로 나눈다.
+- 수치·시간 기준은 "무엇을 기준으로 재는지"까지 적는다. `60초` 대신 `위험 알림이 서버에 등록된 뒤 60초`.
+- 아직 정하지 않은 것은 `TBD`(담당 팀) 한 단어로 적고, 추측으로 채우지 않는다.
+
+## 바꾼 내용의 출처를 남긴다
+
+기존 문서를 고칠 때는 "누가 정한 것"인지 구분해서 보고한다. 사용자가 "이거 네 맘대로 바꾼 거야, 개발자가 정한 거야?"라고 묻지 않게 한다.
+
+- 세 가지로 나눈다: (1) 사용자·리뷰어·개발자가 정한 것(출처: 이슈·PR 리뷰·채팅 날짜), (2) 문서 안에서 같은 내용이 두 번 적혀 정리만 한 것, (3) 내가 판단해 새로 적은 것.
+- (3)은 반드시 보고에 따로 적고 되돌릴 수 있게 한다. 숫자·기준·상태 이름을 내가 새로 만들지 않는다.
+- 보고 표는 `정책 | 고친 문서·위치 | 바꾼 점 | 출처` 네 칸.
+
 ## 문체 규칙 (공통)
 
 이 스킬이 만드는 모든 한국어 산문은 `human-writing` 스킬을 따른다 (같은 저장소의 `human-writing/SKILL.md`. Claude Code는 `~/.claude/skills/human-writing`, Codex는 `~/.codex/skills/human-writing`). 핵심만 요약:
@@ -179,4 +199,4 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - When editing an existing document, preserve every existing change-history row.
 - Add the current work as the newest row at the top. Combine changes made on the same date into one complete row unless the user requests separate rows.
 - Never delete, shorten, reorder, or rewrite previous history without an explicit user request.
-- Write `Codex, hy0909` in change history.
+- Write the author in change history as `Claude, hy0909` in Claude Code and `Codex, hy0909` in Codex. Never a real name.

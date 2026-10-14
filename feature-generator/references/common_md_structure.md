@@ -66,7 +66,7 @@ effective_date: {{YYYY-MM-DD}}
 
 | 버전 | 일자 | 변경 내용 | 작성자 |
 | --- | --- | --- | --- |
-| 1.0.0 | {{YYYY-MM-DD}} | 최초 작성 | Codex, hy0909 |
+| 1.0.0 | {{YYYY-MM-DD}} | 최초 작성 | Claude, hy0909 |
 ````
 
 Rules:
@@ -74,7 +74,7 @@ Rules:
 - `owner_team` is always `AI Platform Team`. Do not copy a different team name from other documents.
 - Write only `목적` and `범위` bullets.
 - Do not add IA summary, role summary, alert summary, status summary, or backend summary sections unless the user asks.
-- Use easy words and short noun-style endings.
+- Use easy words and short noun-style endings. Attach a concrete example to any abstract rule (see SKILL.md `쉽게 쓰기`).
 - When editing an existing document, preserve all previous change-history rows.
 - Add the current work as the newest row and include every material change made in the task.
 - Combine same-day changes into one row by default; split them only when the user requests separate entries.
