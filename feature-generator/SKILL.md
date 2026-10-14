@@ -191,6 +191,7 @@ Keep rows concise. Put detailed behavior in the relevant row, not in a repeated 
 - Preserve source meaning; do not invent scope.
 - Do not add colors, hex codes, sizes, or other design values unless the user asked for them. If a source doc already contains them, remove them when asked to sync with Figma, and point to Figma instead.
 - Do not invent API, DB, enum, event, state machine, component architecture, or permission models.
+- Do not write code identifiers (field names like `clip.deleted_at`, table or column names, API paths) in planning MDs, including the 데이터 요구사항 column. Write the meaning in Korean instead (`영상 삭제 시각`). A reviewer quoting a field name is not a reason to copy it into the MD (user rule 2026-10-14).
 - Treat the exception checklist as a coverage and recommendation tool, not permission to add unsupported policy to the MD.
 - Describe missing context neutrally as `현재 자료에서 확인되지 않음`, `추가 정의 권장`, or `맥락 확인 필요`. Do not frame it as the user's mistake.
 - Use `TBD` or `원문 기준 추가 정의 필요` only when needed.
