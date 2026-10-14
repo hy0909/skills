@@ -42,7 +42,9 @@ description: 기획 문서 저장소(safe-site-docs, safe-qr-docs 등)가 확정
 ### 2. 보고 받은 뒤 내가 할 일
 
 - 지적마다 파일을 직접 열어 사실인지 확인한다. 에이전트는 틀릴 때가 있다(없는 PR 번호를 "없다"고 하거나, 브랜치 중간 버전을 main 버전으로 착각). 확인 안 되면 반영하지 않고 사용자에게 알린다.
-- 맞는 지적만 고친다. 고칠 때 규칙:
+- 맞는 지적만 고친다. 고칠 때 규칙(기능명세 md는 `feature-generator` 스킬의 SKILL.md와 references/common_md_structure.md·feature_content_rules.md를 먼저 읽고 그 규칙을 따른다):
+  - 메타 키는 `id·version·status·owner_team·effective_date`가 표준. `updated`를 새로 추가하지 않는다. 손댄 문서의 `owner_team`은 `AI Platform Team`으로 바꾼다.
+  - 표 칸은 짧은 명사형, 설명 문단은 일상 동사. 예시는 문서에 있는 용어(PPE는 안전모·하네스·각반)로 든다.
   - 정책 문장은 한 문서에만 쓰고 다른 문서는 링크로 가리킨다(기능명세 md 분할 규칙).
   - 요구사항 행을 고치면 같은 행의 프로세스·화면·데이터 열도 같이 본다.
   - yaml `version`을 올리고 변경 이력 맨 위에 행을 추가한다(일자·내용·작성자 `Claude, hy0909`). 같은 날 결정이 여러 개면 날짜별로 행을 나눈다.
