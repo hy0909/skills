@@ -1,6 +1,6 @@
 ---
 name: feature-generator
-description: Create concise Korean 기능명세서 Markdown or XLSX files from Figma screens, raw text, existing XLSX, or MD tables. Use for a new service or feature and for improvements to an existing product when the user wants 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, complete screen/function coverage, optional exception-policy review, peer feature-MD consistency review, Figma-to-spec alignment review, and standard XLSX export.
+description: Create concise Korean 기능명세서 Markdown or XLSX files from Figma screens, raw text, existing XLSX, or MD tables. Use for a new service or feature and for improvements to an existing product when the user wants 목적·범위, a short 핵심 기획 규칙 table, a 기능명세서 table whose first column is 요구사항 ID, complete screen/function coverage, optional exception-policy review, peer feature-MD consistency review, Figma-to-spec alignment review, standard XLSX export, and a subagent pre-publish review (planning-doc consistency, dev impact after merge to main, conflicts) that is always offered before creating an issue, commenting on an issue, or opening a PR.
 ---
 
 # Feature Generator
@@ -16,6 +16,15 @@ Create concise Korean 기능명세서 files.
 5. Verify that every in-scope screen, function, action, and explicitly shown state maps to a requirement row or a documented out-of-scope decision.
 6. After the initial MD is complete, read `references/post_draft_reviews.md` and separately offer all three reviews: exception-policy gaps, consistency with other MD files in the feature folder, and Figma-to-MD alignment.
 7. When commit/push was requested, do not commit or push until the user answers all three review offers and any approved changes are reflected.
+8. Before creating an issue, commenting on an issue, or opening a PR about this work, always read `references/pre_publish_review.md` and ask whether to run the subagent pre-publish review. Do not post until the user answers.
+
+## 올리기 전 검토 (2026-10-26 사용자 규칙)
+
+이슈를 만들 때, 이슈에 댓글을 달 때, PR을 만들 때는 올리기 직전에 항상 묻는다. 위 세 가지 검토를 이미 했어도 따로 묻는다.
+
+- 질문: `올리기 전에 서브에이전트로 기존 기획·기능명세 문서와의 일관성, main 병합 시 개발 쪽 문제, 충돌 사항을 검토할까요?`
+- 승인하면 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄우고, 돌아온 지적은 근거를 직접 열어 확인한 뒤 보고한다.
+- 절차와 보고 표는 `references/pre_publish_review.md`를 따른다.
 
 ## Input Context
 
