@@ -1,6 +1,6 @@
 ---
 name: issue-generator
-description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, comment on, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default. Never post an issue, issue edit, or issue comment before showing the full body in chat and getting explicit approval; write the body with the human-writing skill.
+description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, comment on, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default. Before posting an issue, issue edit, or issue comment, always ask 「추가 검토할까요?」 (1 consistency/conflict/dev impact, 2 exception/error cases, 3 none), then show the full body in chat and get explicit approval; write the body with the human-writing skill.
 ---
 
 # Issue Generator
@@ -57,7 +57,7 @@ If both a development repo and a docs repo appear in context, use the docs repo 
    - Type: use a planning/product/documentation type when the repository supports issue types.
    - Priority field: default to middle/medium.
    - Start date field: default to today's local date.
-7. Show the full title and body in chat and wait for explicit approval (see 「올리기 전 승인」). Then create or edit the issue with `gh issue create` or `gh issue edit`. Issue comments follow the same rule before `gh issue comment`.
+7. Ask 「추가 검토할까요?」 and run the chosen reviews (see 「올리기 전 추가 검토」). Then show the full title and body in chat and wait for explicit approval (see 「올리기 전 승인」). Then create or edit the issue with `gh issue create` or `gh issue edit`. Issue comments follow the same rule before `gh issue comment`.
 8. Verify title, URL, assignees, labels, type, parent relationship, and any project fields that were set.
 
 ## Sub-Issue Workflow
@@ -94,12 +94,53 @@ Then run:
 gh issue view <new-number> --repo safeai-kr/safe-site-docs --json title,url,assignees,parent,body
 ```
 
+## 올리기 전 추가 검토 (2026-10-29 사용자 규칙)
+
+본문 초안을 쓴 뒤, 올리기 전 승인을 받기 전에 추가 검토를 할지 **반드시** 묻는다. 「검토 없이 올려」라고 미리 말했더라도 묻는다. 게시물마다 새로 묻고, 앞에서 받은 답을 다음 게시물에 쓰지 않는다.
+
+- 대상: 이슈 생성, 이슈 제목·본문 수정, 이슈 댓글, 하위 이슈 생성
+- 질문: `추가 검토할까요?`
+- Claude Code에서는 AskUserQuestion 도구로 묻는다. 여러 개를 고를 수 있게(multiSelect) 하고 선택지는 아래 세 개다.
+
+| 선택지 | 검토 내용 |
+| --- | --- |
+| 1. 일관성·충돌·개발 영향 | 문서 간 일관성, 충돌 여부, 이대로 개발했을 때 이상하게 될 점 |
+| 2. 예외·에러 케이스 | 예외 상황과 에러 케이스가 빠짐없이 나왔는지 |
+| 3. 선택 안 함 | 추가 검토 없이 본문 승인 단계로 감 |
+
+- 1과 2는 함께 고를 수 있다. 3을 1·2와 함께 고르면 다시 묻는다.
+- 답을 받기 전에는 올리는 명령(`gh issue create`, `gh issue edit`, `gh issue comment`, `gh pr create`, `gh pr edit`, `gh pr comment`, `gh pr review`)을 실행하지 않는다.
+
+**1을 고르면**
+`../feature-generator/references/pre_publish_review.md` 2~4절대로 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄운다. 서브에이전트를 쓸 수 없는 환경에서는 같은 검토를 차례로 직접 한다.
+
+**2를 고르면**
+서브에이전트 하나를 띄워 올릴 글과 글이 다루는 문서(바뀐 MD, 언급한 요구사항)를 읽고 아래가 정해져 있는지 본다. 기준은 `../feature-generator/references/coverage_exception_review.md`다.
+
+- 화면 상태: 처음 진입, 불러오는 중, 빈 화면, 오류, 권한 없음, 일부만 성공
+- 입력: 필수값 누락, 형식 오류, 글자 수·개수 한도, 중복 입력
+- 처리: 서버 오류, 네트워크 끊김, 시간 초과, 같은 요청 두 번, 다른 사람이 동시에 수정
+- 데이터: 대상이 지워졌거나 권한이 바뀐 경우, 보관 기간이 지난 경우
+- 흐름: 각 분기의 끝(성공·실패 뒤 어디로 가는지), 되돌리기·취소
+
+정해지지 않은 것은 정책을 지어내지 말고 `정의 필요`로 적는다. 작업과 관계없는 항목은 빼고 보고한다.
+
+**결과 보고**
+서브에이전트 결과는 근거 위치를 직접 열어 맞는지 확인한 뒤 아래 표로 보고한다. 확인하지 못한 것은 `확인 필요`로 적는다.
+
+| 심각도 | 검토 | 위치 | 문제 | 근거 | 권장 조치 |
+| --- | --- | --- | --- | --- | --- |
+
+- 심각도는 `병합 막음`, `병합 전 권장`, `참고` 세 가지만 쓴다.
+- 지적이 없으면 `중요 문제 없음`과 무엇을 어디까지 봤는지 한 줄로 적는다.
+- 어떤 지적을 반영할지 사용자에게 묻고, 반영한 뒤 고친 본문 전체를 다시 보여 주고 「올리기 전 승인」을 받는다.
+
 ## 올리기 전 승인 (2026-10-29 사용자 규칙)
 
 GitHub에 글을 남기는 모든 동작은 사용자가 본문을 보고 승인한 뒤에만 실행한다. 사용자가 승인하지 않은 글을 올리지 않는다.
 
 - 대상: 이슈 생성, 이슈 제목·본문 수정, 이슈 댓글 작성·수정, 하위 이슈 생성
-- 순서: 본문 작성 → 채팅에 제목과 본문 전체를 그대로 보여 줌 → 사용자 승인 → 실행
+- 순서: 본문 작성 → 「추가 검토할까요?」 질문과 검토 → 채팅에 제목과 본문 전체를 그대로 보여 줌 → 사용자 승인 → 실행
 - 승인은 「올려」, 「이대로 올려」처럼 이 본문을 올리라고 분명히 말한 경우만 인정한다. 「남겨」, 「정리해」, 「반영해」, 「처리해」는 올리라는 승인이 아니다. 이때도 초안을 먼저 보여 주고 올릴지 묻는다.
 - 본문을 한 글자라도 고치면 고친 본문을 다시 보여 주고 다시 승인받는다.
 - 본문은 채팅에서 표가 제대로 보이게 코드 블록 없이 보여 준다. GitHub에 올라갈 모습 그대로다.
