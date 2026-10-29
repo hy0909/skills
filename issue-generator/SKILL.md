@@ -1,6 +1,6 @@
 ---
 name: issue-generator
-description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default.
+description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, comment on, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default. Never post an issue, issue edit, or issue comment before showing the full body in chat and getting explicit approval; write the body with the human-writing skill.
 ---
 
 # Issue Generator
@@ -57,7 +57,7 @@ If both a development repo and a docs repo appear in context, use the docs repo 
    - Type: use a planning/product/documentation type when the repository supports issue types.
    - Priority field: default to middle/medium.
    - Start date field: default to today's local date.
-7. Create or edit the issue with `gh issue create` or `gh issue edit`.
+7. Show the full title and body in chat and wait for explicit approval (see 「올리기 전 승인」). Then create or edit the issue with `gh issue create` or `gh issue edit`. Issue comments follow the same rule before `gh issue comment`.
 8. Verify title, URL, assignees, labels, type, parent relationship, and any project fields that were set.
 
 ## Sub-Issue Workflow
@@ -93,6 +93,18 @@ Then run:
 ```bash
 gh issue view <new-number> --repo safeai-kr/safe-site-docs --json title,url,assignees,parent,body
 ```
+
+## 올리기 전 승인 (2026-10-29 사용자 규칙)
+
+GitHub에 글을 남기는 모든 동작은 사용자가 본문을 보고 승인한 뒤에만 실행한다. 사용자가 승인하지 않은 글을 올리지 않는다.
+
+- 대상: 이슈 생성, 이슈 제목·본문 수정, 이슈 댓글 작성·수정, 하위 이슈 생성
+- 순서: 본문 작성 → 채팅에 제목과 본문 전체를 그대로 보여 줌 → 사용자 승인 → 실행
+- 승인은 「올려」, 「이대로 올려」처럼 이 본문을 올리라고 분명히 말한 경우만 인정한다. 「남겨」, 「정리해」, 「반영해」, 「처리해」는 올리라는 승인이 아니다. 이때도 초안을 먼저 보여 주고 올릴지 묻는다.
+- 본문을 한 글자라도 고치면 고친 본문을 다시 보여 주고 다시 승인받는다.
+- 본문은 채팅에서 표가 제대로 보이게 코드 블록 없이 보여 준다. GitHub에 올라갈 모습 그대로다.
+- 승인 없이 올린 것을 알게 되면 바로 사용자에게 알리고, 사용자가 원하면 지운다.
+- 본문을 쓰기 전에 `human-writing` 스킬을 먼저 불러와 그 규칙대로 쓴다(Claude Code는 Skill 도구로 `human-writing` 호출, 없으면 `~/.claude/skills/human-writing/SKILL.md`를 읽는다). 아래 「문체 규칙」은 요약일 뿐이다.
 
 ## 문체 규칙 (공통)
 

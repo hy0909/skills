@@ -1,6 +1,6 @@
 ---
 name: pr-generator
-description: Create GitHub pull requests for SafeAI work. Use when the user asks to create, open, draft, publish, or prepare a PR; assign PRs to `hy0909` by default and ask who should be requested as reviewer when reviewers were not specified.
+description: Create GitHub pull requests for SafeAI work. Use when the user asks to create, open, draft, publish, edit, comment on, or prepare a PR; assign PRs to `hy0909` by default and ask who should be requested as reviewer when reviewers were not specified. Never create a PR, edit its body, or post a PR comment before showing the full body in chat and getting explicit approval; write the body with the human-writing skill.
 ---
 
 # PR Generator
@@ -36,7 +36,7 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 5. Stage only intended files.
 6. Commit with a concise message when changes are not already committed.
 7. Push the branch.
-8. Create a draft PR with the confirmed title, body, base branch, `hy0909` assignee, and confirmed reviewers.
+8. Show the full PR title and body in chat and wait for explicit approval (see 「올리기 전 승인」). Then create a draft PR with the approved title, body, base branch, `hy0909` assignee, and confirmed reviewers. PR comments and body edits follow the same rule.
 9. Verify the PR metadata after creation.
 
 ## Metadata Defaults
@@ -45,6 +45,18 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 - Reviewers: always ask before PR creation if not specified.
 - Labels: use user-requested labels; otherwise choose an appropriate existing label only when clearly applicable.
 - Project fields: set only when repository/project context is available.
+
+## 올리기 전 승인 (2026-10-29 사용자 규칙)
+
+GitHub에 글을 남기는 모든 동작은 사용자가 본문을 보고 승인한 뒤에만 실행한다. 사용자가 승인하지 않은 글을 올리지 않는다.
+
+- 대상: PR 생성, PR 제목·본문 수정, PR 댓글·리뷰 작성
+- 순서: 본문 작성 → 채팅에 제목과 본문 전체를 그대로 보여 줌 → 사용자 승인 → 실행
+- 승인은 「올려」, 「이대로 올려」처럼 이 본문을 올리라고 분명히 말한 경우만 인정한다. 「남겨」, 「정리해」, 「반영해」, 「처리해」는 올리라는 승인이 아니다. 이때도 초안을 먼저 보여 주고 올릴지 묻는다.
+- 본문을 한 글자라도 고치면 고친 본문을 다시 보여 주고 다시 승인받는다.
+- 본문은 채팅에서 표가 제대로 보이게 코드 블록 없이 보여 준다. GitHub에 올라갈 모습 그대로다.
+- 승인 없이 올린 것을 알게 되면 바로 사용자에게 알리고, 사용자가 원하면 지운다.
+- 본문을 쓰기 전에 `human-writing` 스킬을 먼저 불러와 그 규칙대로 쓴다(Claude Code는 Skill 도구로 `human-writing` 호출, 없으면 `~/.claude/skills/human-writing/SKILL.md`를 읽는다). 아래 「문체 규칙」은 요약일 뿐이다.
 
 ## 문체 규칙 (공통)
 
