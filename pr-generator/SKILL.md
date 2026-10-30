@@ -42,7 +42,7 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 ## Metadata Defaults
 
 - Assignees: always `hy0909`.
-- Reviewers: always ask before PR creation if not specified.
+- Reviewers: always ask before PR creation if not specified. Offer these candidates: `safe-hwan` (first), `gurdl0525` (BE), or no reviewer.
 - Labels: use user-requested labels; otherwise choose an appropriate existing label only when clearly applicable.
 - Project fields: set only when repository/project context is available.
 

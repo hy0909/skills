@@ -22,7 +22,7 @@ Use this skill for SafeAI GitHub issue work. The user is a planner, so planning 
 - Before creating any issue or sub-issue, explicitly mention `Assignees: hy0909`.
 - Do not stop to ask for Assignees when the user did not specify them; `hy0909` is the default and required assignee.
 - If the user requests extra assignees such as FE/BE, include `hy0909` and the requested additional assignees unless the user explicitly says otherwise.
-- If the user says FE/BE assignees, add FE `easyDong19` and BE `gurdl0525` in addition to `hy0909`.
+- If the user says BE assignees, add BE `gurdl0525` in addition to `hy0909`. For any other extra assignee, ask the user and suggest `safe-hwan` as a candidate.
 - When labels, issue type, project fields, priority, or start date are available, set sensible planning defaults instead of leaving them empty.
 - Default priority to a middle/medium value unless the user says otherwise.
 - Default start date to today's local date from the active environment context unless the user says otherwise.
@@ -50,8 +50,8 @@ If both a development repo and a docs repo appear in context, use the docs repo 
    - Always mention `Assignees: hy0909` before creating.
    - If no assignees were specified, proceed with `hy0909`.
    - If extra assignees were specified, include `hy0909` and state the full proposed assignee list before creating.
-   - FE: `easyDong19`
    - BE: `gurdl0525`
+   - Other candidate: `safe-hwan`
 6. Apply issue metadata when possible:
    - Labels: use the user's requested labels; otherwise choose an appropriate planning label only if it exists.
    - Type: use a planning/product/documentation type when the repository supports issue types.
@@ -77,7 +77,7 @@ gh issue create \
   --parent https://github.com/safeai-kr/safe-site/issues/12 \
   --title "[PD] 위험알림 보고서 컴포넌트 제작 및 기획 문서 작성" \
   --body-file <body-file> \
-  --assignee hy0909,easyDong19,gurdl0525
+  --assignee hy0909,gurdl0525
 ```
 
 ## Transfer Workflow
