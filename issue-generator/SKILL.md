@@ -1,6 +1,6 @@
 ---
 name: issue-generator
-description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, comment on, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default. Before posting an issue, issue edit, or issue comment, always ask 「추가 검토할까요?」 (1 consistency/conflict/dev impact, 2 exception/error cases, 3 none), then show the full body in chat and get explicit approval; write the body with the human-writing skill.
+description: Create or update GitHub issues and sub-issues for SafeAI planning work. Use when the user asks to create, edit, comment on, move, transfer, or verify an issue/sub-issue, especially when repository routing, assignees, labels, issue type, project fields, priority, or start date matters: always prefer the matching `*-docs` repository for planning issues, and assign new issues to `hy0909` by default. Before posting an issue, issue edit, or issue comment, always ask 「추가 검토할까요?」 (1 consistency/conflict/dev impact checked against related dev repos BE/FE/mobile, 2 exception/error cases, 3 none), then show the full body in chat and get explicit approval; write the body with the human-writing skill.
 ---
 
 # Issue Generator
@@ -104,7 +104,7 @@ gh issue view <new-number> --repo safeai-kr/safe-site-docs --json title,url,assi
 
 | 선택지 | 검토 내용 |
 | --- | --- |
-| 1. 일관성·충돌·개발 영향 | 문서 간 일관성, 충돌 여부, 이대로 개발했을 때 이상하게 될 점 |
+| 1. 일관성·충돌·개발 영향 | 문서 간 일관성, 충돌 여부, 이대로 개발했을 때 이상하게 될 점, 같은 제품의 관련 개발 저장소(BE·FE·모바일)와의 차이 |
 | 2. 예외·에러 케이스 | 예외 상황과 에러 케이스가 빠짐없이 나왔는지 |
 | 3. 선택 안 함 | 추가 검토 없이 본문 승인 단계로 감 |
 
@@ -112,10 +112,10 @@ gh issue view <new-number> --repo safeai-kr/safe-site-docs --json title,url,assi
 - 답을 받기 전에는 올리는 명령(`gh issue create`, `gh issue edit`, `gh issue comment`, `gh pr create`, `gh pr edit`, `gh pr comment`, `gh pr review`)을 실행하지 않는다.
 
 **1을 고르면**
-`../feature-generator/references/pre_publish_review.md` 2~4절대로 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄운다. 서브에이전트를 쓸 수 없는 환경에서는 같은 검토를 차례로 직접 한다.
+`../feature-generator/references/pre_publish_review.md`의 2절부터 4절까지에 따라 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄운다. 개발 영향과 충돌을 보는 서브에이전트는 같은 제품의 관련 개발 저장소(BE·FE·모바일)를 읽기 전용으로 대조한다. 저장소를 찾는 방법은 같은 문서의 2-1절에 있다 (2026-11-13 사용자 규칙). 서브에이전트를 쓸 수 없는 환경에서는 같은 검토를 차례로 직접 한다.
 
 **2를 고르면**
-서브에이전트 하나를 띄워 올릴 글과 글이 다루는 문서(바뀐 MD, 언급한 요구사항)를 읽고 아래가 정해져 있는지 본다. 기준은 `../feature-generator/references/coverage_exception_review.md`다.
+서브에이전트 하나를 띄워 올릴 글과 글이 다루는 문서(바뀐 MD, 언급한 요구사항)를 읽고 아래가 정해져 있는지 본다. 기준은 `../feature-generator/references/coverage_exception_review.md`다. 관련 개발 저장소의 코드가 그 예외를 이미 어떻게 처리하는지 참고로 볼 수 있다. 이 확인은 필수가 아니다 (2026-11-13 사용자 규칙).
 
 - 화면 상태: 처음 진입, 불러오는 중, 빈 화면, 오류, 권한 없음, 일부만 성공
 - 입력: 필수값 누락, 형식 오류, 글자 수·개수 한도, 중복 입력
@@ -132,7 +132,8 @@ gh issue view <new-number> --repo safeai-kr/safe-site-docs --json title,url,assi
 | --- | --- | --- | --- | --- | --- |
 
 - 심각도는 `병합 막음`, `병합 전 권장`, `참고` 세 가지만 쓴다.
-- 지적이 없으면 `중요 문제 없음`과 무엇을 어디까지 봤는지 한 줄로 적는다.
+- 위치에는 저장소 이름을 붙인다. 예: `safe-site-fe:src/...:42`, `safe-site#123`. 개발 저장소를 읽지 못했으면 표 아래에 그 사실을 한 줄로 적는다 (2026-11-13 사용자 규칙).
+- 지적이 없으면 `중요 문제 없음`과 함께 봤던 저장소와 문서를 한 줄로 적는다.
 - 어떤 지적을 반영할지 사용자에게 묻고, 반영한 뒤 고친 본문 전체를 다시 보여 주고 「올리기 전 승인」을 받는다.
 
 ## 올리기 전 승인 (2026-10-29 사용자 규칙)
