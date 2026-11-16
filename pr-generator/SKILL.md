@@ -64,7 +64,7 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 - 답을 받기 전에는 올리는 명령(`gh issue create`, `gh issue edit`, `gh issue comment`, `gh pr create`, `gh pr edit`, `gh pr comment`, `gh pr review`)을 실행하지 않는다.
 
 **1을 고르면**
-`../feature-generator/references/pre_publish_review.md`의 2절부터 4절까지에 따라 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄운다. 개발 영향과 충돌을 보는 서브에이전트는 같은 제품의 관련 개발 저장소(BE·FE·모바일)를 읽기 전용으로 대조한다. 저장소를 찾는 방법은 같은 문서의 2-1절에 있다 (2026-11-13 사용자 규칙). 서브에이전트를 쓸 수 없는 환경에서는 같은 검토를 차례로 직접 한다.
+`../feature-generator/references/pre_publish_review.md`의 2절부터 4절까지에 따라 서브에이전트 세 개(기획 일관성, 개발 영향, 충돌)를 동시에 띄운다. 개발 영향과 충돌을 보는 서브에이전트는 같은 제품의 관련 개발 저장소(BE·FE·모바일)를 읽기 전용으로 대조한다. 저장소를 찾는 방법은 같은 문서의 2-1절에 있다 (2026-11-13 사용자 규칙). 관련 저장소는 이름이 `safe-site`이거나 `safe-site-`로 시작하는 저장소만이고(safe-kiosk 같은 다른 제품은 제외), 이슈·PR을 검토하거나 받은 리뷰를 반영할 때도 같은 대조를 한다. 보고 첫 줄에는 「이 브랜치 `커밋`의 문서끼리, 그리고 BE `safeai-kr/safe-site` main `커밋`, FE `safeai-kr/safe-site-monorepo` main `커밋` 코드와 대조했습니다」처럼 대조한 저장소와 커밋을 적는다 (2026-11-16 사용자 규칙). 서브에이전트를 쓸 수 없는 환경에서는 같은 검토를 차례로 직접 한다.
 
 **2를 고르면**
 서브에이전트 하나를 띄워 올릴 글과 글이 다루는 문서(바뀐 MD, 언급한 요구사항)를 읽고 아래가 정해져 있는지 본다. 기준은 `../feature-generator/references/coverage_exception_review.md`다. 관련 개발 저장소의 코드가 그 예외를 이미 어떻게 처리하는지 참고로 볼 수 있다. 이 확인은 필수가 아니다 (2026-11-13 사용자 규칙).

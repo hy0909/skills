@@ -32,10 +32,14 @@
 검토 대상 docs 저장소 이름에서 `-docs`를 뺀 앞부분으로 시작하는 같은 조직 저장소를 모두 찾는다. 목록은 이 문서에 박아 두지 않고 매번 아래 명령으로 찾는다.
 
 ```bash
-gh repo list safeai-kr --limit 300 --json name,isArchived,description -q '.[] | select(.name|startswith("safe-site")) | select(.isArchived|not) | .name'
+gh repo list safeai-kr --limit 300 --json name,isArchived,description -q '.[] | select(.name=="safe-site" or (.name|startswith("safe-site-"))) | select(.isArchived|not) | .name'
 ```
 
 명령의 `safe-site`는 safe-site-docs를 검토할 때의 앞부분이다. safe-qr-docs라면 `safe-qr`로 바꾼다.
+
+앞부분이 정확히 같은 저장소만 본다. 이름이 앞부분과 똑같거나 `앞부분-`으로 시작하는 저장소다. safe-kiosk처럼 회사는 같아도 앞부분이 다른 저장소는 보지 않는다 (2026-11-16 사용자 규칙).
+
+이 대조는 올리기 전 검토에만 하는 것이 아니다. 이슈를 검토하거나, PR을 검토하거나, 받은 리뷰를 반영할 때도 항상 docs 문서끼리 비교에 더해 이 목록의 BE·FE·AI·워커 저장소와 대조한다. docs 저장소 안의 문서끼리만 비교했다가 BE·FE·AI 코드와 어긋난 곳을 PR 리뷰에서 많이 지적받았기 때문이다 (2026-11-16 사용자 규칙).
 
 2026-11-13 기준 결과 예시다. 실제 목록은 검토할 때마다 다시 확인한다: safe-site, safe-site-fe, safe-site-mobile, safe-site-monorepo, safe-site-camera-agent, safe-site-risk-detection-agent, safe-site-ladder-scaffold-worker, safe-site-voice-llm-worker.
 
@@ -117,6 +121,7 @@ git과 GitHub 기준으로 병합을 막거나 덮어쓸 수 있는 곳을 찾�
 - `병합 전 권장`: 올릴 수는 있지만 고치고 올리는 편이 낫다
 - `참고`: 이번 작업 범위 밖이지만 알아 둘 것
 
+- 보고 첫 줄에 무엇과 대조했는지 커밋까지 적는다. 예: `이 브랜치 \`4fd18503\`의 문서끼리, 그리고 BE \`safeai-kr/safe-site\` main \`77268f9f\`, FE \`safeai-kr/safe-site-monorepo\` main \`ba82f7a0\` 코드와 대조했습니다.` 커밋은 앞 8자리로 쓰고, 대조한 저장소마다 역할(BE·FE·앱·AI·워커)을 붙인다. 목록에 있었지만 읽지 못했거나 관련 코드가 없던 저장소도 이 줄 아래에 적는다 (2026-11-16 사용자 규칙).
 - 위치에는 저장소 이름을 붙인다. 예: `safe-site-fe:src/...:42`, `safe-site#123`, `safe-site-docs:plan/...:줄`. 같은 식으로 문서 지적도 저장소 이름을 붙인다 (2026-11-13 사용자 규칙).
 - 개발 저장소를 읽지 못했으면 표 아래에 그 사실을 한 줄로 적는다.
 
