@@ -7,7 +7,7 @@
 올리는 명령을 실행하기 전에 `추가 검토할까요?`라고 반드시 묻는다. 질문과 선택지는 `issue-generator`·`pr-generator`의 「올리기 전 추가 검토」와 같다 (사용자 규칙 2026-10-29).
 
 - Claude Code에서는 AskUserQuestion 도구로 묻고, 여러 개를 고를 수 있게 한다.
-- 선택지: `1. 일관성·충돌·개발 영향`(이 문서 2절부터 4절까지의 서브에이전트 세 개. 같은 제품의 관련 개발 저장소 BE·FE·모바일까지 대조한다), `2. 예외·에러 케이스`(`coverage_exception_review.md` 기준 서브에이전트 하나), `3. 선택 안 함`. (사용자 규칙 2026-11-13)
+- 선택지: `1. 일관성·충돌·개발 영향`(이 문서 2절부터 4절까지의 서브에이전트 세 개. 2-1절에서 저장소 이름을 먼저 확인하고, 같은 제품의 관련 개발 저장소 BE·FE·앱·AI까지 대조한다), `2. 예외·에러 케이스`(`coverage_exception_review.md` 기준 서브에이전트 하나), `3. 선택 안 함`. (사용자 규칙 2026-11-13)
 - 사용자가 답하기 전에는 `gh issue create`, `gh issue comment`, `gh pr create`를 실행하지 않는다.
 - 같은 작업에서 내용이 바뀌어 다시 올릴 때도 다시 묻는다. 한 번 받은 답을 다음 게시물에 그대로 쓰지 않는다.
 
@@ -23,25 +23,57 @@
 | 올릴 글 | 이슈·댓글·PR 본문 초안 전체 |
 | 비교할 문서 폴더 | 기획·기능명세 MD가 모인 폴더 (예: `plan/feature/`, `docs/feature/`) |
 | 관련 이슈·PR | 본문에 적힌 번호, `gh pr list --state open` |
-| 관련 개발 저장소 | 검토 대상 docs 저장소의 이름 앞부분으로 찾는다. 방법은 2-1절 (2026-11-13 사용자 규칙) |
+| 관련 개발 저장소 | 검토하는 docs 저장소 이름에서 `-docs`를 뺀 제품 이름으로 찾는다. 검토 전에 2-1절대로 저장소 이름부터 확인한다 (2026-11-13, 2026-11-17 사용자 규칙) |
 
 브랜치가 없는 이슈·댓글이면 바뀐 파일 대신 "글이 언급하는 문서"를 범위로 잡고, 비교 기준은 `origin/main`으로 한다.
 
-### 2-1. 관련 개발 저장소 찾기 (2026-11-13 사용자 규칙)
+### 2-1. 저장소 이름 확인과 관련 개발 저장소 찾기 (2026-11-13, 2026-11-17 사용자 규칙)
 
-검토 대상 docs 저장소 이름에서 `-docs`를 뺀 앞부분으로 시작하는 같은 조직 저장소를 모두 찾는다. 목록은 이 문서에 박아 두지 않고 매번 아래 명령으로 찾는다.
+검토를 시작하기 전에 저장소 이름부터 확인한다. 관련 저장소는 safe-site로 정해 둔 것이 아니라, 검토하는 기획 저장소의 제품 이름으로 매번 정한다. safe-site-docs를 검토하면 safe-site 저장소들과, safe-kiosk-docs를 검토하면 safe-kiosk 저장소들과 대조한다. 제품 이름이 다른 저장소는 보지 않는다. safe-site-docs를 볼 때 safe-kiosk-be를, safe-kiosk-docs를 볼 때 safe-site를 섞지 않는다 (2026-11-17 사용자 규칙).
+
+1. 검토하는 기획 저장소 이름을 확인한다. 작업 폴더에서는 `gh repo view --json name -q .name`으로 보고, 이슈·PR 링크를 받았으면 링크에 있는 저장소 이름을 쓴다. 작업 폴더와 링크의 저장소가 다르면 링크 쪽을 따른다.
+2. 이름 끝의 `-docs`를 빼서 제품 이름을 정한다. `safe-site-docs`는 `safe-site`, `safe-kiosk-docs`는 `safe-kiosk`, `safe-qr-docs`는 `safe-qr`다. 이름이 `-docs`로 끝나지 않으면 제품 이름을 짐작하지 말고 사용자에게 묻는다.
+3. 제품 이름과 똑같거나 `제품 이름-`으로 시작하는 저장소를 모두 찾는다. 목록은 이 문서에 박아 두지 않고 매번 아래 명령으로 찾는다.
 
 ```bash
-gh repo list safeai-kr --limit 300 --json name,isArchived,description -q '.[] | select(.name=="safe-site" or (.name|startswith("safe-site-"))) | select(.isArchived|not) | .name'
+DOCS=$(gh repo view --json name -q .name)   # 예: safe-kiosk-docs. 링크로 받았으면 그 이름을 넣는다
+P=${DOCS%-docs}                              # 예: safe-kiosk
+gh repo list safeai-kr --limit 1000 --json name,isArchived,defaultBranchRef,description \
+  -q ".[] | select(.isArchived|not) | select(.name==\"$P\" or (.name|startswith(\"$P-\"))) | [.name, .defaultBranchRef.name, .description] | @tsv"
 ```
 
-명령의 `safe-site`는 safe-site-docs를 검토할 때의 앞부분이다. safe-qr-docs라면 `safe-qr`로 바꾼다.
+4. 이름은 비슷하지만 표기가 다른 저장소도 따로 찾는다. 대소문자나 `_`만 다른 저장소다(예: `SafeKiosk`, `Safe_Site_CADet`, `safeCheck_FE`).
 
-앞부분이 정확히 같은 저장소만 본다. 이름이 앞부분과 똑같거나 `앞부분-`으로 시작하는 저장소다. safe-kiosk처럼 회사는 같아도 앞부분이 다른 저장소는 보지 않는다 (2026-11-16 사용자 규칙).
+```bash
+K=$(printf %s "$P" | tr -d '_-' | tr 'A-Z' 'a-z')
+gh repo list safeai-kr --limit 1000 --json name,isArchived \
+  -q ".[] | select(.isArchived|not) | select((.name==\"$P\" or (.name|startswith(\"$P-\")))|not) | select(.name|ascii_downcase|gsub(\"[-_]\";\"\")|startswith(\"$K\")) | .name"
+```
 
-이 대조는 올리기 전 검토에만 하는 것이 아니다. 이슈를 검토하거나, PR을 검토하거나, 받은 리뷰를 반영할 때도 항상 docs 문서끼리 비교에 더해 이 목록의 BE·FE·AI·워커 저장소와 대조한다. docs 저장소 안의 문서끼리만 비교했다가 BE·FE·AI 코드와 어긋난 곳을 PR 리뷰에서 많이 지적받았기 때문이다 (2026-11-16 사용자 규칙).
+   이런 저장소는 기본으로 대조하지 않고 확인 결과에 「제외」로 적는다. 검토하는 문서나 이슈·PR이 그 저장소를 직접 언급하면 넣을지 사용자에게 묻는다.
 
-2026-11-13 기준 결과 예시다. 실제 목록은 검토할 때마다 다시 확인한다: safe-site, safe-site-fe, safe-site-mobile, safe-site-monorepo, safe-site-camera-agent, safe-site-risk-detection-agent, safe-site-ladder-scaffold-worker, safe-site-voice-llm-worker.
+5. 확인 결과를 검토 시작 전에 사용자에게 아래 표로 짧게 보여 주고 바로 검토를 시작한다. 아래 세 경우에만 멈추고 묻는다.
+   - 기획 저장소 이름이 `-docs`로 끝나지 않을 때
+   - 3번 결과에 docs 말고 개발 저장소가 하나도 없을 때
+   - 저장소 이름과 설명만으로 같은 제품인지 애매할 때
+
+| 저장소 | 역할 | 기본 브랜치 | 대조 |
+| --- | --- | --- | --- |
+| safe-kiosk-be | BE | main | 포함 |
+| safe-kiosk-fe | FE | main | 포함 |
+| SafeKiosk | 확인 필요 | - | 제외(표기가 다름) |
+
+역할은 이름과 설명으로 정한다. be·server는 BE, fe·monorepo·web은 FE, mobile·app은 앱, agent·worker·edge·crawler는 AI·기기·워커로 적고, 제품 이름과 똑같은 저장소는 설명을 보고 정한다. 애매하면 「확인 필요」로 적는다.
+
+2026-11-17 기준 결과 예시다. 실제 목록은 검토할 때마다 다시 확인한다.
+
+| 기획 저장소 | 대조할 저장소 | 제외한 비슷한 이름 |
+| --- | --- | --- |
+| safe-site-docs | safe-site, safe-site-monorepo, safe-site-fe, safe-site-mobile, safe-site-camera-agent, safe-site-risk-detection-agent, safe-site-ladder-scaffold-worker, safe-site-voice-llm-worker | Safe_Site_CADet, Safe_Site_Risk_detection |
+| safe-kiosk-docs (이날 기준 저장소 없음) | safe-kiosk-be, safe-kiosk-fe, safe-kiosk-crawler, safe-kiosk-people-agent | SafeKiosk |
+| safe-qr-docs | safe-qr, safe-qr-be, safe-qr-monorepo | - |
+
+이 대조는 올리기 전 검토에만 하는 것이 아니다. 이슈를 검토하거나, PR을 검토하거나, 받은 리뷰를 반영할 때도 항상 docs 문서끼리 비교에 더해 이 목록의 BE·FE·앱·AI·워커 저장소와 대조한다. docs 저장소 안의 문서끼리만 비교했다가 BE·FE·AI 코드와 어긋난 곳을 PR 리뷰에서 많이 지적받았기 때문이다 (2026-11-16 사용자 규칙).
 
 - 이름에 `docs`가 들어간 저장소는 수정 대상이다. 나머지는 읽기 전용으로 대조한다.
 - 이름만으로 같은 제품인지 애매하면 저장소 설명(description)을 본다. 그래도 모르면 사용자에게 묻는다.
@@ -121,7 +153,7 @@ git과 GitHub 기준으로 병합을 막거나 덮어쓸 수 있는 곳을 찾�
 - `병합 전 권장`: 올릴 수는 있지만 고치고 올리는 편이 낫다
 - `참고`: 이번 작업 범위 밖이지만 알아 둘 것
 
-- 보고 첫 줄에 무엇과 대조했는지 커밋까지 적는다. 예: `이 브랜치 \`4fd18503\`의 문서끼리, 그리고 BE \`safeai-kr/safe-site\` main \`77268f9f\`, FE \`safeai-kr/safe-site-monorepo\` main \`ba82f7a0\` 코드와 대조했습니다.` 커밋은 앞 8자리로 쓰고, 대조한 저장소마다 역할(BE·FE·앱·AI·워커)을 붙인다. 목록에 있었지만 읽지 못했거나 관련 코드가 없던 저장소도 이 줄 아래에 적는다 (2026-11-16 사용자 규칙).
+- 보고 첫 줄에 무엇과 대조했는지 커밋까지 적는다. 형식은 `이 브랜치 \`커밋\`의 문서끼리, 그리고 <역할> \`safeai-kr/<저장소>\` <기본 브랜치> \`커밋\`, … 코드와 대조했습니다.`이고, 저장소는 2-1절에서 확인한 목록을 그대로 쓴다. 예: safe-site-docs면 `이 브랜치 \`4fd18503\`의 문서끼리, 그리고 BE \`safeai-kr/safe-site\` main \`77268f9f\`, FE \`safeai-kr/safe-site-monorepo\` main \`ba82f7a0\` 코드와 대조했습니다.`, safe-kiosk-docs면 `… 그리고 BE \`safeai-kr/safe-kiosk-be\` main \`커밋\`, FE \`safeai-kr/safe-kiosk-fe\` main \`커밋\` 코드와 대조했습니다.` 커밋은 앞 8자리로 쓴다. 목록에 있었지만 읽지 못했거나 관련 코드가 없던 저장소, 2-1절에서 제외한 비슷한 이름의 저장소도 이 줄 아래에 적는다 (2026-11-16, 2026-11-17 사용자 규칙).
 - 위치에는 저장소 이름을 붙인다. 예: `safe-site-fe:src/...:42`, `safe-site#123`, `safe-site-docs:plan/...:줄`. 같은 식으로 문서 지적도 저장소 이름을 붙인다 (2026-11-13 사용자 규칙).
 - 개발 저장소를 읽지 못했으면 표 아래에 그 사실을 한 줄로 적는다.
 

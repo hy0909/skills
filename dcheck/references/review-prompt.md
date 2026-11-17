@@ -7,7 +7,7 @@
 
 대상: <워크트리 절대 경로> (<저장소 이름>, origin/main 최신). plan/ 아래 .md 전부, deprecated/plan/**/*.md, README.md, plan/README.md를 읽어라. 큰 파일(<파일명 약 n줄>)도 전체를 읽어라.
 
-관련 개발 저장소(읽기 전용): <저장소 이름 목록. 2-1절 명령으로 찾은 결과>. 각 저장소의 기본 브랜치를 scratchpad에 `git clone --depth 1`로 받아 읽고, 열린 PR(`gh pr list --repo <저장소> --state open`)도 본다. 고치거나 GitHub에 쓰지 마라. 받은 클론은 검토에만 쓴다.
+관련 개발 저장소(읽기 전용): <저장소 이름 목록. 검토 대상 저장소 이름에서 `-docs`를 뺀 제품 이름으로 2-1절 명령을 돌려 찾은 결과. 제품 이름이 다른 저장소는 넣지 않는다>. 각 저장소의 기본 브랜치를 scratchpad에 `git clone --depth 1`로 받아 읽고, 열린 PR(`gh pr list --repo <저장소> --state open`)도 본다. 고치거나 GitHub에 쓰지 마라. 받은 클론은 검토에만 쓴다.
 
 확정 정책(<날짜> 사용자 정리). 문서가 이대로 돼 있어야 한다:
 D1. <정책 문장>
