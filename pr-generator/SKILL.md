@@ -1,6 +1,6 @@
 ---
 name: pr-generator
-description: Create GitHub pull requests for SafeAI work. Use when the user asks to create, open, draft, publish, edit, comment on, or prepare a PR; assign PRs to `hy0909` by default and ask who should be requested as reviewer when reviewers were not specified. Before creating a PR, editing its body, or posting a PR comment, always ask 「추가 검토할까요?」 (1 consistency/conflict/dev impact checked against related dev repos BE/FE/mobile, 2 exception/error cases, 3 none), then show the full body in chat and get explicit approval; write the body with the human-writing skill.
+description: Create GitHub pull requests for SafeAI work. Use when the user asks to create, open, draft, publish, edit, comment on, or prepare a PR; assign PRs to `hy0909` by default and ask who should be requested as reviewer when reviewers were not specified. Before creating a PR, editing its body, or posting a PR comment, always ask 「추가 검토할까요?」 (1 consistency/conflict/dev impact checked against related dev repos BE/FE/mobile, 2 exception/error cases, 3 Figma vs MD consistency, 4 none), then show the full body in chat and get explicit approval; write the body with the human-writing skill.
 ---
 
 # PR Generator
@@ -52,15 +52,16 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 
 - 대상: PR 생성, PR 제목·본문 수정, PR 댓글·리뷰
 - 질문: `추가 검토할까요?`
-- Claude Code에서는 AskUserQuestion 도구로 묻는다. 여러 개를 고를 수 있게(multiSelect) 하고 선택지는 아래 세 개다.
+- Claude Code에서는 AskUserQuestion 도구로 묻는다. 여러 개를 고를 수 있게(multiSelect) 하고 선택지는 아래 네 개다.
 
 | 선택지 | 검토 내용 |
 | --- | --- |
 | 1. 일관성·충돌·개발 영향 | 문서 간 일관성, 충돌 여부, 이대로 개발했을 때 이상하게 될 점, 같은 제품의 관련 개발 저장소(BE·FE·모바일)와의 차이 |
 | 2. 예외·에러 케이스 | 예외 상황과 에러 케이스가 빠짐없이 나왔는지 |
-| 3. 선택 안 함 | 추가 검토 없이 본문 승인 단계로 감 |
+| 3. 피그마·MD 일관성 | 글이 다루는 MD와 피그마 화면의 문구·화면 구성·상태·규칙이 같은지 |
+| 4. 선택 안 함 | 추가 검토 없이 본문 승인 단계로 감 |
 
-- 1과 2는 함께 고를 수 있다. 3을 1·2와 함께 고르면 다시 묻는다.
+- 1·2·3은 함께 고를 수 있다. 4를 1·2·3과 함께 고르면 다시 묻는다. (피그마·MD 일관성 추가: 2026-11-23 사용자 규칙)
 - 답을 받기 전에는 올리는 명령(`gh issue create`, `gh issue edit`, `gh issue comment`, `gh pr create`, `gh pr edit`, `gh pr comment`, `gh pr review`)을 실행하지 않는다.
 
 **1을 고르면**
@@ -77,6 +78,24 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 
 정해지지 않은 것은 정책을 지어내지 말고 `정의 필요`로 적는다. 작업과 관계없는 항목은 빼고 보고한다.
 
+**3을 고르면** (2026-11-23 사용자 규칙)
+서브에이전트 하나를 띄워 글이 다루는 MD(바뀐 MD, 언급한 요구사항)와 피그마 화면을 맞대어 본다. 피그마는 화면·문구·컴포넌트 상태의 기준이다. MD에만 있는 정책·보안·데이터 규칙은 화면에 나오지 않는 것이 정상이니 차이로 잡지 않는다.
+
+1. 피그마 위치를 정한다. MD에 적힌 피그마 링크와 노드 ID, 글 본문에 있는 링크, 사용자가 준 링크 순서로 찾는다. 찾지 못하면 짐작하지 말고 사용자에게 링크를 묻는다.
+2. Figma MCP로 읽는다. `create_session` 다음 `get_metadata`로 화면 목록과 구조를 보고, 문구와 상태는 `get_design_context`나 읽기 전용 `use_figma`로 읽는다. 차이를 보고하기 전에 `get_screenshot`으로 실제 화면을 한 번 확인한다. 노드가 크면 화면 단위로 나눠 읽는다.
+3. 파일에 옛 시안 표시가 있으면 그 화면은 빼고 본다. safe-site 피그마는 구분선(`---`) 아래 페이지와 `시안` 페이지가 옛 시안이다.
+4. 아래 항목을 맞대어 본다. 작업과 관계없는 항목은 빼고 보고한다.
+
+- 화면: MD에 적힌 화면이 피그마에 모두 있는지, 화면 이름과 진입 경로가 같은지
+- 문구: 제목, 본문, 버튼, 입력칸 안내, 토스트, 모달, 에러 문구가 글자 그대로 같은지
+- 상태: 빈 화면, 불러오는 중, 오류, 비활성, 선택됨 같은 상태별 화면이 양쪽에 다 있는지
+- 규칙 표시: 글자 수, 파일 형식·크기·개수, 필수 표시처럼 화면에 보이는 규칙의 숫자가 같은지
+- 흐름: 버튼을 누른 뒤 가는 화면, 모달과 토스트 중 무엇을 띄우는지가 같은지
+
+차이마다 어느 쪽이 최신인지 적는다. 기본은 피그마를 따라 MD를 고치는 것이다. 하지만 이슈·PR에서 새로 정한 내용이라 MD가 더 최신이면 `피그마 반영 필요`로 적는다. 어느 쪽이 맞는지 알 수 없으면 `확인 필요`로 적고 정책을 지어내지 않는다.
+
+Figma MCP를 쓸 수 없으면 3번 검토를 하지 못했다고 보고하고 끝낸다. 기억이나 MD만 보고 피그마 내용을 짐작하지 않는다.
+
 **결과 보고**
 서브에이전트 결과는 근거 위치를 직접 열어 맞는지 확인한 뒤 아래 표로 보고한다. 확인하지 못한 것은 `확인 필요`로 적는다.
 
@@ -84,7 +103,7 @@ Use this skill for GitHub PR creation. It adds the user's required planning guar
 | --- | --- | --- | --- | --- | --- |
 
 - 심각도는 `병합 막음`, `병합 전 권장`, `참고` 세 가지만 쓴다.
-- 위치에는 저장소 이름을 붙인다. 예: `safe-site-fe:src/...:42`, `safe-site#123`. 개발 저장소를 읽지 못했으면 표 아래에 그 사실을 한 줄로 적는다 (2026-11-13 사용자 규칙).
+- 위치에는 저장소 이름을 붙인다. 예: `safe-site-fe:src/...:42`, `safe-site#123`. 피그마 차이는 MD 위치와 피그마 노드를 함께 적는다. 예: `plan/feature/project-list.md:160` ↔ `피그마 3988:104904`. 개발 저장소를 읽지 못했으면 표 아래에 그 사실을 한 줄로 적는다 (2026-11-13 사용자 규칙).
 - 지적이 없으면 `중요 문제 없음`과 함께 봤던 저장소와 문서를 한 줄로 적는다.
 - 어떤 지적을 반영할지 사용자에게 묻고, 반영한 뒤 고친 본문 전체를 다시 보여 주고 「올리기 전 승인」을 받는다.
 
